@@ -6,8 +6,13 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFo
 from PySide2.QtWidgets import *
 
 from ui_main import Ui_MainWindow
-
 from ui_functions import *
+
+from model.note_handler import NoteHandler
+from model.note import Note
+
+from datetime import datetime
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -25,6 +30,9 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    sys.exit(app.exec_())
+    # app = QApplication(sys.argv)
+    # window = MainWindow()
+    # sys.exit(app.exec_())
+
+    note_handler = NoteHandler("")
+    note_handler.add_note(Note("Remember!", datetime.now()))

@@ -1,2 +1,5 @@
-/final_project.pdf
-/__pycache__
+__pycache__/
+*.py[cod]
+*$py.class
+
+final_project.pdf
