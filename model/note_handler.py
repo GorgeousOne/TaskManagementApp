@@ -3,22 +3,22 @@ from model.note import NoteDecoder, NoteEncoder
 import os
 from os import path
 
+from PySide2.QtCore import QSize
+from PySide2.QtWidgets import QPushButton
+
 
 class NoteHandler:
-	def __init__(self, saves_path):
+	def __init__(self):
 		self.saves_dir = path.expanduser("~") + path.sep + "TaskManagerApp"
 		self.saves_file = self.saves_dir + path.sep + "data.json"
 		self.notes = self.load_notes()
 		print(self.notes)
 
-
 	def add_note(self, note):
 		self.notes.append(note)
 		self.save_notes()
 
-
 	def load_notes(self):
-		
 		if path.exists(self.saves_file) and os.stat(self.saves_file).st_size > 0:
 			with open(self.saves_file, 'r') as infile:
 				try:
@@ -27,13 +27,25 @@ class NoteHandler:
 					print("Failed to load save file:", str(e))
 		return []
 
-
 	def save_notes(self):
-
 		if not path.exists(self.saves_dir):
 			os.makedirs(self.saves_dir)
-
 		with open(self.saves_file, 'w') as outfile:
-			return json.dump(self.notes, outfile, cls=NoteEncoder, ensure_ascii=False, indent=4)
+			return json.dump(self.notes, outfile, cls=NoteEncoder, ensure_ascii=False, indent=2)
 
+	def display_notes(self, container, layout):
+		for note in self.notes:
+			layout.addWidget(self.create_note_box(note, container))
 
+	def create_note_box(self, note, container):
+		box = QPushButton(container)
+		box.setObjectName(u"insert something here")
+		box.setMinimumSize(QSize(0, 40))
+		box.setText(note.title)
+		box.setStyleSheet(
+			u"QPushButton {\n"
+			"   border: 1px solid\n"
+			"   border-radius: 5px\n"
+			"   background-color: rgb(133, 227, 70)\n"
+			"}")
+		return box
