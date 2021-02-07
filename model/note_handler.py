@@ -41,11 +41,17 @@ class NoteHandler:
 		box = QPushButton(container)
 		box.setObjectName(u"insert something here")
 		box.setMinimumSize(QSize(0, 40))
+		box.setMaximumSize(QSize(120, 80))
 		box.setText(note.title)
 		box.setStyleSheet(
 			u"QPushButton {\n"
-			"   border: 1px solid\n"
-			"   border-radius: 5px\n"
-			"   background-color: rgb(133, 227, 70)\n"
-			"}")
+			"   border: 0px solid;\n"
+			"   border-radius: 3px;\n"
+			"   background-color: rgb(133, 227, 70);\n"
+			"}\n"
+			"QPushButton:hover {\n"
+			"   border: 1px solid;\n"
+			"   background-color: rgb(133, 227, 70);\n"
+			"}"
+			)
 		return box

@@ -148,7 +148,7 @@ class Ui_MainWindow(object):
 
 		self.verticalLayout_7 = QVBoxLayout(self.page_1)
 		self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-
+		self.verticalLayout_7.setAlignment(Qt.AlignTop)
 		# self.label_1 = QLabel(self.page_1)
 		# self.label_1.setObjectName(u"label_1")
 		# self.label_1.setAlignment(Qt.AlignCenter)
