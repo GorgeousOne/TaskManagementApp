@@ -5,6 +5,8 @@ import pickle
 from PySide2.QtCore import QSize
 from PySide2.QtWidgets import QPushButton
 
+from model.note import Note
+
 
 class NoteHandler:
 	def __init__(self):
@@ -15,7 +17,12 @@ class NoteHandler:
 		self.notes = self.load_notes()
 		print(self.notes)
 
-	def create_note(self, note):
+	def create_note(self, note_form):
+		title = note_form.title.text()
+		description = note_form.description.toPlainText()
+		date = note_form.date_picker.date()
+		time = note_form.time_picker.time() if note_form.enable_time.isChecked() else None
+		note = Note(title, date, description, time)
 
 		self.notes.append(note)
 		self.save_notes()
@@ -33,6 +40,8 @@ class NoteHandler:
 			pickle.dump(self.notes, outfile)
 
 	def display_notes(self, container, layout):
+		for i in reversed(range(layout.count())):
+			layout.itemAt(i).widget().setParent(None)
 		for note in self.notes:
 			layout.addWidget(self.create_note_box(note, container))
 
