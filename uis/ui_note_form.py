@@ -1,8 +1,8 @@
 import sys
 from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPlainTextEdit, QDateEdit, QTimeEdit, QHBoxLayout, \
-	QCheckBox, QVBoxLayout, QPushButton
+	QCheckBox, QVBoxLayout, QPushButton, QGridLayout, QWidget
 from PySide2.QtGui import QFont
-from PySide2.QtCore import QCoreApplication, QMetaObject, QDate, QTime
+from PySide2.QtCore import QCoreApplication, QMetaObject, QDate, QTime, Qt, QSize
 
 
 class NoteForm(QDialog):
@@ -12,10 +12,10 @@ class NoteForm(QDialog):
 		segoe_font = QFont("Segoe UI Light", 12)
 		self.setFont(segoe_font)
 
-		self.resize(400, 300)
+		self.setFixedSize(QSize(350, 420))
 		self.verticalLayout = QVBoxLayout(self)
 		self.verticalLayout.setContentsMargins(30, 30, 30, 30)
-		self.verticalLayout.setSpacing(6)
+		self.verticalLayout.setSpacing(20)
 		self.verticalLayout.setObjectName("verticalLayout")
 
 		self.title = QLineEdit(self)
@@ -25,31 +25,32 @@ class NoteForm(QDialog):
 
 		self.description = QPlainTextEdit(self)
 		self.description.setObjectName("description")
+		self.description.setMaximumHeight(120)
 		self.description.setFont(QFont("Segoe UI", 12))
 		self.verticalLayout.addWidget(self.description)
 
+		self.grid_widget = QWidget(self)
+		self.grid_widget.setObjectName("widget")
+		self.verticalLayout.addWidget(self.grid_widget)
+
+		self.gridLayout_2 = QGridLayout(self.grid_widget)
+		self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
+		self.gridLayout_2.setHorizontalSpacing(20)
+		self.gridLayout_2.setObjectName("gridLayout_2")
+
 		self.date_picker = QDateEdit(calendarPopup=True)
 		self.date_picker.setObjectName("date_picker")
-		self.date_picker.setDate(QDate.currentDate())
-		self.verticalLayout.addWidget(self.date_picker)
+		self.gridLayout_2.addWidget(self.date_picker, 0, 0, 1, 1)
 
-		self.horizontalLayout_2 = QHBoxLayout()
-		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-		self.verticalLayout.addLayout(self.horizontalLayout_2)
+		self.time_picker = QTimeEdit(self)
+		self.time_picker.hide()
+		self.time_picker.setObjectName("time_picker")
+		self.gridLayout_2.addWidget(self.time_picker, 0, 1, 1, 1)
 
 		self.enable_time = QCheckBox(self)
 		self.enable_time.setObjectName("enable_time")
-		self.horizontalLayout_2.addWidget(self.enable_time)
-
-		self.time_picker = QTimeEdit(self)
-		self.time_picker.setEnabled(False)
-		self.time_picker.setObjectName("time_picker")
-		now = QTime.currentTime()
-		next_quarter = (now.minute() // 15 + 1) * 15
-		time = QTime(now.hour() + next_quarter // 60, next_quarter % 60)
-		self.time_picker.setTime(time)
-
-		self.horizontalLayout_2.addWidget(self.time_picker)
+		self.enable_time.setLayoutDirection(Qt.RightToLeft)
+		self.verticalLayout.addWidget(self.enable_time)
 
 		self.verticalLayout.addStretch(1)
 
@@ -60,7 +61,6 @@ class NoteForm(QDialog):
 		self.btn_cancel = QPushButton(self)
 		self.btn_cancel.setObjectName("btn_cancel")
 		self.horizontalLayout_3.addWidget(self.btn_cancel)
-
 		self.horizontalLayout_3.addStretch(1)
 
 		self.btn_create = QPushButton(self)
@@ -76,13 +76,24 @@ class NoteForm(QDialog):
 		QMetaObject.connectSlotsByName(self)
 
 	def toggle_time(self):
-		self.time_picker.setEnabled(self.enable_time.isChecked())
+		self.time_picker.setVisible(self.enable_time.isChecked())
 
 	def toggle_btn_create(self, text):
 		self.btn_create.setEnabled(len(text.strip()) > 0)
 
-	def clear_and_hide(self):
-		pass
+	def show_updated(self):
+		"""Reset any previous inputs and update date and time picker before showing"""
+		self.title.setText("")
+		self.description.setPlainText("")
+		self.enable_time.setChecked(False)
+
+		now = QTime.currentTime()
+		next_quarter = (now.minute() + 18) // 15 * 15
+		time = QTime(now.hour() + next_quarter // 60, next_quarter % 60)
+
+		self.time_picker.setTime(time)
+		self.date_picker.setDate(QDate.currentDate())
+		self.show()
 
 	def retranslate_ui(self):
 		_translate = QCoreApplication.translate

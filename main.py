@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
 		self.show()
 
 	def open_node_form(self):
-		self.note_dialog.show()
+		self.note_dialog.show_updated()
 
 
 if __name__ == "__main__":
@@ -41,7 +41,7 @@ if __name__ == "__main__":
 	window = MainWindow()
 
 	note_handler = NoteHandler()
-	#note_handler.add_note(Note("Remember!", datetime.now()))
+	note_handler.create_note(Note("I am pickle rick!", datetime.now()))
 	note_handler.display_notes(window.ui.page_1, window.ui.verticalLayout_7)
 
 	sys.exit(app.exec_())

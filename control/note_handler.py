@@ -1,7 +1,6 @@
-import json
-from model.note import NoteDecoder, NoteEncoder
 import os
 from os import path
+import pickle
 
 from PySide2.QtCore import QSize
 from PySide2.QtWidgets import QPushButton
@@ -11,27 +10,27 @@ class NoteHandler:
 	def __init__(self):
 		self.saves_dir = path.expanduser("~") + path.sep + "TaskManagerApp"
 		self.saves_file = self.saves_dir + path.sep + "data.json"
+		self.saves_file2 = self.saves_dir + path.sep + "data2.json"
+
 		self.notes = self.load_notes()
 		print(self.notes)
 
-	def add_note(self, note):
+	def create_note(self, note):
+
 		self.notes.append(note)
 		self.save_notes()
 
 	def load_notes(self):
 		if path.exists(self.saves_file) and os.stat(self.saves_file).st_size > 0:
-			with open(self.saves_file, 'r') as infile:
-				try:
-					return json.load(infile, cls=NoteDecoder)
-				except json.decoder.JSONDecodeError as e:
-					print("Failed to load save file:", str(e))
+			with open(self.saves_file, 'rb') as infile:
+				return pickle.load(infile)
 		return []
 
 	def save_notes(self):
 		if not path.exists(self.saves_dir):
 			os.makedirs(self.saves_dir)
-		with open(self.saves_file, 'w') as outfile:
-			return json.dump(self.notes, outfile, cls=NoteEncoder, ensure_ascii=False, indent=2)
+		with open(self.saves_file, 'wb') as outfile:
+			pickle.dump(self.notes, outfile)
 
 	def display_notes(self, container, layout):
 		for note in self.notes:
