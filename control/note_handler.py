@@ -45,7 +45,7 @@ class NoteHandler:
 		box.setText(note.title)
 		box.setStyleSheet(
 			u"QPushButton {\n"
-			"   border: 0px solid;\n"
+			"   border: none;\n"
 			"   border-radius: 3px;\n"
 			"   background-color: rgb(133, 227, 70);\n"
 			"}\n"

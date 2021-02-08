@@ -1,20 +1,19 @@
 from PySide2 import QtCore
 from PySide2.QtCore import (QPropertyAnimation)
-from main import MainWindow
+# from main import MainWindow
+import main
 
 
-class UIFunctions(MainWindow):
+class UIFunctions(main.MainWindow):
 
-	def toggle_menu(self, maxWidth, enable):
-		if enable:
+	def toggle_menu(self, min_extended, max_extend, set_expanded):
+		if set_expanded:
 			width = self.ui.frame_left_menu.width()
-			maxExtend = maxWidth
-			standard = 70
 
-			if width == 70:
-				widthExtended = maxExtend
+			if width == min_extended:
+				widthExtended = max_extend
 			else:
-				widthExtended = standard
+				widthExtended = min_extended
 
 			self.animation = QPropertyAnimation(self.ui.frame_left_menu, b"minimumWidth")
 			self.animation.setDuration(400)

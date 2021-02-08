@@ -7,22 +7,29 @@ from PySide2.QtWidgets import QMainWindow, QApplication
 from control.note_handler import NoteHandler
 from model.note import Note
 
-from uis.ui_functions import UIFunctions
+import uis.ui_functions
 from uis.ui_main import Ui_MainWindow
-
+from uis.ui_note_form import NoteForm
 
 class MainWindow(QMainWindow):
 	def __init__(self):
 		QMainWindow.__init__(self)
 		self.ui = Ui_MainWindow()
-		self.ui.setupUi(self)
+		self.ui.setup_ui(self)
 
-		self.ui.btn_toggle.clicked.connect(lambda: UIFunctions.toggle_menu(self, 250, True))
+		self.note_dialog = NoteForm()
+		self.note_dialog.hide()
+
+		self.ui.btn_toggle_menu.clicked.connect(lambda: uis.ui_functions.UIFunctions.toggle_menu(self, 50, 250, True))
 		self.ui.btn_page_1.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_1))
 		self.ui.btn_page_2.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_2))
 		self.ui.btn_page_3.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_3))
 
+		self.ui.btn_add_note.clicked.connect(self.open_node_form)
 		self.show()
+
+	def open_node_form(self):
+		self.note_dialog.show()
 
 
 if __name__ == "__main__":

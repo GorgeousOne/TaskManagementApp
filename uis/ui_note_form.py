@@ -1,13 +1,16 @@
 import sys
 from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPlainTextEdit, QDateEdit, QTimeEdit, QHBoxLayout, \
-	QCheckBox, QVBoxLayout, QPushButton, QSpacerItem, QSizePolicy
+	QCheckBox, QVBoxLayout, QPushButton
 from PySide2.QtGui import QFont
 from PySide2.QtCore import QCoreApplication, QMetaObject, QDate, QTime
 
 
-class NoteForm2(QDialog):
+class NoteForm(QDialog):
 	def __init__(self):
 		super().__init__(None)  # , QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
+
+		segoe_font = QFont("Segoe UI Light", 12)
+		self.setFont(segoe_font)
 
 		self.resize(400, 300)
 		self.verticalLayout = QVBoxLayout(self)
@@ -17,10 +20,12 @@ class NoteForm2(QDialog):
 
 		self.title = QLineEdit(self)
 		self.title.setObjectName("title")
+		self.title.setFont(QFont("Segoe UI semibold", 12))
 		self.verticalLayout.addWidget(self.title)
 
 		self.description = QPlainTextEdit(self)
 		self.description.setObjectName("description")
+		self.description.setFont(QFont("Segoe UI", 12))
 		self.verticalLayout.addWidget(self.description)
 
 		self.date_picker = QDateEdit(calendarPopup=True)
@@ -46,6 +51,8 @@ class NoteForm2(QDialog):
 
 		self.horizontalLayout_2.addWidget(self.time_picker)
 
+		self.verticalLayout.addStretch(1)
+
 		self.horizontalLayout_3 = QHBoxLayout()
 		self.horizontalLayout_3.setObjectName("horizontalLayout_3")
 		self.verticalLayout.addLayout(self.horizontalLayout_3)
@@ -54,8 +61,7 @@ class NoteForm2(QDialog):
 		self.btn_cancel.setObjectName("btn_cancel")
 		self.horizontalLayout_3.addWidget(self.btn_cancel)
 
-		spacerItem = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-		self.horizontalLayout_3.addItem(spacerItem)
+		self.horizontalLayout_3.addStretch(1)
 
 		self.btn_create = QPushButton(self)
 		self.btn_create.setObjectName("btn_create")
@@ -64,6 +70,7 @@ class NoteForm2(QDialog):
 
 		self.enable_time.stateChanged.connect(self.toggle_time)
 		self.title.textChanged.connect(self.toggle_btn_create)
+		self.btn_cancel.clicked.connect(self.hide)
 
 		self.retranslate_ui()
 		QMetaObject.connectSlotsByName(self)
@@ -72,7 +79,10 @@ class NoteForm2(QDialog):
 		self.time_picker.setEnabled(self.enable_time.isChecked())
 
 	def toggle_btn_create(self, text):
-		self.btn_create.setEnabled(len(text) > 0)
+		self.btn_create.setEnabled(len(text.strip()) > 0)
+
+	def clear_and_hide(self):
+		pass
 
 	def retranslate_ui(self):
 		_translate = QCoreApplication.translate
@@ -85,11 +95,8 @@ class NoteForm2(QDialog):
 
 
 if __name__ == '__main__':
-	segoe_font = QFont("Segoe UI Light", 10)
 
 	app = QApplication(sys.argv)
-	app.setFont(segoe_font)
-
-	window = NoteForm2()
+	window = NoteForm()
 	window.show()
 	sys.exit(app.exec_())
