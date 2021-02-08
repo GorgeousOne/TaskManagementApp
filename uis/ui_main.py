@@ -1,4 +1,3 @@
-# WARNING! All changes made in this file will be lost when recompiling UI file!
 
 from PySide2.QtCore import (QCoreApplication, QMetaObject, QObject, QPoint,
                             QRect, QSize, QUrl, Qt)
@@ -69,18 +68,18 @@ class Ui_MainWindow(object):
 		self.frame_top.setFrameShadow(QFrame.Raised)
 		self.horizontalLayout.addWidget(self.frame_top)
 
-		self.Content = QFrame(self.centralwidget)
-		self.Content.setObjectName("Content")
-		self.Content.setFrameShape(QFrame.NoFrame)
-		self.Content.setFrameShadow(QFrame.Raised)
-		self.verticalLayout.addWidget(self.Content)
+		self.content = QFrame(self.centralwidget)
+		self.content.setObjectName("content")
+		self.content.setFrameShape(QFrame.NoFrame)
+		self.content.setFrameShadow(QFrame.Raised)
+		self.verticalLayout.addWidget(self.content)
 
-		self.horizontal_layout_2 = QHBoxLayout(self.Content)
+		self.horizontal_layout_2 = QHBoxLayout(self.content)
 		self.horizontal_layout_2.setSpacing(0)
 		self.horizontal_layout_2.setObjectName("horizontalLayout_2")
 		self.horizontal_layout_2.setContentsMargins(0, 0, 0, 0)
 
-		self.frame_left_menu = QFrame(self.Content)
+		self.frame_left_menu = QFrame(self.content)
 		self.frame_left_menu.setObjectName("frame_left_men")
 		self.frame_left_menu.setMinimumSize(QSize(70, 0))
 		self.frame_left_menu.setMaximumSize(QSize(70, 16777215))
@@ -128,7 +127,7 @@ class Ui_MainWindow(object):
 		self.btn_page_3.setMinimumSize(QSize(0, 40))
 		self.verticalLayout_4.addWidget(self.btn_page_3)
 
-		self.frame_pages = QFrame(self.Content)
+		self.frame_pages = QFrame(self.content)
 		self.frame_pages.setObjectName("frame_pages")
 		self.frame_pages.setFrameShape(QFrame.StyledPanel)
 		self.frame_pages.setFrameShadow(QFrame.Raised)
