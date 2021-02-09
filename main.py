@@ -1,10 +1,10 @@
 import sys
 
 from PySide2.QtWidgets import QApplication
-
-from control.note_handler import NoteHandler
+from PySide2.QtGui import QFont
 
 import uis.ui_functions
+from control.note_handler import NoteHandler
 from uis.ui_main import UIMainWindow
 from uis.ui_note_editor import UINoteEditor
 
@@ -35,6 +35,8 @@ class MainHandler:
 if __name__ == "__main__":
 
 	app = QApplication(sys.argv)
+	app.setFont(QFont("Segoe UI light", 12))
+
 	whatever = MainHandler()
 	sys.exit(app.exec_())
 

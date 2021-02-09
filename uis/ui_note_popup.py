@@ -1,7 +1,9 @@
-from PySide2.QtCore import QCoreApplication, QMetaObject, Qt, QSize, QEvent
+from PySide2.QtCore import QCoreApplication, QMetaObject, Qt, QSize
 from PySide2.QtWidgets import QDialog, QFrame, QLabel, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, \
 	QGraphicsDropShadowEffect
 from PySide2.QtGui import QFont, QIcon
+
+from utils import icons_folder
 
 
 class UINotePopup(QDialog):
@@ -12,11 +14,11 @@ class UINotePopup(QDialog):
 		self.setWindowModality(Qt.ApplicationModal)
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.setAttribute(Qt.WA_TranslucentBackground, True)
-		self.setFixedWidth(350)
-		self.setFont(QFont("Segoe UI", 12))
+		self.setFixedWidth(420)
+		self.setFont(QFont("Segoe UI light", 12))
 
 		self.verticalLayout = QVBoxLayout(self)
-		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+		self.verticalLayout.setContentsMargins(20, 20, 20, 20)
 		self.verticalLayout.setSpacing(0)
 		self.verticalLayout.setObjectName("verticalLayout")
 
@@ -31,46 +33,52 @@ class UINotePopup(QDialog):
 		self.frame.setFrameShadow(QFrame.Raised)
 		self.frame.setObjectName("frame")
 
-		# self.shadow = QGraphicsDropShadowEffect(dialog)
-		# self.shadow.setBlurRadius(10)
-		# self.frame.setGraphicsEffect(self.shadow)
+		shadow = QGraphicsDropShadowEffect(self)
+		shadow.setBlurRadius(20)
+		shadow.setOffset(0)
+		shadow.setColor(Qt.black)
+		self.frame.setGraphicsEffect(shadow)
 
 		self.vertical_layout_2 = QVBoxLayout(self.frame)
 		self.vertical_layout_2.setObjectName("verticalLayout_2")
 
 		self.widget_top_bar = QWidget(self.frame)
-		# self.widget_top_bar.setStyleSheet(
-		# 	".QPushButton {\n"
-		# 	"    border: 0px solid;\n"
-		# 	"    border-radius: 20px;\n"
-		# 	"    background-color: rgb(125, 240, 31);\n"
-		# 	"}\n"
-		# 	".QPushButton:hover:!pressed {\n"
-		# 	"    background-color: rgb(158, 240, 63);\n"
-		# 	"}")
+		self.widget_top_bar.setStyleSheet(
+			".QPushButton {\n"
+			"    border: 0px solid;\n"
+			"    border-radius: 20px;\n"
+			"}\n"
+			".QPushButton:hover:!pressed {\n"
+			"    background-color: rgb(230, 230, 230);\n"
+			"}")
 		self.widget_top_bar.setObjectName("horizontalWidget")
 		self.vertical_layout_2.addWidget(self.widget_top_bar)
 
 		self.top_bar = QHBoxLayout(self.widget_top_bar)
-		self.top_bar.setContentsMargins(10, 10, 10, 0)
-		self.top_bar.setSpacing(10)
+		self.top_bar.setContentsMargins(10, 0, 10, 0)
+		self.top_bar.setSpacing(0)
 		self.top_bar.setObjectName("action_bar")
 		self.top_bar.addStretch(1)
 
 		self.btn_edit = QPushButton(self.widget_top_bar)
 		self.btn_edit.setObjectName("btn_edit")
-		# self.btn_edit.setFixedSize(40, 40)
-
-		# self.btn_edit.setIcon(QIcon(icons_folder + "pencil.png"))
-		# self.btn_edit.setIconSize(QSize(50, 50))
+		self.btn_edit.setFixedSize(40, 40)
+		self.btn_edit.setIcon(QIcon(icons_folder + "pencil.png"))
+		self.btn_edit.setIconSize(QSize(50, 50))
 		self.top_bar.addWidget(self.btn_edit)
 
 		self.btn_delete = QPushButton(self.widget_top_bar)
 		self.btn_delete.setObjectName("btn_delete")
+		self.btn_delete.setFixedSize(40, 40)
+		self.btn_delete.setIcon(QIcon(icons_folder + "trashcan.png"))
+		self.btn_delete.setIconSize(QSize(50, 50))
 		self.top_bar.addWidget(self.btn_delete)
 
 		self.btn_close = QPushButton(self.widget_top_bar)
 		self.btn_close.setObjectName("btn_close")
+		self.btn_close.setFixedSize(40, 40)
+		self.btn_close.setIcon(QIcon(icons_folder + "cross2.png"))
+		self.btn_close.setIconSize(QSize(50, 50))
 		self.top_bar.addWidget(self.btn_close)
 
 		self.vertical_layout_2.addLayout(self.top_bar)
@@ -118,9 +126,9 @@ class UINotePopup(QDialog):
 
 	def retranslate_ui(self):
 		_translate = QCoreApplication.translate
-		self.btn_edit.setText(_translate("Dialog", "edit"))
-		self.btn_delete.setText(_translate("Dialog", "delete"))
-		self.btn_close.setText(_translate("Dialog", "close"))
+		# self.btn_edit.setText(_translate("Dialog", "edit"))
+		# self.btn_delete.setText(_translate("Dialog", "delete"))
+		# self.btn_close.setText(_translate("Dialog", "close"))
 		self.date_label.setText(_translate("Dialog", "Insert Date and Time"))
 		self.title_label.setText(_translate("Dialog", "Insert Title"))
 		self.description_label.setText(_translate("Dialog", "Insert Description"))

@@ -6,14 +6,14 @@ from utils import icons_folder
 
 class UIMainWindow(QMainWindow):
 	def __init__(self):
-		super().__init__()
+		super(UIMainWindow, self).__init__()
 		self.resize(900, 550)
 		self.setMinimumSize(QSize(900, 550))
 		self.setStyleSheet("background-color: rgb(45, 45, 45);")
 
 		self.centralwidget = QWidget(self)
 		self.centralwidget.setObjectName("centralwidget")
-		self.centralwidget.setFont(QFont("Segoe UI", 12))
+		self.centralwidget.setFont(QFont("Segoe UI light", 12))
 		self.setCentralWidget(self.centralwidget)
 
 		self.verticalLayout = QVBoxLayout(self.centralwidget)

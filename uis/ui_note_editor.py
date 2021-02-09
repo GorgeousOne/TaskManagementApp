@@ -5,7 +5,7 @@ from PySide2.QtGui import QFont
 from PySide2.QtCore import QCoreApplication, QMetaObject, QDate, QTime, Qt, QSize
 
 
-class UINoteEditor(object):
+class UINoteEditor:
 	def __init__(self):
 		self.dialog = QDialog()
 		self.dialog.setObjectName("Dialog")
