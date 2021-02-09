@@ -1,17 +1,17 @@
 
-from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPlainTextEdit, QDateEdit, QTimeEdit, QHBoxLayout, \
+from PySide2.QtWidgets import QDialog, QLineEdit, QPlainTextEdit, QDateEdit, QTimeEdit, QHBoxLayout, \
 	QCheckBox, QVBoxLayout, QPushButton, QGridLayout, QWidget
 from PySide2.QtGui import QFont
 from PySide2.QtCore import QCoreApplication, QMetaObject, QDate, QTime, Qt, QSize
 
 
-class UINoteEditor(object):
-	def setup_ui(self, dialog):
-		dialog.setWindowModality(Qt.ApplicationModal)
-		dialog.setObjectName("Dialog")
-		dialog.setFixedSize(350, 420)
-		dialog.setStyleSheet("font: 25 12pt \"Segoe UI\";")
-		self.dialog = dialog
+class UINoteEditor:
+	def __init__(self):
+		self.dialog = QDialog()
+		self.dialog.setObjectName("Dialog")
+		self.dialog.setFixedSize(350, 420)
+		self.dialog.setWindowModality(Qt.ApplicationModal)
+		self.dialog.setFont(QFont("Segoe UI", 12))
 
 		self.verticalLayout = QVBoxLayout(self.dialog)
 		self.verticalLayout.setContentsMargins(30, 30, 30, 30)
@@ -72,8 +72,8 @@ class UINoteEditor(object):
 		self.title.textChanged.connect(self.toggle_btn_create)
 		self.btn_cancel.clicked.connect(self.dialog.hide)
 
-		self.retranslate_ui(dialog)
-		QMetaObject.connectSlotsByName(dialog)
+		self.retranslate_ui()
+		QMetaObject.connectSlotsByName(self.dialog)
 
 	def toggle_time(self):
 		self.time_picker.setVisible(self.enable_time.isChecked())
@@ -94,11 +94,11 @@ class UINoteEditor(object):
 		self.time_picker.setTime(time)
 		self.date_picker.setDate(QDate.currentDate())
 		self.dialog.show()
-		self.dialog.activateWindow()
+		self.dialog.setFocus(Qt.PopupFocusReason)
 
-	def retranslate_ui(self, dialog):
+	def retranslate_ui(self):
 		_translate = QCoreApplication.translate
-		dialog.setWindowTitle(_translate("self", "Create new note"))
+		self.dialog.setWindowTitle(_translate("self", "Create new note"))
 		self.title.setPlaceholderText(_translate("self", "Add title"))
 		self.description.setPlaceholderText(_translate("self", "Add description"))
 		self.enable_time.setText(_translate("self", "Add a time"))
@@ -108,9 +108,9 @@ class UINoteEditor(object):
 
 if __name__ == '__main__':
 	import sys
+	from PySide2.QtWidgets import QApplication
 	app = QApplication(sys.argv)
 	main_dialog = QDialog()
 	ui = UINoteEditor()
-	ui.setup_ui(main_dialog)
 	main_dialog.show()
 	sys.exit(app.exec_())

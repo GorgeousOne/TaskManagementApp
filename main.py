@@ -1,50 +1,42 @@
 import sys
 
-from PySide2.QtGui import (QFont)
-from PySide2.QtWidgets import QMainWindow, QApplication, QDialog
-
-from control.note_handler import NoteHandler
+from PySide2.QtWidgets import QApplication
+from PySide2.QtGui import QFont
 
 import uis.ui_functions
+from control.note_handler import NoteHandler
 from uis.ui_main import UIMainWindow
 from uis.ui_note_editor import UINoteEditor
 
 
-class MainWindow(QMainWindow):
+class MainHandler:
 	def __init__(self):
-		QMainWindow.__init__(self)
-		self.ui = UIMainWindow()
-		self.ui.setup_ui(self)
+		self.main_ui = UIMainWindow()
+		self.note_editor = UINoteEditor()
 
-		create_note_dialog = QDialog()
-		self.ui_create_note = UINoteEditor()
-		self.ui_create_note.setup_ui(create_note_dialog)
-		self.ui_create_note.btn_create.clicked.connect(self.forward_note)
+		self.main_ui.btn_toggle_menu.clicked.connect(lambda: uis.ui_functions.toggle_menu(self.main_ui, 50, 250))
+		self.main_ui.btn_page_1.clicked.connect(lambda: self.main_ui.pages_widget.setCurrentWidget(self.main_ui.page_1))
+		self.main_ui.btn_page_2.clicked.connect(lambda: self.main_ui.pages_widget.setCurrentWidget(self.main_ui.page_2))
+		self.main_ui.btn_page_3.clicked.connect(lambda: self.main_ui.pages_widget.setCurrentWidget(self.main_ui.page_3))
+		self.main_ui.btn_add_note.clicked.connect(self.note_editor.show_updated)
 
-		self.ui.btn_toggle_menu.clicked.connect(lambda: uis.ui_functions.UIFunctions.toggle_menu(self, 50, 250, True))
-		self.ui.btn_page_1.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_1))
-		self.ui.btn_page_2.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_2))
-		self.ui.btn_page_3.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_3))
+		self.note_editor.btn_create.clicked.connect(self.forward_note)
+		self.main_ui.show()
 
-		self.ui.btn_add_note.clicked.connect(self.ui_create_note.show_updated)
-		self.show()
+		self.note_handler = NoteHandler()
+		self.note_handler.display_notes(self.main_ui.page_1, self.main_ui.verticalLayout_7)
 
 	def forward_note(self):
-		note_handler.create_note(self.ui_create_note)
-		note_handler.display_notes(window.ui.page_1, window.ui.verticalLayout_7)
-		self.ui_create_note.dialog.hide()
+		self.note_handler.create_note(self.note_editor)
+		self.note_handler.display_notes(self.main_ui.page_1, self.main_ui.verticalLayout_7)
+		self.note_editor.dialog.hide()
 
 
 if __name__ == "__main__":
 
 	app = QApplication(sys.argv)
-	segoe_font = QFont("Segoe UI Light", 12)
-	app.setFont(segoe_font)
+	app.setFont(QFont("Segoe UI light", 12))
 
-	window = MainWindow()
-
-	note_handler = NoteHandler()
-	note_handler.display_notes(window.ui.page_1, window.ui.verticalLayout_7)
-
+	whatever = MainHandler()
 	sys.exit(app.exec_())
 

@@ -5,6 +5,10 @@ class Note:
 		self.date = date
 		self.time = time
 		self.description = description
+		self.isDone = False
+
+	def __hash__(self):
+		return hash((self.title, self.date))
 
 	def __eq__(self, other):
 		if not isinstance(other, Note):
