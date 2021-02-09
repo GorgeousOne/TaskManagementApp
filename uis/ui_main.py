@@ -1,16 +1,11 @@
-from PySide2.QtCore import QCoreApplication, QMetaObject, QSize, Qt, QFile
+from PySide2.QtCore import QCoreApplication, QMetaObject, QSize, Qt
 from PySide2.QtWidgets import *
 from PySide2.QtGui import QIcon
-import os
-from os.path import sep
+from utils import icons_folder
 
 
-class Ui_MainWindow(object):
+class UIMainWindow(object):
 	def setup_ui(self, main_window):
-		if main_window.objectName():
-			main_window.setObjectName("MainWindow")
-
-		icons_folder = os.path.dirname(os.path.abspath("main.py")) + sep + "uis" + sep + "icons" + sep
 
 		main_window.resize(900, 550)
 		main_window.setMinimumSize(QSize(900, 550))
@@ -203,11 +198,11 @@ class Ui_MainWindow(object):
 		self.retranslateUi(main_window)
 		QMetaObject.connectSlotsByName(main_window)
 
-	def retranslateUi(self, MainWindow):
-		MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", "MainWindow", None))
-		# self.btn_toggle_menu.setText(QCoreApplication.translate("MainWindow", "TOGGLE", None))
-		self.btn_page_1.setText(QCoreApplication.translate("MainWindow", "Page 1", None))
-		self.btn_page_2.setText(QCoreApplication.translate("MainWindow", "Page 2", None))
-		self.btn_page_3.setText(QCoreApplication.translate("MainWindow", "Page 3", None))
-		self.label_2.setText(QCoreApplication.translate("MainWindow", "PAGE 2", None))
-		self.label_3.setText(QCoreApplication.translate("MainWindow", "PAGE 3", None))
+	def retranslateUi(self, main_window):
+		_translate = QCoreApplication.translate
+		main_window.setWindowTitle(_translate("MainWindow", "MainWindow", None))
+		self.btn_page_1.setText(_translate("MainWindow", "Page 1", None))
+		self.btn_page_2.setText(_translate("MainWindow", "Page 2", None))
+		self.btn_page_3.setText(_translate("MainWindow", "Page 3", None))
+		self.label_2.setText(_translate("MainWindow", "PAGE 2", None))
+		self.label_3.setText(_translate("MainWindow", "PAGE 3", None))

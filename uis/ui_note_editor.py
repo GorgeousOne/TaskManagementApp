@@ -1,35 +1,35 @@
-import sys
+
 from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPlainTextEdit, QDateEdit, QTimeEdit, QHBoxLayout, \
 	QCheckBox, QVBoxLayout, QPushButton, QGridLayout, QWidget
 from PySide2.QtGui import QFont
 from PySide2.QtCore import QCoreApplication, QMetaObject, QDate, QTime, Qt, QSize
 
 
-class NoteForm(QDialog):
-	def __init__(self):
-		super().__init__(None, Qt.WindowStaysOnTopHint | Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
+class UINoteEditor(object):
+	def setup_ui(self, dialog):
+		dialog.setWindowModality(Qt.ApplicationModal)
+		dialog.setObjectName("Dialog")
+		dialog.setFixedSize(350, 420)
+		dialog.setStyleSheet("font: 25 12pt \"Segoe UI\";")
+		self.dialog = dialog
 
-		segoe_font = QFont("Segoe UI Light", 12)
-		self.setFont(segoe_font)
-
-		self.setFixedSize(QSize(350, 420))
-		self.verticalLayout = QVBoxLayout(self)
+		self.verticalLayout = QVBoxLayout(self.dialog)
 		self.verticalLayout.setContentsMargins(30, 30, 30, 30)
 		self.verticalLayout.setSpacing(20)
 		self.verticalLayout.setObjectName("verticalLayout")
 
-		self.title = QLineEdit(self)
+		self.title = QLineEdit(self.dialog)
 		self.title.setObjectName("title")
 		self.title.setFont(QFont("Segoe UI semibold", 12))
 		self.verticalLayout.addWidget(self.title)
 
-		self.description = QPlainTextEdit(self)
+		self.description = QPlainTextEdit(self.dialog)
 		self.description.setObjectName("description")
 		self.description.setMaximumHeight(120)
 		self.description.setFont(QFont("Segoe UI", 12))
 		self.verticalLayout.addWidget(self.description)
 
-		self.grid_widget = QWidget(self)
+		self.grid_widget = QWidget(self.dialog)
 		self.grid_widget.setObjectName("widget")
 		self.verticalLayout.addWidget(self.grid_widget)
 
@@ -42,12 +42,12 @@ class NoteForm(QDialog):
 		self.date_picker.setObjectName("date_picker")
 		self.gridLayout_2.addWidget(self.date_picker, 0, 0, 1, 1)
 
-		self.time_picker = QTimeEdit(self)
+		self.time_picker = QTimeEdit(self.dialog)
 		self.time_picker.hide()
 		self.time_picker.setObjectName("time_picker")
 		self.gridLayout_2.addWidget(self.time_picker, 0, 1, 1, 1)
 
-		self.enable_time = QCheckBox(self)
+		self.enable_time = QCheckBox(self.dialog)
 		self.enable_time.setObjectName("enable_time")
 		self.enable_time.setLayoutDirection(Qt.RightToLeft)
 		self.verticalLayout.addWidget(self.enable_time)
@@ -58,22 +58,22 @@ class NoteForm(QDialog):
 		self.horizontalLayout_3.setObjectName("horizontalLayout_3")
 		self.verticalLayout.addLayout(self.horizontalLayout_3)
 
-		self.btn_cancel = QPushButton(self)
+		self.btn_cancel = QPushButton(self.dialog)
 		self.btn_cancel.setObjectName("btn_cancel")
 		self.horizontalLayout_3.addWidget(self.btn_cancel)
 		self.horizontalLayout_3.addStretch(1)
 
-		self.btn_create = QPushButton(self)
+		self.btn_create = QPushButton(self.dialog)
 		self.btn_create.setObjectName("btn_create")
 		self.btn_create.setEnabled(False)
 		self.horizontalLayout_3.addWidget(self.btn_create)
 
 		self.enable_time.stateChanged.connect(self.toggle_time)
 		self.title.textChanged.connect(self.toggle_btn_create)
-		self.btn_cancel.clicked.connect(self.hide)
+		self.btn_cancel.clicked.connect(self.dialog.hide)
 
-		self.retranslate_ui()
-		QMetaObject.connectSlotsByName(self)
+		self.retranslate_ui(dialog)
+		QMetaObject.connectSlotsByName(dialog)
 
 	def toggle_time(self):
 		self.time_picker.setVisible(self.enable_time.isChecked())
@@ -93,12 +93,12 @@ class NoteForm(QDialog):
 
 		self.time_picker.setTime(time)
 		self.date_picker.setDate(QDate.currentDate())
-		self.show()
-		self.activateWindow()
+		self.dialog.show()
+		self.dialog.activateWindow()
 
-	def retranslate_ui(self):
+	def retranslate_ui(self, dialog):
 		_translate = QCoreApplication.translate
-		self.setWindowTitle(_translate("self", "Create new note"))
+		dialog.setWindowTitle(_translate("self", "Create new note"))
 		self.title.setPlaceholderText(_translate("self", "Add title"))
 		self.description.setPlaceholderText(_translate("self", "Add description"))
 		self.enable_time.setText(_translate("self", "Add a time"))
@@ -107,8 +107,10 @@ class NoteForm(QDialog):
 
 
 if __name__ == '__main__':
-
+	import sys
 	app = QApplication(sys.argv)
-	window = NoteForm()
-	window.show()
+	main_dialog = QDialog()
+	ui = UINoteEditor()
+	ui.setup_ui(main_dialog)
+	main_dialog.show()
 	sys.exit(app.exec_())

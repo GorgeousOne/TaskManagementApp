@@ -53,6 +53,9 @@ class NoteHandler:
 		box.setObjectName(u"insert something here")
 		box.setFixedSize(QSize(300, 40))
 		box.setText(note.title)
+		font = box.font()
+		font.setStrikeOut(True)
+		box.setFont(font)
 		box.setLayoutDirection(Qt.RightToLeft)
 
 		box.setStyleSheet(
