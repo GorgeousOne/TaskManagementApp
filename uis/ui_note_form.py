@@ -7,7 +7,7 @@ from PySide2.QtCore import QCoreApplication, QMetaObject, QDate, QTime, Qt, QSiz
 
 class NoteForm(QDialog):
 	def __init__(self):
-		super().__init__(None)  # , QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
+		super().__init__(None, Qt.WindowStaysOnTopHint | Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
 
 		segoe_font = QFont("Segoe UI Light", 12)
 		self.setFont(segoe_font)
@@ -94,6 +94,7 @@ class NoteForm(QDialog):
 		self.time_picker.setTime(time)
 		self.date_picker.setDate(QDate.currentDate())
 		self.show()
+		self.activateWindow()
 
 	def retranslate_ui(self):
 		_translate = QCoreApplication.translate
@@ -102,7 +103,7 @@ class NoteForm(QDialog):
 		self.description.setPlaceholderText(_translate("self", "Add description"))
 		self.enable_time.setText(_translate("self", "Add a time"))
 		self.btn_cancel.setText(_translate("self", "Cancel"))
-		self.btn_create.setText(_translate("self", "Create"))
+		self.btn_create.setText(_translate("self", "Save"))
 
 
 if __name__ == '__main__':

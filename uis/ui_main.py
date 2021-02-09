@@ -9,6 +9,9 @@ class Ui_MainWindow(object):
 	def setup_ui(self, main_window):
 		if main_window.objectName():
 			main_window.setObjectName("MainWindow")
+
+		icons_folder = os.path.dirname(os.path.abspath("main.py")) + sep + "uis" + sep + "icons" + sep
+
 		main_window.resize(900, 550)
 		main_window.setMinimumSize(QSize(900, 550))
 		main_window.setStyleSheet("background-color: rgb(45, 45, 45);")
@@ -57,6 +60,8 @@ class Ui_MainWindow(object):
 
 		self.btn_toggle_menu.setSizePolicy(sizePolicy)
 		self.btn_toggle_menu.setStyleSheet("color: rgb(255, 255, 255);\nborder: none;")
+		self.btn_toggle_menu.setIcon(QIcon(icons_folder + "burger.png"))
+		self.btn_toggle_menu.setIconSize(QSize(50, 50))
 		self.verticalLayout_2.addWidget(self.btn_toggle_menu)
 
 		self.frame_top = QFrame(self.top_bar)
@@ -84,8 +89,7 @@ class Ui_MainWindow(object):
 		self.btn_add_note.setObjectName("btn_add_note")
 		self.btn_add_note.setMinimumSize(QSize(50, 50))
 
-		root_dir = os.path.dirname(os.path.abspath("main.py"))
-		self.btn_add_note.setIcon(QIcon(root_dir + sep + "uis" + sep + "icons" + sep + "plus.png"))
+		self.btn_add_note.setIcon(QIcon(icons_folder + "plus.png"))
 		self.btn_add_note.setIconSize(QSize(50, 50))
 		self.horizontal_layout_3.addWidget(self.btn_add_note)
 
@@ -201,7 +205,7 @@ class Ui_MainWindow(object):
 
 	def retranslateUi(self, MainWindow):
 		MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", "MainWindow", None))
-		self.btn_toggle_menu.setText(QCoreApplication.translate("MainWindow", "TOGGLE", None))
+		# self.btn_toggle_menu.setText(QCoreApplication.translate("MainWindow", "TOGGLE", None))
 		self.btn_page_1.setText(QCoreApplication.translate("MainWindow", "Page 1", None))
 		self.btn_page_2.setText(QCoreApplication.translate("MainWindow", "Page 2", None))
 		self.btn_page_3.setText(QCoreApplication.translate("MainWindow", "Page 3", None))
