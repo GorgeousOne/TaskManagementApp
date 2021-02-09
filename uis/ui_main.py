@@ -1,19 +1,20 @@
 from PySide2.QtCore import QCoreApplication, QMetaObject, QSize, Qt
 from PySide2.QtWidgets import *
-from PySide2.QtGui import QIcon
+from PySide2.QtGui import QIcon, QFont
 from utils import icons_folder
 
 
-class UIMainWindow(object):
-	def setup_ui(self, main_window):
+class UIMainWindow(QMainWindow):
+	def __init__(self):
+		super().__init__()
+		self.resize(900, 550)
+		self.setMinimumSize(QSize(900, 550))
+		self.setStyleSheet("background-color: rgb(45, 45, 45);")
 
-		main_window.resize(900, 550)
-		main_window.setMinimumSize(QSize(900, 550))
-		main_window.setStyleSheet("background-color: rgb(45, 45, 45);")
-
-		self.centralwidget = QWidget(main_window)
+		self.centralwidget = QWidget(self)
 		self.centralwidget.setObjectName("centralwidget")
-		main_window.setCentralWidget(self.centralwidget)
+		self.centralwidget.setFont(QFont("Segoe UI", 12))
+		self.setCentralWidget(self.centralwidget)
 
 		self.verticalLayout = QVBoxLayout(self.centralwidget)
 		self.verticalLayout.setSpacing(0)
@@ -158,14 +159,14 @@ class UIMainWindow(object):
 		self.verticalLayout_5 = QVBoxLayout(self.frame_pages)
 		self.verticalLayout_5.setObjectName("verticalLayout_5")
 
-		self.stackedWidget = QStackedWidget(self.frame_pages)
-		self.stackedWidget.setObjectName("stackedWidget")
-		self.stackedWidget.setCurrentIndex(0)
-		self.verticalLayout_5.addWidget(self.stackedWidget)
+		self.pages_widget = QStackedWidget(self.frame_pages)
+		self.pages_widget.setObjectName("stackedWidget")
+		self.pages_widget.setCurrentIndex(0)
+		self.verticalLayout_5.addWidget(self.pages_widget)
 
 		self.page_1 = QWidget()
 		self.page_1.setObjectName("page_1")
-		self.stackedWidget.addWidget(self.page_1)
+		self.pages_widget.addWidget(self.page_1)
 
 		self.verticalLayout_7 = QVBoxLayout(self.page_1)
 		self.verticalLayout_7.setObjectName("verticalLayout_7")
@@ -173,7 +174,7 @@ class UIMainWindow(object):
 
 		self.page_2 = QWidget()
 		self.page_2.setObjectName("page_2")
-		self.stackedWidget.addWidget(self.page_2)
+		self.pages_widget.addWidget(self.page_2)
 
 		self.verticalLayout_6 = QVBoxLayout(self.page_2)
 		self.verticalLayout_6.setObjectName("verticalLayout_6")
@@ -185,7 +186,7 @@ class UIMainWindow(object):
 
 		self.page_3 = QWidget()
 		self.page_3.setObjectName("page_3")
-		self.stackedWidget.addWidget(self.page_3)
+		self.pages_widget.addWidget(self.page_3)
 
 		self.vertical_layout_8 = QVBoxLayout(self.page_3)
 		self.vertical_layout_8.setObjectName("vertical_layout_8")
@@ -195,14 +196,14 @@ class UIMainWindow(object):
 		self.label_3.setAlignment(Qt.AlignCenter)
 		self.vertical_layout_8.addWidget(self.label_3)
 
-		self.retranslateUi(main_window)
-		QMetaObject.connectSlotsByName(main_window)
+		self.retranslateUi()
+		QMetaObject.connectSlotsByName(self)
 
-	def retranslateUi(self, main_window):
+	def retranslateUi(self):
 		_translate = QCoreApplication.translate
-		main_window.setWindowTitle(_translate("MainWindow", "MainWindow", None))
-		self.btn_page_1.setText(_translate("MainWindow", "Page 1", None))
-		self.btn_page_2.setText(_translate("MainWindow", "Page 2", None))
-		self.btn_page_3.setText(_translate("MainWindow", "Page 3", None))
-		self.label_2.setText(_translate("MainWindow", "PAGE 2", None))
-		self.label_3.setText(_translate("MainWindow", "PAGE 3", None))
+		self.setWindowTitle(_translate("MainWindow", "Task Management App"))
+		self.btn_page_1.setText(_translate("MainWindow", "Page 1"))
+		self.btn_page_2.setText(_translate("MainWindow", "Page 2"))
+		self.btn_page_3.setText(_translate("MainWindow", "Page 3"))
+		self.label_2.setText(_translate("MainWindow", "PAGE 2"))
+		self.label_3.setText(_translate("MainWindow", "PAGE 3"))

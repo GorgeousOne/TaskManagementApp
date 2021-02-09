@@ -1,27 +1,30 @@
-from PySide2.QtCore import QCoreApplication, QMetaObject, Qt, QSize, QFile
-from PySide2.QtWidgets import QApplication, QDialog, QFrame, QLabel, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, \
+from PySide2.QtCore import QCoreApplication, QMetaObject, Qt, QSize, QEvent
+from PySide2.QtWidgets import QDialog, QFrame, QLabel, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, \
 	QGraphicsDropShadowEffect
-from PySide2.QtGui import QIcon
+from PySide2.QtGui import QFont, QIcon
 
 
-class UINotePopup(object):
-	def setup_ui(self, dialog):
-		dialog.setWindowFlags(Qt.FramelessWindowHint)
-		dialog.setObjectName("Dialog")
-		dialog.resize(350, 420)
-		dialog.setStyleSheet("font: 25 12pt \"Segoe UI\";")
-		dialog.setAttribute(Qt.WA_TranslucentBackground, True)
+class UINotePopup(QDialog):
 
-		self.verticalLayout = QVBoxLayout(dialog)
+	def __init__(self):
+		super().__init__()
+		self.setObjectName("Dialog")
+		self.setWindowModality(Qt.ApplicationModal)
+		self.setWindowFlags(Qt.FramelessWindowHint)
+		self.setAttribute(Qt.WA_TranslucentBackground, True)
+		self.setFixedWidth(350)
+		self.setFont(QFont("Segoe UI", 12))
+
+		self.verticalLayout = QVBoxLayout(self)
 		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
 		self.verticalLayout.setSpacing(0)
 		self.verticalLayout.setObjectName("verticalLayout")
 
-		self.frame = QFrame(dialog)
+		self.frame = QFrame(self)
 		self.frame.setStyleSheet(
 			".QFrame {\n"
 			"    border:0px solid;\n"
-			"    background-color: rgb(125, 240, 31);\n"
+			"    background-color: white;\n"
 			"    border-radius:10px;\n"
 			"}")
 		self.frame.setFrameShape(QFrame.StyledPanel)
@@ -58,12 +61,6 @@ class UINotePopup(object):
 		self.btn_edit.setObjectName("btn_edit")
 		# self.btn_edit.setFixedSize(40, 40)
 
-		import os
-		from os.path import sep
-		my_path = os.path.dirname(os.path.abspath("requirements.txt"))
-		print(my_path)
-		print(QFile.exists(my_path))
-
 		# self.btn_edit.setIcon(QIcon(icons_folder + "pencil.png"))
 		# self.btn_edit.setIconSize(QSize(50, 50))
 		self.top_bar.addWidget(self.btn_edit)
@@ -92,6 +89,8 @@ class UINotePopup(object):
 
 		self.title_label = QLabel(self.widget)
 		self.title_label.setObjectName("title_label")
+		self.title_label.setFont(QFont("Segoe UI semibold", 12))
+
 		self.info_layout.addWidget(self.title_label)
 
 		self.description_label = QLabel(self.widget)
@@ -112,11 +111,12 @@ class UINotePopup(object):
 		self.vertical_layout_2.addLayout(self.action_bar_2)
 		self.verticalLayout.addWidget(self.frame, 0, Qt.AlignTop)
 
-		self.retranslateUi(dialog)
-		QMetaObject.connectSlotsByName(dialog)
+		self.retranslate_ui()
+		QMetaObject.connectSlotsByName(self)
 
+		self.btn_close.clicked.connect(self.hide)
 
-	def retranslateUi(self, dialog):
+	def retranslate_ui(self):
 		_translate = QCoreApplication.translate
 		self.btn_edit.setText(_translate("Dialog", "edit"))
 		self.btn_delete.setText(_translate("Dialog", "delete"))
@@ -126,13 +126,21 @@ class UINotePopup(object):
 		self.description_label.setText(_translate("Dialog", "Insert Description"))
 		self.btn_done.setText(_translate("Dialog", "Mark as done"))
 
+	def display_note(self, note):
+		date_info = note.date.toString("d. MMMM yy")
+		if note.time:
+			date_info += "   " + note.time.toString("HH:mm")
+
+		self.date_label.setText(date_info)
+		self.title_label.setText(note.title)
+		self.description_label.setText(note.description)
+
 
 if __name__ == '__main__':
 	import sys
+	from PySide2.QtWidgets import QApplication
 
 	app = QApplication(sys.argv)
-	main_dialog = QDialog()
 	ui = UINotePopup()
-	ui.setup_ui(main_dialog)
-	main_dialog.show()
+	ui.dialog.show()
 	sys.exit(app.exec_())
