@@ -25,7 +25,8 @@ class Note:
 		if day_diff != 0:
 			return day_diff < 0
 		if self.time:
-			return self.time.minutesTo(other.time) < 0 if other.time else True
+			return 0
+			# return self.time.minutesTo(other.time) < 0 if other.time else True
 		return False
 
 	# def __gt__(self, other):

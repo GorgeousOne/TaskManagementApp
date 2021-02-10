@@ -5,8 +5,8 @@ import pickle
 from PySide2.QtCore import Qt
 
 from model.note import Note
-from view.ui_note_entry import UINoteEntry
-from view.ui_note_popup import UINotePopup
+from uis.ui_note_entry import UINoteEntry
+from uis.ui_note_popup import UINotePopup
 
 
 class NoteHandler:
@@ -21,13 +21,14 @@ class NoteHandler:
 			self._create_entry(note)
 
 	def create_note(self, note_form):
-		title = note_form.title.text()
+		title = note_form.dialog.title_edit.text()
 		if "hello there" in title.lower():
 			title = "General Kenobi!"
 
-		description = note_form.description.toPlainText()
-		date = note_form.date_picker.date()
-		time = note_form.time_picker.time() if note_form.enable_time.isChecked() else None
+		dialog = note_form.dialog
+		description = dialog.description_edit.toPlainText()
+		date = dialog.date_picker.date()
+		time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
 		note = Note(title, date, description, time)
 
 		self._notes.append(note)

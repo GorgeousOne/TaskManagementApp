@@ -64,16 +64,16 @@
        <number>30</number>
       </property>
       <property name="topMargin">
-       <number>30</number>
+       <number>40</number>
       </property>
       <property name="rightMargin">
        <number>30</number>
       </property>
       <property name="bottomMargin">
-       <number>30</number>
+       <number>40</number>
       </property>
       <item>
-       <widget class="QLineEdit" name="title">
+       <widget class="QLineEdit" name="title_edit">
         <property name="font">
          <font>
           <family>Segoe UI Light</family>
@@ -89,7 +89,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTextEdit" name="description">
+       <widget class="QTextEdit" name="description_edit">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -135,12 +135,12 @@
           <number>20</number>
          </property>
          <item row="0" column="0">
-          <widget class="QDateEdit" name="date_pciker_2"/>
+          <widget class="QDateEdit" name="date_picker"/>
          </item>
          <item row="0" column="1">
-          <widget class="QTimeEdit" name="time_picker_2">
+          <widget class="QTimeEdit" name="time_picker">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -148,7 +148,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="enable_time">
+       <widget class="QCheckBox" name="enable_time_check">
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
@@ -173,7 +173,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QPushButton" name="btn_cancel_2">
+         <widget class="QPushButton" name="cancel_btn">
           <property name="text">
            <string>Cancel</string>
           </property>
@@ -193,7 +193,10 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_create_2">
+         <widget class="QPushButton" name="create_btn">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Create</string>
           </property>
