@@ -18,5 +18,25 @@ class Note:
 			return self.time == other.time
 		return False
 
+	def __lt__(self, other):
+		if not isinstance(other, Note):
+			return False
+		day_diff = self.date.daysTo(other.date)
+		if day_diff != 0:
+			return day_diff < 0
+		if self.time:
+			return self.time.minutesTo(other.time) < 0 if other.time else True
+		return False
+
+	# def __gt__(self, other):
+	# 	if not isinstance(other, Note):
+	# 		return False
+	# 	day_diff = self.date.daysTo(other.date)
+	# 	if day_diff != 0:
+	# 		return day_diff > 0
+	# 	if self.time:
+	# 		return self.time.minutesTo(other.time) > 0 if other.time else True
+	# 	return False
+
 	def __repr__(self):
 		return f"<Note: {self.title}>"

@@ -5,22 +5,20 @@ import pickle
 from PySide2.QtCore import Qt
 
 from model.note import Note
-from uis.ui_note_entry import UINoteEntry
-from uis.ui_note_popup import UINotePopup
+from view.ui_note_entry import UINoteEntry
+from view.ui_note_popup import UINotePopup
 
 
 class NoteHandler:
 	def __init__(self):
 		self._saves_dir = path.expanduser("~") + path.sep + "TaskManagementApp"
 		self._saves_file = self._saves_dir + path.sep + "data.json"
-		self._notes = self.load_notes()
+		self._load_notes()
 		self._entries = {}
 		self._details_popup = UINotePopup()
 
 		for note in self._notes:
 			self._create_entry(note)
-
-		print(self._notes)
 
 	def create_note(self, note_form):
 		title = note_form.title.text()
@@ -40,11 +38,13 @@ class NoteHandler:
 		entry = UINoteEntry(note)
 		self._entries[note] = entry
 
-	def load_notes(self):
+	def _load_notes(self):
 		if path.exists(self._saves_file) and os.stat(self._saves_file).st_size > 0:
 			with open(self._saves_file, 'rb') as infile:
-				return pickle.load(infile)
-		return []
+				self._notes = pickle.load(infile)
+				self._notes.sort(reverse=True)
+				return
+		self._notes = []
 
 	def save_notes(self):
 		if not path.exists(self._saves_dir):
@@ -71,3 +71,4 @@ class NoteHandler:
 			self._details_popup.show()
 			self._details_popup.setFocus(Qt.PopupFocusReason)
 			print(self._details_popup.font())
+

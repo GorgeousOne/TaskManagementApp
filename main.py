@@ -3,10 +3,10 @@ import sys
 from PySide2.QtWidgets import QApplication
 from PySide2.QtGui import QFont
 
-import uis.ui_functions
+import view.ui_functions
 from control.note_handler import NoteHandler
-from uis.ui_main import UIMainWindow
-from uis.ui_note_editor import UINoteEditor
+from view.ui_main import UIMainWindow
+from view.ui_note_editor import UINoteEditor
 
 
 class MainHandler:
@@ -14,7 +14,7 @@ class MainHandler:
 		self.main_ui = UIMainWindow()
 		self.note_editor = UINoteEditor()
 
-		self.main_ui.btn_toggle_menu.clicked.connect(lambda: uis.ui_functions.toggle_menu(self.main_ui, 50, 250))
+		self.main_ui.btn_toggle_menu.clicked.connect(lambda: view.ui_functions.toggle_menu(self.main_ui, 50, 250))
 		self.main_ui.btn_page_1.clicked.connect(lambda: self.main_ui.pages_widget.setCurrentWidget(self.main_ui.page_1))
 		self.main_ui.btn_page_2.clicked.connect(lambda: self.main_ui.pages_widget.setCurrentWidget(self.main_ui.page_2))
 		self.main_ui.btn_page_3.clicked.connect(lambda: self.main_ui.pages_widget.setCurrentWidget(self.main_ui.page_3))

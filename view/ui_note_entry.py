@@ -1,6 +1,5 @@
-from model.note import Note
 
-from PySide2.QtCore import QSize, Qt
+from PySide2.QtCore import QSize
 from PySide2.QtWidgets import QPushButton
 
 
@@ -12,13 +11,14 @@ class UINoteEntry:
 		button = QPushButton(container)
 		# button.setObjectName(u"insert something here")
 		button.setFixedSize(QSize(300, 40))
-		button.setText(self._note.title)
-		button.setLayoutDirection(Qt.RightToLeft)
 
-		if self._note.isDone:
-			font = button.font()
-			font.setStrikeOut(True)
-			button.setFont(font)
+		# button.setText(self._note.title + ("✓" if self._note.isDone else ""))
+		button.setText((self._note.time.toString("HH:mm    ") if self._note.time else "") + self._note.title)
+
+		# if self._note.isDone:
+		# 	font = button.font()
+		# 	font.setStrikeOut(True)
+		# 	button.setFont(font)
 
 		button.setStyleSheet(
 			"	text-align: left;\n"
@@ -32,9 +32,9 @@ class UINoteEntry:
 		button_width = button.width() - 2 * 10
 		text_width = button.fontMetrics().boundingRect(button.text()).width()
 
-		# create a gradient for makes long texts to fade out
+		# create a gradient that makes label overflow fade out
 		if text_width > button_width:
-			rel_start = str((button_width - 30) / text_width)
+			rel_start = str((button_width - 40) / text_width)
 			rel_end = str(button_width / text_width)
 			button.setStyleSheet(button.styleSheet() + (
 				"	color: qlineargradient("

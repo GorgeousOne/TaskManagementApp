@@ -49,7 +49,7 @@ class UINotePopup(QDialog):
 			"    border-radius: 20px;\n"
 			"}\n"
 			".QPushButton:hover:!pressed {\n"
-			"    background-color: rgb(230, 230, 230);\n"
+			"    background-color: rgba(0, 0, 0, 20);\n"
 			"}")
 		self.widget_top_bar.setObjectName("horizontalWidget")
 		self.vertical_layout_2.addWidget(self.widget_top_bar)
@@ -77,7 +77,7 @@ class UINotePopup(QDialog):
 		self.btn_close = QPushButton(self.widget_top_bar)
 		self.btn_close.setObjectName("btn_close")
 		self.btn_close.setFixedSize(40, 40)
-		self.btn_close.setIcon(QIcon(icons_folder + "cross2.png"))
+		self.btn_close.setIcon(QIcon(icons_folder + "cross.png"))
 		self.btn_close.setIconSize(QSize(50, 50))
 		self.top_bar.addWidget(self.btn_close)
 
