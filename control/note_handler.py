@@ -13,23 +13,22 @@ class NoteHandler:
 	def __init__(self):
 		self._saves_dir = path.expanduser("~") + path.sep + "TaskManagementApp"
 		self._saves_file = self._saves_dir + path.sep + "data.json"
-		self._notes = self.load_notes()
+		self._load_notes()
 		self._entries = {}
 		self._details_popup = UINotePopup()
 
 		for note in self._notes:
 			self._create_entry(note)
 
-		print(self._notes)
-
 	def create_note(self, note_form):
-		title = note_form.title.text()
+		title = note_form.dialog.title_edit.text()
 		if "hello there" in title.lower():
 			title = "General Kenobi!"
 
-		description = note_form.description.toPlainText()
-		date = note_form.date_picker.date()
-		time = note_form.time_picker.time() if note_form.enable_time.isChecked() else None
+		dialog = note_form.dialog
+		description = dialog.description_edit.toPlainText()
+		date = dialog.date_picker.date()
+		time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
 		note = Note(title, date, description, time)
 
 		self._notes.append(note)
@@ -40,11 +39,13 @@ class NoteHandler:
 		entry = UINoteEntry(note)
 		self._entries[note] = entry
 
-	def load_notes(self):
+	def _load_notes(self):
 		if path.exists(self._saves_file) and os.stat(self._saves_file).st_size > 0:
 			with open(self._saves_file, 'rb') as infile:
-				return pickle.load(infile)
-		return []
+				self._notes = pickle.load(infile)
+				self._notes.sort(reverse=True)
+				return
+		self._notes = []
 
 	def save_notes(self):
 		if not path.exists(self._saves_dir):
@@ -67,7 +68,6 @@ class NoteHandler:
 
 		self._details_popup.display_note(note)
 
-		if not self._details_popup.isVisible():
-			self._details_popup.show()
-			self._details_popup.setFocus(Qt.PopupFocusReason)
-			print(self._details_popup.font())
+		if not self._details_popup.dialog.isVisible():
+			self._details_popup.dialog.show()
+			self._details_popup.dialog.setFocus(Qt.PopupFocusReason)

@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="images">
+    <file>icons/burger.png</file>
+    <file>icons/cross.png</file>
+    <file>icons/pencil.png</file>
+    <file>icons/plus.png</file>
+    <file>icons/trashcan.png</file>
+  </qresource>
+</RCC>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>420</height>
+    <width>460</width>
+    <height>248</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,24 +22,24 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>0</number>
+    <number>20</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>20</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>20</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>20</number>
    </property>
    <item alignment="Qt::AlignTop">
     <widget class="QFrame" name="frame">
      <property name="styleSheet">
       <string notr="true">.QFrame {
-	border:0px solid;
-	background-color: rgb(125, 240, 31);
-	border-radius:10px;
+	border: 0px solid;
+	background-color: white;
+	border-radius: 10px;
 }
 </string>
      </property>
@@ -66,32 +66,32 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="horizontalWidget" native="true">
+       <widget class="QWidget" name="top_bar_widget" native="true">
         <property name="styleSheet">
          <string notr="true">.QPushButton {
 	border: 0px solid;
 	border-radius: 20px;
-	background-color: rgb(125, 240, 31);
+	background-color: rgba(0, 0, 0, 0);
 }
 .QPushButton:hover:!pressed {
-	background-color: rgb(158, 240, 63);
+	background-color: rgba(0, 0, 0, 20);
 }</string>
         </property>
         <layout class="QHBoxLayout" name="action_bar">
          <property name="spacing">
-          <number>10</number>
+          <number>0</number>
          </property>
          <property name="leftMargin">
-          <number>10</number>
+          <number>0</number>
          </property>
          <property name="topMargin">
-          <number>10</number>
+          <number>5</number>
          </property>
          <property name="rightMargin">
-          <number>10</number>
+          <number>5</number>
          </property>
          <property name="bottomMargin">
-          <number>1</number>
+          <number>0</number>
          </property>
          <item>
           <spacer name="horizontalSpacer">
@@ -107,7 +107,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_edit">
+          <widget class="QPushButton" name="edit_btn">
            <property name="minimumSize">
             <size>
              <width>40</width>
@@ -121,7 +121,7 @@
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-image: url(:/imgs/pencil.png);</string>
+            <string notr="true">background-image: url(:/images/icons/pencil.png);</string>
            </property>
            <property name="text">
             <string/>
@@ -135,22 +135,46 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_delete">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <widget class="QPushButton" name="delete_btn">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-image: url(:/images/icons/trashcan.png);</string>
            </property>
            <property name="text">
-            <string>delete</string>
+            <string/>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_close">
+          <widget class="QPushButton" name="close_btn">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-image: url(:/images/icons/cross.png);</string>
+           </property>
            <property name="text">
-            <string>close</string>
+            <string/>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -161,7 +185,7 @@
        <widget class="QWidget" name="widget" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <property name="spacing">
-          <number>10</number>
+          <number>20</number>
          </property>
          <property name="leftMargin">
           <number>30</number>
@@ -176,23 +200,38 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="date_label">
+          <widget class="QLabel" name="title_label">
+           <property name="font">
+            <font>
+             <family>Segoe UI Semibold</family>
+             <pointsize>16</pointsize>
+             <weight>7</weight>
+             <italic>false</italic>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">font: 63 16pt &quot;Segoe UI Semibold&quot;;</string>
+           </property>
            <property name="text">
-            <string>Insert Date and Time</string>
+            <string>Example Task</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="title_label">
+          <widget class="QLabel" name="date_label">
            <property name="text">
-            <string>Insert Title</string>
+            <string>Dienstag, 9. Februar 21    14:30</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="description_label">
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
            <property name="text">
-            <string>Inser Description</string>
+            <string>Example description</string>
            </property>
           </widget>
          </item>
@@ -201,6 +240,18 @@
       </item>
       <item>
        <widget class="QWidget" name="horizontalWidget_2" native="true">
+        <property name="styleSheet">
+         <string notr="true">.QPushButton {
+	border: 0px solid;
+	border-radius: 3px;
+	padding: 5px;
+	background-color: rgba(0, 0, 0, 0)
+}
+
+.QPushButton:hover:!pressed {
+	background-color: rgba(0, 0, 0, 20)
+}</string>
+        </property>
         <layout class="QHBoxLayout" name="action_bar_2">
          <property name="spacing">
           <number>10</number>
@@ -246,7 +297,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../icons/iconic-imgs.qrc"/>
+  <include location="icon_resouce.qrc"/>
  </resources>
  <connections/>
 </ui>
