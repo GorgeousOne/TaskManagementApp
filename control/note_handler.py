@@ -68,8 +68,6 @@ class NoteHandler:
 
 		self._details_popup.display_note(note)
 
-		if not self._details_popup.isVisible():
-			self._details_popup.show()
-			self._details_popup.setFocus(Qt.PopupFocusReason)
-			print(self._details_popup.font())
-
+		if not self._details_popup.dialog.isVisible():
+			self._details_popup.dialog.show()
+			self._details_popup.dialog.setFocus(Qt.PopupFocusReason)

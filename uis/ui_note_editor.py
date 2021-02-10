@@ -3,6 +3,7 @@ from PySide2.QtCore import QDate, QTime, Qt
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import QGraphicsDropShadowEffect
 
+
 class UINoteEditor:
 	def __init__(self):
 
