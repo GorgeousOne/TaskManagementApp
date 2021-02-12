@@ -16,12 +16,11 @@ class NoteHandler:
 		self._saves_dir = path.expanduser("~") + path.sep + "TaskManagementApp"
 		self._saves_file = self._saves_dir + path.sep + "data.json"
 		self._load_notes()
-		self._entries = {}
 		self._details_popup = UINotePopup()
 		self._timeline = UITimeline(timeline_frame)
 
 		for note in self._notes:
-			self._create_entry(note)
+			self._timeline.display_note(note)
 
 	def create_note(self, note_form):
 		title = note_form.dialog.title_edit.text()
@@ -31,16 +30,13 @@ class NoteHandler:
 		dialog = note_form.dialog
 		description = dialog.description_edit.toPlainText()
 		date = dialog.date_picker.date()
+
 		time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
-		note = Note(uuid.uuid4(), date, description, time)
+		note = Note(uuid.uuid4(), title, date, description, time)
 
 		self._notes.append(note)
 		self.save_notes()
-		self._create_entry(note)
-
-	def _create_entry(self, note):
-		entry = UINoteEntry(note)
-		self._entries[note] = entry
+		self._timeline.display_note(note)
 
 	def _load_notes(self):
 		if path.exists(self._saves_file) and os.stat(self._saves_file).st_size > 0:
@@ -56,21 +52,7 @@ class NoteHandler:
 		with open(self._saves_file, 'wb') as outfile:
 			pickle.dump(self._notes, outfile)
 
-	def display_notes(self):
-		# layout = container.layout()
-		# for i in reversed(range(layout.count())):
-		# 	layout.itemAt(i).widget().setParent(None)
-		for note in self._notes:
-			# layout.addWidget(self.create_note_box(note, container))
-			self._timeline.display_note(note)
-
-	def create_note_box(self, note, container):
-		box = self._entries[note].create_button(container)
-		box.clicked.connect(lambda: self.create_popup(note))
-		return box
-
 	def create_popup(self, note):
-
 		self._details_popup.display_note(note)
 
 		if not self._details_popup.dialog.isVisible():
