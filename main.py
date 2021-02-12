@@ -17,20 +17,26 @@ class MainHandler:
 		self.note_editor.dialog.create_btn.clicked.connect(self.forward_note)
 		self.main_ui.window.show()
 
-		self.note_handler = NoteHandler()
-		self.note_handler.display_notes(self.main_ui.window.page1_widget, self.main_ui.window.verticalLayout_7)
+		self.note_handler = NoteHandler(self.main_ui.window.note_timeline_frame)
+		self.note_handler.display_notes()
 
 	def forward_note(self):
 		self.note_handler.create_note(self.note_editor)
-		self.note_handler.display_notes(self.main_ui.window.page_1, self.main_ui.window.verticalLayout_7)
+		self.note_handler.display_notes(self.main_ui.window.note_timeline_frame)
 		self.note_editor.dialog.hide()
 
 
 if __name__ == "__main__":
 
+	from PySide2.QtCore import QDate
+	arr = [QDate(2000, 5, 1), QDate(2000, 2, 1), QDate(2000, 7, 1), QDate(2000, 3, 1)]
+	print(arr)
+	arr.sort()
+	print(arr)
 	app = QApplication(sys.argv)
 	app.setFont(QFont("Segoe UI light", 12))
 
 	whatever = MainHandler()
 	sys.exit(app.exec_())
+
 

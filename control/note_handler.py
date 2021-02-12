@@ -1,21 +1,24 @@
 import os
 from os import path
 import pickle
+import uuid
 
 from PySide2.QtCore import Qt
 
 from model.note import Note
 from uis.ui_note_entry import UINoteEntry
 from uis.ui_note_popup import UINotePopup
+from uis.ui_timeline import UITimeline
 
 
 class NoteHandler:
-	def __init__(self):
+	def __init__(self, timeline_frame):
 		self._saves_dir = path.expanduser("~") + path.sep + "TaskManagementApp"
 		self._saves_file = self._saves_dir + path.sep + "data.json"
 		self._load_notes()
 		self._entries = {}
 		self._details_popup = UINotePopup()
+		self._timeline = UITimeline(timeline_frame)
 
 		for note in self._notes:
 			self._create_entry(note)
@@ -29,7 +32,7 @@ class NoteHandler:
 		description = dialog.description_edit.toPlainText()
 		date = dialog.date_picker.date()
 		time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
-		note = Note(title, date, description, time)
+		note = Note(uuid.uuid4(), date, description, time)
 
 		self._notes.append(note)
 		self.save_notes()
@@ -53,11 +56,13 @@ class NoteHandler:
 		with open(self._saves_file, 'wb') as outfile:
 			pickle.dump(self._notes, outfile)
 
-	def display_notes(self, container, layout):
-		for i in reversed(range(layout.count())):
-			layout.itemAt(i).widget().setParent(None)
+	def display_notes(self):
+		# layout = container.layout()
+		# for i in reversed(range(layout.count())):
+		# 	layout.itemAt(i).widget().setParent(None)
 		for note in self._notes:
-			layout.addWidget(self.create_note_box(note, container))
+			# layout.addWidget(self.create_note_box(note, container))
+			self._timeline.display_note(note)
 
 	def create_note_box(self, note, container):
 		box = self._entries[note].create_button(container)

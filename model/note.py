@@ -1,6 +1,7 @@
 
 class Note:
-	def __init__(self, title, date, description="", time=None, priority=""):
+	def __init__(self, uuid, title, date, description="", time=None, priority=""):
+		self.uui = uuid
 		self.title = title
 		self.date = date
 		self.time = time
