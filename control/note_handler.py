@@ -6,18 +6,17 @@ import uuid
 from PySide2.QtCore import Qt
 
 from model.note import Note
-from uis.ui_note_entry import UINoteEntry
 from uis.ui_note_popup import UINotePopup
 from uis.ui_timeline import UITimeline
 
 
 class NoteHandler:
-	def __init__(self, timeline_frame):
+	def __init__(self, timeline_container):
 		self._saves_dir = path.expanduser("~") + path.sep + "TaskManagementApp"
 		self._saves_file = self._saves_dir + path.sep + "data.json"
 		self._load_notes()
 		self._details_popup = UINotePopup()
-		self._timeline = UITimeline(timeline_frame)
+		self._timeline = UITimeline(timeline_container)
 
 		for note in self._notes:
 			self._timeline.display_note(note)

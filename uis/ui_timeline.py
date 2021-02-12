@@ -22,7 +22,7 @@ class UITimeline:
 			index = self.dates.index(date)
 			section = self.sections[index]
 
-		section.display_note(note)
+		section.display_note(note, self.container)
 
 	def insert_date(self, new_date):
 		new_section = UIDateSection(new_date)

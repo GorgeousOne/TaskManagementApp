@@ -94,7 +94,7 @@ font: 25 12pt &quot;Segoe UI Light&quot;;</string>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(35, 35, 35);</string>
+          <string notr="true">background-color: rgb(65, 65, 65);</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -284,7 +284,7 @@ QPushButton:hover:!pressed {
          </property>
          <property name="styleSheet">
           <string notr="true">QFrame {
-	background-color: rgb(35, 35, 35);
+	background-color: rgb(55, 55, 55);
 }
 
 .QPushButton {
@@ -439,11 +439,11 @@ QPushButton:hover:!pressed {
                <number>0</number>
               </property>
               <item>
-               <widget class="QScrollArea" name="note_timeline_scroll">
+               <widget class="QScrollArea" name="timeline_scroll">
                 <property name="widgetResizable">
                  <bool>true</bool>
                 </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents">
+                <widget class="QWidget" name="scroll_area_widget">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
@@ -453,7 +453,7 @@ QPushButton:hover:!pressed {
                   </rect>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: white;</string>
+                  <string notr="true">background-color: rgb(250, 250, 250);</string>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_9">
                   <property name="leftMargin">
@@ -469,23 +469,27 @@ QPushButton:hover:!pressed {
                    <number>0</number>
                   </property>
                   <item alignment="Qt::AlignTop">
-                   <widget class="QFrame" name="note_timeline_frame">
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>50</height>
-                     </size>
-                    </property>
+                   <widget class="QFrame" name="timeline_area">
                     <property name="styleSheet">
                      <string notr="true"/>
                     </property>
-                    <property name="frameShape">
-                     <enum>QFrame::StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                     <enum>QFrame::Raised</enum>
-                    </property>
-                    <layout class="QVBoxLayout" name="verticalLayout_10"/>
+                    <layout class="QVBoxLayout" name="verticalLayout_10">
+                     <property name="spacing">
+                      <number>10</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>15</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>15</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>15</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>15</number>
+                     </property>
+                    </layout>
                    </widget>
                   </item>
                  </layout>

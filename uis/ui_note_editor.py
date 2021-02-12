@@ -19,6 +19,7 @@ class UINoteEditor:
 		self.dialog.frame.setGraphicsEffect(shadow)
 		self.dialog.description_edit.setPlaceholderText("Add description")
 
+		self.dialog.date_picker.calendarPopup = True
 		self.dialog.time_picker.hide()
 		self.dialog.enable_time_check.stateChanged.connect(self.toggle_time_visibility)
 		self.dialog.title_edit.textChanged.connect(self.toggle_btn_create)

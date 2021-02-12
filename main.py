@@ -16,8 +16,7 @@ class MainHandler:
 		self.note_editor.dialog.create_btn.clicked.connect(self.forward_note)
 		self.main_ui.window.show()
 
-		self.note_handler = NoteHandler(self.main_ui.window.note_timeline_frame)
-		print(self.note_handler._notes)
+		self.note_handler = NoteHandler(self.main_ui.window.timeline_area)
 
 	def forward_note(self):
 		self.note_handler.create_note(self.note_editor)
@@ -26,9 +25,7 @@ class MainHandler:
 
 if __name__ == "__main__":
 
-	from PySide2.QtCore import QDate
 	app = QApplication(sys.argv)
-
 	whatever = MainHandler()
 	sys.exit(app.exec_())
 
