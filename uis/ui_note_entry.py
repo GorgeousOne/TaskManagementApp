@@ -19,11 +19,13 @@ class UINoteEntry:
 		# 	button.setFont(font)
 
 		button.setStyleSheet(
+			"   color: rgb(50, 50, 50);\n"
+			"   background-color: rgb(255, 255, 255);\n"
 			"	text-align: left;\n"
 			"   padding: 10px;\n"
 			"   border: 1px solid;\n"
 			"   border-radius: 5px;\n"
-			"   border-color: rgb(230, 230, 230);\n"
+			"   border-color: rgb(200, 200, 200);\n"
 			# "   background-color: rgb(133, 227, 70);\n"
 		)
 
@@ -48,8 +50,8 @@ class UINoteEntry:
 
 		button.setStyleSheet(button.styleSheet() + (
 			"}\n"
-			"QPushButton:hover:!pressed {\n"
-			"   background-color: rgb(153, 247, 90);\n"
-			"}"
+			# "QPushButton:hover:!pressed {\n"
+			# "   background-color: rgb(153, 247, 90);\n"
+			# "}"
 		))
 		return button

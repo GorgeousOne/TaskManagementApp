@@ -35,7 +35,7 @@ class UIDateSection(QWidget):
 		self.verticalLayout.addWidget(self.note_area)
 
 		self.verticalLayout_2 = QVBoxLayout(self.note_area)
-		self.verticalLayout_2.setContentsMargins(0, 10, 0, 0)
+		self.verticalLayout_2.setContentsMargins(10, 10, 10, 10)
 		self.verticalLayout_2.setSpacing(10)
 		self.verticalLayout_2.setObjectName("verticalLayout_2")
 
