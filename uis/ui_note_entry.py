@@ -4,11 +4,13 @@ from PySide2.QtUiTools import QUiLoader
 
 
 class UINoteEntry(QFrame):
-	def __init__(self, note, container):
+	def __init__(self, note, section):
 		super().__init__()
 
 		note.add_listener(self)
 		self._note = note
+		self._section = section
+
 		self.setStyleSheet(
 			"""
 			QFrame {
@@ -27,7 +29,7 @@ class UINoteEntry(QFrame):
 		self.content = QUiLoader().load("./uis/res/ui_note_entry.ui")
 		self.verticalLayout.addWidget(self.content)
 
-		self.shadow_effect = QGraphicsDropShadowEffect(container)
+		self.shadow_effect = QGraphicsDropShadowEffect(self._section)
 		self.shadow_effect.setBlurRadius(10)
 		self.shadow_effect.setOffset(0)
 		self.shadow_effect.setColor(QColor(0, 0, 0, 30))

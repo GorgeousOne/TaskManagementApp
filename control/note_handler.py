@@ -31,14 +31,16 @@ class NoteHandler:
 
 		time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
 		new_note = Note(uuid.uuid4(), title, date, description, time)
+		self.add_note(new_note)
 
-		self._notes.append(new_note)
+	def add_note(self, note):
+		self._notes.append(note)
 		self.save_notes()
-		self._create_entry(new_note)
+		self._create_entry(note)
 
 	def _create_entry(self, new_note):
 		entry = self._timeline.display_note(new_note)
-		entry.content.delete_btn.clicked.connect(lambda: self.delete_note(new_note))
+		entry.content.delete_btn.clicked.connect(lambda: self.delete_note(new_note, True))
 		entry.content.edit_btn.clicked.connect(lambda: self.start_editing_note(new_note))
 
 	def _load_notes(self):
@@ -55,10 +57,11 @@ class NoteHandler:
 		with open(self._saves_file, 'wb') as outfile:
 			pickle.dump(self._notes, outfile)
 
-	def delete_note(self, note):
+	def delete_note(self, note, save_change=False):
 		self._timeline.remove_note(note)
-		# self._notes.remove(note)
-		# self.save_notes()
+		self._notes.remove(note)
+		if save_change:
+			self.save_notes()
 
 	def start_editing_note(self, note):
 		self._note_editor.clear()
@@ -79,12 +82,16 @@ class NoteHandler:
 		self._edited_note.description = dialog.description_edit.toPlainText().strip()
 		self._edited_note.date = dialog.date_picker.date()
 		self._edited_note.time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
+
 		self._edited_note.update_data()
+		for entry in self._edited_note._listeners:
+			entry._section.update_entry(entry)
+
 		self._edited_note = None
 
 		self._note_editor.dialog.hide()
 		self._note_editor.clear()
-		self.save_notes()
+		# self.save_notes()
 
 	def complete_note(self, note):
 		pass

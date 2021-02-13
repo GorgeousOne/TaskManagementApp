@@ -45,7 +45,6 @@ class UIDateSection(QWidget):
 		return len(self._note_entries) == 0
 
 	def display_note(self, new_note):
-
 		new_time = new_note.time if new_note.time else QTime(0, 0)
 		index = bisect.bisect_right(self._times, new_time)
 		new_entry = UINoteEntry(new_note, self)
@@ -54,6 +53,20 @@ class UIDateSection(QWidget):
 		self.note_area.layout().insertWidget(index, new_entry)
 		self._note_entries.insert(index, new_entry)
 		return new_entry
+
+	def update_entry(self, entry):
+		index = self._note_entries.index(entry)
+
+		self._times.pop(index)
+		self._note_entries.remove(entry)
+
+		note = entry._note;
+		time = note.time if note.time else QTime(0, 0)
+
+		new_index = bisect.bisect_right(self._times, note.time)
+		self.note_area.layout().insertWidget(new_index, entry)
+		self._note_entries.insert(new_index, entry)
+		self._times.insert(new_index, time)
 
 	def remove_note(self, note):
 		for i in range(len(self._times)):
