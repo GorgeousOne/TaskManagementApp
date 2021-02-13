@@ -2,7 +2,7 @@
 from PySide2.QtCore import QDate, QTime, Qt
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import QGraphicsDropShadowEffect
-
+from PySide2.QtGui import QColor
 
 class UINoteEditor:
 	def __init__(self):
@@ -13,12 +13,13 @@ class UINoteEditor:
 		self.dialog.setAttribute(Qt.WA_TranslucentBackground, True)
 
 		shadow = QGraphicsDropShadowEffect(self.dialog)
-		shadow.setBlurRadius(20)
+		shadow.setBlurRadius(30)
 		shadow.setOffset(0)
-		shadow.setColor(Qt.black)
+		shadow.setColor(QColor(0, 0, 0, 100))
 		self.dialog.frame.setGraphicsEffect(shadow)
 		self.dialog.description_edit.setPlaceholderText("Add description")
 
+		self.dialog.date_picker.calendarPopup = True
 		self.dialog.time_picker.hide()
 		self.dialog.enable_time_check.stateChanged.connect(self.toggle_time_visibility)
 		self.dialog.title_edit.textChanged.connect(self.toggle_btn_create)
@@ -45,4 +46,4 @@ class UINoteEditor:
 		self.dialog.time_picker.setTime(time)
 		self.dialog.date_picker.setDate(QDate.currentDate())
 		self.dialog.show()
-		self.dialog.setFocus(Qt.PopupFocusReason)
+		self.dialog.title_edit.setFocus(Qt.PopupFocusReason)

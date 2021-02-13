@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>390</width>
-    <height>460</height>
+    <width>410</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="font">
@@ -30,16 +30,16 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>20</number>
+    <number>30</number>
    </property>
    <property name="topMargin">
-    <number>20</number>
+    <number>30</number>
    </property>
    <property name="rightMargin">
-    <number>20</number>
+    <number>30</number>
    </property>
    <property name="bottomMargin">
-    <number>20</number>
+    <number>30</number>
    </property>
    <item>
     <widget class="QFrame" name="frame">
@@ -58,7 +58,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
-       <number>20</number>
+       <number>25</number>
       </property>
       <property name="leftMargin">
        <number>30</number>
@@ -76,12 +76,15 @@
        <widget class="QLineEdit" name="title_edit">
         <property name="font">
          <font>
-          <family>Segoe UI Light</family>
-          <pointsize>12</pointsize>
-          <weight>3</weight>
+          <family>Segoe UI Semibold</family>
+          <pointsize>14</pointsize>
+          <weight>7</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
         </property>
         <property name="placeholderText">
          <string>Add title</string>
@@ -114,6 +117,9 @@
         <property name="focusPolicy">
          <enum>Qt::WheelFocus</enum>
         </property>
+        <property name="tabChangesFocus">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -135,7 +141,11 @@
           <number>20</number>
          </property>
          <item row="0" column="0">
-          <widget class="QDateEdit" name="date_picker"/>
+          <widget class="QDateEdit" name="date_picker">
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
          <item row="0" column="1">
           <widget class="QTimeEdit" name="time_picker">
@@ -153,7 +163,7 @@
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>Add time</string>
+         <string>Add a time</string>
         </property>
        </widget>
       </item>
@@ -195,7 +205,7 @@
         <item>
          <widget class="QPushButton" name="create_btn">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Create</string>

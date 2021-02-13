@@ -31,7 +31,6 @@ class UINotePopup:
 		self.dialog.frame.setGraphicsEffect(shadow)
 		self.dialog.close_btn.clicked.connect(self.dialog.hide)
 
-
 	def display_note(self, note):
 		date_info = note.date.toString("dddd, d. MMMM")
 		if note.time:

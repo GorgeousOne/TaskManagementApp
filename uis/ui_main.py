@@ -11,9 +11,9 @@ class UIMainWindow:
 		self.window = QUiLoader().load("./uis/res/ui_main.ui")
 
 		self.window.toggle_menu_btn.setIcon(QIcon(icons_folder + "burger.png"))
-		self.window.create_note_btn.setIcon(QIcon(icons_folder + "plus.png"))
+		# self.window.create_note_btn.setIcon(QIcon(icons_folder + "plus.png"))
 
-		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(50, 250))
+		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(60, 150))
 		self.window.page1_btn.clicked.connect(lambda: self.window.page_stack.setCurrentWidget(self.window.page1_widget))
 		self.window.page2_btn.clicked.connect(lambda: self.window.page_stack.setCurrentWidget(self.window.page2_widget))
 		self.window.page3_btn.clicked.connect(lambda: self.window.page_stack.setCurrentWidget(self.window.page3_widget))
