@@ -3,10 +3,7 @@ from os import path
 import pickle
 import uuid
 
-from PySide2.QtCore import Qt
-
 from model.note import Note
-from uis.ui_note_popup import UINotePopup
 from uis.ui_timeline import UITimeline
 
 
@@ -15,7 +12,6 @@ class NoteHandler:
 		self._saves_dir = path.expanduser("~") + path.sep + "TaskManagementApp"
 		self._saves_file = self._saves_dir + path.sep + "data.json"
 		self._load_notes()
-		self._details_popup = UINotePopup()
 		self._timeline = UITimeline(timeline_container)
 
 		for note in self._notes:
@@ -50,10 +46,3 @@ class NoteHandler:
 			os.makedirs(self._saves_dir)
 		with open(self._saves_file, 'wb') as outfile:
 			pickle.dump(self._notes, outfile)
-
-	def create_popup(self, note):
-		self._details_popup.display_note(note)
-
-		if not self._details_popup.dialog.isVisible():
-			self._details_popup.dialog.show()
-			self._details_popup.dialog.setFocus(Qt.PopupFocusReason)

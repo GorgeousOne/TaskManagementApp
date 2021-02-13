@@ -4,6 +4,7 @@ from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import QGraphicsDropShadowEffect
 from PySide2.QtGui import QColor
 
+
 class UINoteEditor:
 	def __init__(self):
 
