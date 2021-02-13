@@ -38,16 +38,31 @@ class UIDateSection(QWidget):
 		self.verticalLayout_2.setSpacing(10)
 		self.verticalLayout_2.setObjectName("verticalLayout_2")
 
-		self.times = []
-		self.note_entries = []
+		self._times = []
+		self._note_entries = []
+
+	def is_empty(self):
+		return len(self._note_entries) == 0
 
 	def display_note(self, new_note):
 
 		new_time = new_note.time if new_note.time else QTime(0, 0)
-		index = bisect.bisect_right(self.times, new_time)
-
+		index = bisect.bisect_right(self._times, new_time)
 		new_entry = UINoteEntry(new_note, self)
 
-		self.times.insert(index, new_time)
+		self._times.insert(index, new_time)
 		self.note_area.layout().insertWidget(index, new_entry)
-		self.note_entries.insert(index, new_entry)
+		self._note_entries.insert(index, new_entry)
+		return new_entry
+
+	def remove_note(self, note):
+		for i in range(len(self._times)):
+			entry = self._note_entries[i]
+			if entry._note == note:
+				# self.note_area.layout().removeWidget(entry)
+				entry.hide()
+				entry.deleteLater()
+
+				self._note_entries.remove(entry)
+				self._times.pop(i)
+				return

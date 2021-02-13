@@ -22,7 +22,17 @@ class UITimeline:
 			index = self.dates.index(date)
 			section = self.sections[index]
 
-		section.display_note(note)
+		return section.display_note(note)
+
+	def remove_note(self, note):
+		date = note.date
+		if date not in self.dates:
+			return
+
+		section = self.sections[self.dates.index(date)]
+		section.remove_note(note)
+		if section.is_empty():
+			self.remove_section(section)
 
 	def insert_date(self, new_date):
 		new_section = UIDateSection(new_date)
@@ -32,3 +42,10 @@ class UITimeline:
 		self.sections.insert(index, new_section)
 		self.layout.insertWidget(index, new_section)
 		return new_section
+
+	def remove_section(self, section):
+		index = self.sections.index(section)
+		section.hide()
+		section.deleteLater()
+		self.sections.remove(section)
+		self.dates.pop(index)

@@ -1,7 +1,7 @@
 
 class Note:
 	def __init__(self, uuid, title, date, description="", time=None, priority=""):
-		self.uui = uuid
+		self.uuid = uuid
 		self.title = title
 		self.date = date
 		self.time = time
@@ -14,10 +14,10 @@ class Note:
 	def __eq__(self, other):
 		if not isinstance(other, Note):
 			return False
-
-		if self.title == other.title and self.date == other.date:
-			return self.time == other.time
-		return False
+		return self.uuid == other.uuid
+		# if self.title == other.title and self.date == other.date:
+		# 	return self.time == other.time
+		# return False
 
 	def __lt__(self, other):
 		if not isinstance(other, Note):

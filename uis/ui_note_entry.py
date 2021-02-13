@@ -64,7 +64,6 @@ class UINoteEntry(QFrame):
 		self.content.details_widget.setVisible(False)
 		self.content.title_label.setStyleSheet("")
 
-
 	def update_content(self):
 		"""Updates the displayed information about the note."""
 		self.content.title_label.setText(self._note.title)

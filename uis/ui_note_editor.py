@@ -48,3 +48,4 @@ class UINoteEditor:
 		self.dialog.date_picker.setDate(QDate.currentDate())
 		self.dialog.show()
 		self.dialog.title_edit.setFocus(Qt.PopupFocusReason)
+		self.dialog.create_btn.setEnabled(False)
