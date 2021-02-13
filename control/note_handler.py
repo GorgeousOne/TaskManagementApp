@@ -1,10 +1,10 @@
 import os
-from functools import partial
 from os import path
 import pickle
 import uuid
 
 from model.note import Note
+from uis.ui_note_editor import UINoteEditor
 from uis.ui_timeline import UITimeline
 
 
@@ -15,17 +15,18 @@ class NoteHandler:
 		self._load_notes()
 		self._timeline = UITimeline(timeline_container)
 
+		self._note_editor = UINoteEditor()
+		self._note_editor.dialog.create_btn.clicked.connect(self.finish_editing_note)
+		self._note_editor.dialog.create_btn.setText("Save")
+		self._edited_note = None
+
 		for note in self._notes:
 			self._create_entry(note)
-			# entry.content.edit_btn.clicked.connect(lambda n=note: self.edit_note(n))
 
 	def create_note(self, note_form):
-		title = note_form.dialog.title_edit.text()
-		if "hello there" in title.lower():
-			title = "General Kenobi!"
-
+		title = note_form.dialog.title_edit.text().strip()
 		dialog = note_form.dialog
-		description = dialog.description_edit.toPlainText()
+		description = dialog.description_edit.toPlainText().strip()
 		date = dialog.date_picker.date()
 
 		time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
@@ -38,6 +39,7 @@ class NoteHandler:
 	def _create_entry(self, new_note):
 		entry = self._timeline.display_note(new_note)
 		entry.content.delete_btn.clicked.connect(lambda: self.delete_note(new_note))
+		entry.content.edit_btn.clicked.connect(lambda: self.start_editing_note(new_note))
 
 	def _load_notes(self):
 		if path.exists(self._saves_file) and os.stat(self._saves_file).st_size > 0:
@@ -58,8 +60,31 @@ class NoteHandler:
 		# self._notes.remove(note)
 		# self.save_notes()
 
-	def edit_note(self, note):
-		pass
+	def start_editing_note(self, note):
+		self._note_editor.clear()
+		self._note_editor.dialog.title_edit.setText(note.title)
+		self._note_editor.dialog.description_edit.setPlainText(note.description)
+		self._note_editor.dialog.date_picker.setDate(note.date)
+
+		if note.time:
+			self._note_editor.dialog.time_picker.setTime(note.time)
+			self._note_editor.dialog.enable_time_check.setChecked(True)
+
+		self._edited_note = note
+		self._note_editor.dialog.show()
+
+	def finish_editing_note(self):
+		dialog = self._note_editor.dialog
+		self._edited_note.title = dialog.title_edit.text().strip()
+		self._edited_note.description = dialog.description_edit.toPlainText().strip()
+		self._edited_note.date = dialog.date_picker.date()
+		self._edited_note.time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
+		self._edited_note.update_data()
+		self._edited_note = None
+
+		self._note_editor.dialog.hide()
+		self._note_editor.clear()
+		self.save_notes()
 
 	def complete_note(self, note):
 		pass

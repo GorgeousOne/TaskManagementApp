@@ -205,7 +205,7 @@
         <item>
          <widget class="QPushButton" name="create_btn">
           <property name="enabled">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="text">
            <string>Create</string>

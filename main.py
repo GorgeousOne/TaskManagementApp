@@ -10,18 +10,17 @@ from uis.ui_note_editor import UINoteEditor
 class MainHandler:
 	def __init__(self):
 		self.main_ui = UIMainWindow()
-		self.note_editor = UINoteEditor()
+		self.note_creator = UINoteEditor()
 
-		self.main_ui.window.create_note_btn.clicked.connect(self.note_editor.show_updated)
-		self.note_editor.dialog.create_btn.clicked.connect(self.forward_note)
+		self.main_ui.window.create_note_btn.clicked.connect(self.note_creator.show_updated)
+		self.note_creator.dialog.create_btn.clicked.connect(self.forward_note)
 		self.main_ui.window.show()
 
 		self.note_handler = NoteHandler(self.main_ui.window.timeline_area)
 
 	def forward_note(self):
-		self.note_handler.create_note(self.note_editor)
-		self.note_editor.dialog.hide()
-
+		self.note_handler.create_note(self.note_creator)
+		self.note_creator.dialog.hide()
 
 if __name__ == "__main__":
 

@@ -36,10 +36,7 @@ class UINoteEditor:
 
 	def show_updated(self):
 		"""Reset any previous inputs and update date and time picker before showing"""
-		self.dialog.title_edit.setText("")
-		self.dialog.description_edit.setPlainText("")
-		self.dialog.enable_time_check.setChecked(False)
-
+		self.clear()
 		now = QTime.currentTime()
 		next_quarter = (now.minute() + 18) // 15 * 15
 		time = QTime(now.hour() + next_quarter // 60, next_quarter % 60)
@@ -48,4 +45,9 @@ class UINoteEditor:
 		self.dialog.date_picker.setDate(QDate.currentDate())
 		self.dialog.show()
 		self.dialog.title_edit.setFocus(Qt.PopupFocusReason)
+
+	def clear(self):
+		self.dialog.title_edit.setText("")
+		self.dialog.description_edit.setPlainText("")
+		self.dialog.enable_time_check.setChecked(False)
 		self.dialog.create_btn.setEnabled(False)

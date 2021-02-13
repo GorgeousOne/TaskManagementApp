@@ -6,8 +6,9 @@ from PySide2.QtUiTools import QUiLoader
 class UINoteEntry(QFrame):
 	def __init__(self, note, container):
 		super().__init__()
-		self._note = note
 
+		note.add_listener(self)
+		self._note = note
 		self.setStyleSheet(
 			"""
 			QFrame {
@@ -39,7 +40,7 @@ class UINoteEntry(QFrame):
 		self.gray_out_effect.setStrength(0.95)
 		self.content.button_bar.setGraphicsEffect(self.gray_out_effect)
 
-		self.update_content()
+		self.update_data()
 
 	def enterEvent(self, event):
 		self.shadow_effect.setColor(QColor(0, 0, 0, 60))
@@ -64,7 +65,7 @@ class UINoteEntry(QFrame):
 		self.content.details_widget.setVisible(False)
 		self.content.title_label.setStyleSheet("")
 
-	def update_content(self):
+	def update_data(self):
 		"""Updates the displayed information about the note."""
 		self.content.title_label.setText(self._note.title)
 		self.content.description_label.setText(self._note.description)
