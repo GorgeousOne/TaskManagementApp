@@ -1,6 +1,6 @@
 import bisect
 
-from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame, QSizePolicy
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame
 from PySide2.QtCore import Qt, QTime
 
 from uis.ui_note_entry import UINoteEntry
@@ -30,7 +30,6 @@ class UIDateSection(QWidget):
 
 		self.note_area = QWidget(self)
 		self.note_area.setObjectName("note_area")
-		# self.note_area.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
 
 		self.verticalLayout.addWidget(self.note_area)
 
@@ -39,17 +38,44 @@ class UIDateSection(QWidget):
 		self.verticalLayout_2.setSpacing(10)
 		self.verticalLayout_2.setObjectName("verticalLayout_2")
 
-		self.times = []
-		self.note_entries = []
+		self._times = []
+		self._note_entries = []
 
-	def display_note(self, new_note, container):
+	def is_empty(self):
+		return len(self._note_entries) == 0
 
+	def display_note(self, new_note):
 		new_time = new_note.time if new_note.time else QTime(0, 0)
-		index = bisect.bisect_right(self.times, new_time)
+		index = bisect.bisect_right(self._times, new_time)
+		new_entry = UINoteEntry(new_note, self)
 
-		new_entry = UINoteEntry(new_note)
-		new_entry_button = new_entry.create_button(self, container)
+		self._times.insert(index, new_time)
+		self.note_area.layout().insertWidget(index, new_entry)
+		self._note_entries.insert(index, new_entry)
+		return new_entry
 
-		self.times.insert(index, new_time)
-		self.note_area.layout().insertWidget(index, new_entry_button)
-		self.note_entries.insert(index, new_entry)
+	def update_entry(self, entry):
+		index = self._note_entries.index(entry)
+
+		self._times.pop(index)
+		self._note_entries.remove(entry)
+
+		note = entry._note;
+		time = note.time if note.time else QTime(0, 0)
+
+		new_index = bisect.bisect_right(self._times, note.time)
+		self.note_area.layout().insertWidget(new_index, entry)
+		self._note_entries.insert(new_index, entry)
+		self._times.insert(new_index, time)
+
+	def remove_note(self, note):
+		for i in range(len(self._times)):
+			entry = self._note_entries[i]
+			if entry._note == note:
+				# self.note_area.layout().removeWidget(entry)
+				entry.hide()
+				entry.deleteLater()
+
+				self._note_entries.remove(entry)
+				self._times.pop(i)
+				return

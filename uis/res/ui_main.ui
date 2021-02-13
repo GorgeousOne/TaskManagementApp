@@ -32,7 +32,6 @@ font: 25 12pt &quot;Segoe UI Light&quot;;</string>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
     <string notr="true">.QPushButton {
-	color: white;
 	background-color: rgba(0, 0, 0, 0);
 	border: none;
 }
@@ -91,7 +90,8 @@ font: 25 12pt &quot;Segoe UI Light&quot;;</string>
        <item alignment="Qt::AlignTop">
         <widget class="QFrame" name="sidebar_btn_frame">
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">	color: white;
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
