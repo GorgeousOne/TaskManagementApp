@@ -13,11 +13,9 @@ class UINoteEntry(QFrame):
 
 		self.setStyleSheet(
 			"""
-			QFrame {
 				border: 0px solid;
 				border-radius: 3px;
 				background-color: rgb(255, 255, 255);
-			}
 			"""
 		)
 
@@ -73,6 +71,16 @@ class UINoteEntry(QFrame):
 		self.content.description_label.setText(self._note.description)
 
 		if self._note.time:
+			self.content.time_label.show()
 			self.content.time_label.setText(self._note.time.toString("HH:mm"))
 		else:
 			self.content.time_label.hide()
+
+		if self._note.get_is_done():
+			self.content.toggle_done_btn.setText("Undo")
+			self.setStyleSheet(self.styleSheet() + "color: rgb(200, 200, 200);")
+			self.shadow_effect.setEnabled(False)
+		else:
+			self.content.toggle_done_btn.setText("Mark as done")
+			self.setStyleSheet(self.styleSheet() + "color: rgb(0, 0, 0);")
+			self.shadow_effect.setEnabled(True)

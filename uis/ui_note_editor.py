@@ -25,6 +25,7 @@ class UINoteEditor:
 		self.dialog.enable_time_check.stateChanged.connect(self.toggle_time_visibility)
 		self.dialog.title_edit.textChanged.connect(self.toggle_btn_create)
 		self.dialog.cancel_btn.clicked.connect(self.dialog.hide)
+		self.dialog.create_btn.setDefault(True)
 
 	def toggle_time_visibility(self):
 		"""show or hide the time picker when needed"""
@@ -32,7 +33,8 @@ class UINoteEditor:
 
 	def toggle_btn_create(self, text):
 		"""enable or disable the create button depending on if the title is set"""
-		self.dialog.create_btn.setEnabled(len(text.strip()) > 0)
+		enable = len(text.strip()) > 0
+		self.dialog.create_btn.setEnabled(enable)
 
 	def show_updated(self):
 		"""Reset any previous inputs and update date and time picker before showing"""
@@ -44,7 +46,7 @@ class UINoteEditor:
 		self.dialog.time_picker.setTime(time)
 		self.dialog.date_picker.setDate(QDate.currentDate())
 		self.dialog.show()
-		self.dialog.title_edit.setFocus(Qt.PopupFocusReason)
+		self.dialog.title_edit.setFocus()
 
 	def clear(self):
 		self.dialog.title_edit.setText("")

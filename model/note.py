@@ -6,7 +6,7 @@ class Note:
 		self.date = date
 		self.time = time
 		self.description = description
-		self.isDone = False
+		self.is_done = False
 		self._listeners = []
 
 	def add_listener(self, listener):
@@ -15,9 +15,15 @@ class Note:
 	def remove_listener(self, listener):
 		self._listeners.remove(listener)
 
-	def update_data(self):
+	def update_listeners(self):
 		for listener in self._listeners:
 			listener.update_data()
+
+	def get_is_done(self):
+		return self.is_done
+
+	def toggle_is_done(self):
+		self.is_done = not self.is_done
 
 	def __getstate__(self):
 		# Copy the object's state from self.__dict__ which contains

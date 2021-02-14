@@ -133,7 +133,7 @@ background-color: rgba(0, 0, 0, 0)</string>
           <number>5</number>
          </property>
          <item>
-          <widget class="QPushButton" name="btn_done">
+          <widget class="QPushButton" name="toggle_done_btn">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -141,10 +141,11 @@ background-color: rgba(0, 0, 0, 0)</string>
             </sizepolicy>
            </property>
            <property name="styleSheet">
-            <string notr="true">	border: 0px solid;
-	border-radius: 3px;
-	padding: 5px;
-</string>
+            <string notr="true">color: 95, 99, 104;
+border: 0px solid;
+border-radius: 3px;
+padding: 5px;
+	</string>
            </property>
            <property name="text">
             <string>Mark as done</string>
@@ -194,32 +195,6 @@ background-color: rgba(0, 0, 0, 0)</string>
            <property name="styleSheet">
             <string notr="true">background-image: url(./uis/res/icons/trashcan.png);
 /*background-image: url(:/images/icons/trashcan.png);*/</string>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="close_btn">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-image: url(./uis/res/icons/cross.png);
-/*background-image: url(:/images/icons/cross.png);*/</string>
            </property>
            <property name="iconSize">
             <size>

@@ -60,7 +60,7 @@ class UIDateSection(QWidget):
 		self._times.pop(index)
 		self._note_entries.remove(entry)
 
-		note = entry._note;
+		note = entry._note
 		time = note.time if note.time else QTime(0, 0)
 
 		new_index = bisect.bisect_right(self._times, note.time)
@@ -72,7 +72,6 @@ class UIDateSection(QWidget):
 		for i in range(len(self._times)):
 			entry = self._note_entries[i]
 			if entry._note == note:
-				# self.note_area.layout().removeWidget(entry)
 				entry.hide()
 				entry.deleteLater()
 

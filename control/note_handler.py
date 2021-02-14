@@ -40,6 +40,7 @@ class NoteHandler:
 
 	def _create_entry(self, new_note):
 		entry = self._timeline.display_note(new_note)
+		entry.content.toggle_done_btn.clicked.connect(lambda: self.toggle_complete_note(new_note))
 		entry.content.delete_btn.clicked.connect(lambda: self.delete_note(new_note, True))
 		entry.content.edit_btn.clicked.connect(lambda: self.start_editing_note(new_note))
 
@@ -83,7 +84,7 @@ class NoteHandler:
 		self._edited_note.date = dialog.date_picker.date()
 		self._edited_note.time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
 
-		self._edited_note.update_data()
+		self._edited_note.update_listeners()
 		for entry in self._edited_note._listeners:
 			entry._section.update_entry(entry)
 
@@ -91,7 +92,9 @@ class NoteHandler:
 
 		self._note_editor.dialog.hide()
 		self._note_editor.clear()
-		# self.save_notes()
+		self.save_notes()
 
-	def complete_note(self, note):
-		pass
+	def toggle_complete_note(self, note):
+		note.toggle_is_done()
+		note.update_listeners()
+		self.save_notes()
