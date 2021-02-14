@@ -32,12 +32,14 @@ font: 25 12pt &quot;Segoe UI Light&quot;;</string>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
     <string notr="true">.QPushButton {
+	color: white;
 	background-color: rgba(0, 0, 0, 0);
 	border: none;
 }
 .QPushButton:hover:!pressed {
 	background-color: rgba(0, 0, 0, 50);
-}</string>
+}
+</string>
    </property>
    <layout class="QHBoxLayout" name="verticalLayout">
     <property name="spacing">
@@ -90,8 +92,7 @@ font: 25 12pt &quot;Segoe UI Light&quot;;</string>
        <item alignment="Qt::AlignTop">
         <widget class="QFrame" name="sidebar_btn_frame">
          <property name="styleSheet">
-          <string notr="true">	color: white;
-</string>
+          <string notr="true"/>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -231,8 +232,7 @@ font: 25 12pt &quot;Segoe UI Light&quot;;</string>
 	background-color: rgb(140, 187, 255);
 	background-image: url(./uis/res/icons/banner.png);
 	/*background-image: url(:/banner/icons/banner.png);*/
-}
-background-image: url(:/banner/icons/banner.png);</string>
+}</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -250,21 +250,12 @@ background-image: url(:/banner/icons/banner.png);</string>
           <property name="topMargin">
            <number>0</number>
           </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QPushButton" name="create_note_btn">
             <property name="minimumSize">
-             <size>
-              <width>50</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="maximumSize">
              <size>
               <width>50</width>
               <height>50</height>
@@ -284,6 +275,39 @@ background-image: url(:/banner/icons/banner.png);</string>
               <width>50</width>
               <height>50</height>
              </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="finished_notes_check">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox {
+	color: white;
+	background-color: rgba(0, 0, 0, 0);
+	padding-left: 17px;
+	padding-right: 17px;
+}
+QCheckBox:hover:!pressed {
+	background-color: rgba(0, 0, 0, 50);
+}
+/*QCheckBox::indicator {
+	background-color: rgba(0, 0, 0, 50);
+}*/</string>
+            </property>
+            <property name="text">
+             <string>Hide completed</string>
+            </property>
+            <property name="tristate">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -350,6 +374,9 @@ background-image: url(:/banner/icons/banner.png);</string>
                <string notr="true">background-color: rgb(250, 250, 250);</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_9">
+               <property name="spacing">
+                <number>0</number>
+               </property>
                <property name="leftMargin">
                 <number>0</number>
                </property>
@@ -364,9 +391,6 @@ background-image: url(:/banner/icons/banner.png);</string>
                </property>
                <item alignment="Qt::AlignTop">
                 <widget class="QFrame" name="timeline_area">
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
                  <layout class="QVBoxLayout" name="verticalLayout_10">
                   <property name="spacing">
                    <number>10</number>
@@ -384,6 +408,29 @@ background-image: url(:/banner/icons/banner.png);</string>
                    <number>15</number>
                   </property>
                  </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="empty_timeline_label">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: rgb(100, 100, 100);
+padding-bottom: 20px;</string>
+                 </property>
+                 <property name="text">
+                  <string>Add tasks with the + button</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
               </layout>

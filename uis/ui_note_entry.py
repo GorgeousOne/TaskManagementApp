@@ -13,9 +13,8 @@ class UINoteEntry(QFrame):
 
 		self.setStyleSheet(
 			"""
-				border: 0px solid;
-				border-radius: 3px;
-				background-color: rgb(255, 255, 255);
+			border: 0px solid;
+			border-radius: 5px;
 			"""
 		)
 
@@ -30,7 +29,7 @@ class UINoteEntry(QFrame):
 		self.shadow_effect = QGraphicsDropShadowEffect(self._section)
 		self.shadow_effect.setBlurRadius(10)
 		self.shadow_effect.setOffset(0)
-		self.shadow_effect.setColor(QColor(0, 0, 0, 30))
+		self.shadow_effect.setColor(QColor(0, 0, 0, 40))
 		self.setGraphicsEffect(self.shadow_effect)
 
 		self.content.details_widget.hide()
@@ -47,7 +46,7 @@ class UINoteEntry(QFrame):
 		self.gray_out_effect.setEnabled(False)
 
 	def leaveEvent(self, event):
-		self.shadow_effect.setColor(QColor(0, 0, 0, 30))
+		self.shadow_effect.setColor(QColor(0, 0, 0, 39))
 		self.gray_out_effect.setEnabled(True)
 
 	def mouseReleaseEvent(self, event):
@@ -78,9 +77,12 @@ class UINoteEntry(QFrame):
 
 		if self._note.get_is_done():
 			self.content.toggle_done_btn.setText("Undo")
+			self.setStyleSheet(self.styleSheet() + "background-color: rgb(240, 245, 255);")
+			# self.setStyleSheet(self.styleSheet() + "background-color: rgb(245, 250, 255);")
 			self.setStyleSheet(self.styleSheet() + "color: rgb(200, 200, 200);")
 			self.shadow_effect.setEnabled(False)
 		else:
-			self.content.toggle_done_btn.setText("Mark as done")
+			self.content.toggle_done_btn.setText("Complete ")
+			self.setStyleSheet(self.styleSheet() + "background-color: rgb(255, 255, 255);")
 			self.setStyleSheet(self.styleSheet() + "color: rgb(0, 0, 0);")
 			self.shadow_effect.setEnabled(True)

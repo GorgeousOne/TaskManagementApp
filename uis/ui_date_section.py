@@ -39,10 +39,10 @@ class UIDateSection(QWidget):
 		self.verticalLayout_2.setObjectName("verticalLayout_2")
 
 		self._times = []
-		self._note_entries = []
+		self._entries = []
 
 	def is_empty(self):
-		return len(self._note_entries) == 0
+		return len(self._entries) == 0
 
 	def display_note(self, new_note):
 		new_time = new_note.time if new_note.time else QTime(0, 0)
@@ -51,30 +51,30 @@ class UIDateSection(QWidget):
 
 		self._times.insert(index, new_time)
 		self.note_area.layout().insertWidget(index, new_entry)
-		self._note_entries.insert(index, new_entry)
+		self._entries.insert(index, new_entry)
 		return new_entry
 
 	def update_entry(self, entry):
-		index = self._note_entries.index(entry)
+		index = self._entries.index(entry)
 
 		self._times.pop(index)
-		self._note_entries.remove(entry)
+		self._entries.remove(entry)
 
 		note = entry._note
 		time = note.time if note.time else QTime(0, 0)
 
 		new_index = bisect.bisect_right(self._times, note.time)
 		self.note_area.layout().insertWidget(new_index, entry)
-		self._note_entries.insert(new_index, entry)
+		self._entries.insert(new_index, entry)
 		self._times.insert(new_index, time)
 
 	def remove_note(self, note):
 		for i in range(len(self._times)):
-			entry = self._note_entries[i]
+			entry = self._entries[i]
 			if entry._note == note:
 				entry.hide()
 				entry.deleteLater()
 
-				self._note_entries.remove(entry)
+				self._entries.remove(entry)
 				self._times.pop(i)
 				return

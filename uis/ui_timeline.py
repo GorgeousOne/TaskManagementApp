@@ -24,6 +24,12 @@ class UITimeline:
 
 		return section.display_note(note)
 
+	def set_done_notes_visible(self, state):
+		for section in self.sections:
+			for entry in section._entries:
+				if entry._note.is_done:
+					entry.setVisible(state)
+
 	def remove_note(self, note):
 		date = note.date
 		if date not in self.dates:

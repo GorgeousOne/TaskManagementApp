@@ -9,11 +9,13 @@ from uis.ui_timeline import UITimeline
 
 
 class NoteHandler:
-	def __init__(self, timeline_container):
+	def __init__(self, main_ui):
 		self._saves_dir = path.expanduser("~") + path.sep + "TaskManagementApp"
 		self._saves_file = self._saves_dir + path.sep + "data.json"
 		self._load_notes()
-		self._timeline = UITimeline(timeline_container)
+
+		self._main_ui = main_ui
+		self._timeline = UITimeline(self._main_ui.window.timeline_area)
 
 		self._note_editor = UINoteEditor()
 		self._note_editor.dialog.create_btn.clicked.connect(self.finish_editing_note)
@@ -39,6 +41,9 @@ class NoteHandler:
 		self._create_entry(note)
 
 	def _create_entry(self, new_note):
+		self._main_ui.window.empty_timeline_label.hide()
+		self._main_ui.window.timeline_area.show()
+
 		entry = self._timeline.display_note(new_note)
 		entry.content.toggle_done_btn.clicked.connect(lambda: self.toggle_complete_note(new_note))
 		entry.content.delete_btn.clicked.connect(lambda: self.delete_note(new_note, True))
@@ -63,6 +68,10 @@ class NoteHandler:
 		self._notes.remove(note)
 		if save_change:
 			self.save_notes()
+
+		if len(self._notes) == 0:
+			self._main_ui.window.timeline_area.hide()
+			self._main_ui.window.empty_timeline_label.show()
 
 	def start_editing_note(self, note):
 		self._note_editor.clear()
