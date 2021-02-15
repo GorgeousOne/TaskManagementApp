@@ -20,7 +20,7 @@ class MainHandler:
 
 	def forward_note(self):
 		self.note_handler.create_note(self.note_creator)
-		self.note_creator.dialog.hide()
+		# self.note_creator.dialog.hide()
 
 if __name__ == "__main__":
 

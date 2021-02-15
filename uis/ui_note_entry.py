@@ -1,6 +1,19 @@
+import re
+
 from PySide2.QtWidgets import QFrame, QVBoxLayout, QGraphicsDropShadowEffect, QGraphicsColorizeEffect
 from PySide2.QtGui import QColor
 from PySide2.QtUiTools import QUiLoader
+
+
+def reference_urls(text):
+	"""A primitive method to turn some types of urls inside a string into hyperlinks"""
+	hyper_words = []
+	for word in text.split():
+		if re.search("\.[com|net|org|io|de]", word):
+			hyper_words.append("""<a href={url}>{url}</>""".format(url=word))
+		else:
+			hyper_words.append(word)
+	return " ".join(hyper_words)
 
 
 class UINoteEntry(QFrame):
@@ -25,6 +38,9 @@ class UINoteEntry(QFrame):
 
 		self.content = QUiLoader().load("./uis/res/ui_note_entry.ui")
 		self.verticalLayout.addWidget(self.content)
+
+		self.content.description_label.setOpenExternalLinks(True)
+		self.content.title_label.setOpenExternalLinks(True)
 
 		self.shadow_effect = QGraphicsDropShadowEffect(self._section)
 		self.shadow_effect.setBlurRadius(10)
@@ -67,7 +83,7 @@ class UINoteEntry(QFrame):
 	def update_data(self):
 		"""Updates the displayed information about the note."""
 		self.content.title_label.setText(self._note.title)
-		self.content.description_label.setText(self._note.description)
+		self.content.description_label.setText(reference_urls(self._note.description))
 
 		if self._note.time:
 			self.content.time_label.show()
@@ -77,12 +93,11 @@ class UINoteEntry(QFrame):
 
 		if self._note.get_is_done():
 			self.content.toggle_done_btn.setText("Undo")
-			self.setStyleSheet(self.styleSheet() + "background-color: rgb(240, 245, 255);")
-			# self.setStyleSheet(self.styleSheet() + "background-color: rgb(245, 250, 255);")
+			self.setStyleSheet(self.styleSheet() + "background: rgb(240, 245, 255);")
 			self.setStyleSheet(self.styleSheet() + "color: rgb(200, 200, 200);")
 			self.shadow_effect.setEnabled(False)
 		else:
-			self.content.toggle_done_btn.setText("Complete ")
-			self.setStyleSheet(self.styleSheet() + "background-color: rgb(255, 255, 255);")
+			self.content.toggle_done_btn.setText("Complete")
+			self.setStyleSheet(self.styleSheet() + "background: rgb(255, 255, 255);")
 			self.setStyleSheet(self.styleSheet() + "color: rgb(0, 0, 0);")
 			self.shadow_effect.setEnabled(True)
