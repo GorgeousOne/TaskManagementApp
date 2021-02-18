@@ -7,6 +7,7 @@ from control.note_handler import NoteHandler
 from model.note import Note
 from uis.ui_main import UIMainWindow
 from uis.ui_note_editor import UINoteEditor
+from uis.ui_project_editor import UIProjectEditor
 
 
 class MainHandler:
@@ -14,6 +15,7 @@ class MainHandler:
 		self.main_ui = UIMainWindow()
 		self.note_creator = UINoteEditor()
 		self.note_editor = UINoteEditor()
+		self.project_editor = UIProjectEditor()
 
 		self.note_handler = NoteHandler()
 
@@ -105,5 +107,6 @@ class MainHandler:
 
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
-	whatever = MainHandler()
+	MainHandler()
 	sys.exit(app.exec_())
+
