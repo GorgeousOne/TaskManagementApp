@@ -5,6 +5,9 @@ from PySide2.QtGui import QIcon
 
 from utils import icons_folder
 
+from uis.ui_note_editor import UINoteEditor
+from uis.ui_timeline import UITimeline
+
 
 class UIMainWindow:
 	def __init__(self):
@@ -12,6 +15,7 @@ class UIMainWindow:
 
 		self.window.toggle_menu_btn.setIcon(QIcon(icons_folder + "burger.png"))
 		self.window.timeline_area.hide()
+		self.timeline = UITimeline(self.window.timeline_area)
 
 		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(60, 150))
 		self.window.page1_btn.clicked.connect(lambda: self.window.page_stack.setCurrentWidget(self.window.page1_widget))
