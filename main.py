@@ -1,7 +1,7 @@
 import sys
 import uuid
 
-from PySide2.QtWidgets import QApplication
+from PySide2 import QtWidgets
 
 from control.note_handler import NoteHandler
 from model.note import Note
@@ -35,6 +35,8 @@ class MainHandler:
 		self.main_ui.window.finished_notes_check.stateChanged.connect(
 			lambda: self.main_ui.timeline.set_done_notes_visible(
 				not self.main_ui.window.finished_notes_check.isChecked()))
+
+		self.main_ui.window.page3_btn.clicked.connect(self.project_editor.dialog.show)
 
 		self.note_creator.dialog.create_btn.clicked.connect(lambda: self.create_note(self.note_creator))
 		self.note_editor.dialog.create_btn.clicked.connect(self.finish_editing_note)
@@ -106,7 +108,7 @@ class MainHandler:
 
 
 if __name__ == "__main__":
-	app = QApplication(sys.argv)
+	app = QtWidgets.QApplication(sys.argv)
 	MainHandler()
 	sys.exit(app.exec_())
 

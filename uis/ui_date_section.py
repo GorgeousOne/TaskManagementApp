@@ -1,39 +1,40 @@
 import bisect
 
-from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame
-from PySide2.QtCore import Qt, QTime
+from PySide2 import QtWidgets
+from PySide2 import QtCore
+from PySide2.QtCore import Qt
 
 from uis.ui_note_entry import UINoteEntry
 
 
-class UIDateSection(QWidget):
+class UIDateSection(QtWidgets.QWidget):
 	def __init__(self, date):
 		super().__init__()
 		self.date = date
 
-		self.verticalLayout = QVBoxLayout(self)
+		self.verticalLayout = QtWidgets.QVBoxLayout(self)
 		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
 		self.verticalLayout.setObjectName("verticalLayout")
 
-		self.date_label = QLabel(self)
+		self.date_label = QtWidgets.QLabel(self)
 		self.date_label.setMaximumHeight(20)
 		self.date_label.setText(self.date.toString("dddd d. MMMM"))
 		self.date_label.setStyleSheet("font: 8pt \"Segoe UI\";")
 		self.date_label.setObjectName("date_label")
 		self.verticalLayout.addWidget(self.date_label, 0, Qt.AlignHCenter)
 
-		self.line = QFrame(self)
-		self.line.setFrameShape(QFrame.HLine)
-		self.line.setFrameShadow(QFrame.Sunken)
+		self.line = QtWidgets.QFrame(self)
+		self.line.setFrameShape(QtWidgets.QFrame.HLine)
+		self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
 		self.line.setObjectName("line")
 		self.verticalLayout.addWidget(self.line)
 
-		self.note_area = QWidget(self)
+		self.note_area = QtWidgets.QWidget(self)
 		self.note_area.setObjectName("note_area")
 
 		self.verticalLayout.addWidget(self.note_area)
 
-		self.verticalLayout_2 = QVBoxLayout(self.note_area)
+		self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.note_area)
 		self.verticalLayout_2.setContentsMargins(10, 10, 10, 10)
 		self.verticalLayout_2.setSpacing(10)
 		self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -45,7 +46,7 @@ class UIDateSection(QWidget):
 		return len(self._entries) == 0
 
 	def display_note(self, new_note):
-		new_time = new_note.time if new_note.time else QTime(0, 0)
+		new_time = new_note.time if new_note.time else QtCore.QTime(0, 0)
 		index = bisect.bisect_right(self._times, new_time)
 		new_entry = UINoteEntry(new_note, self)
 
@@ -61,7 +62,7 @@ class UIDateSection(QWidget):
 		self._entries.remove(entry)
 
 		note = entry._note
-		time = note.time if note.time else QTime(0, 0)
+		time = note.time if note.time else QtCore.QTime(0, 0)
 
 		new_index = bisect.bisect_right(self._times, note.time)
 		self.note_area.layout().insertWidget(new_index, entry)

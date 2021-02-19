@@ -1,21 +1,22 @@
 
-from PySide2.QtCore import QDate, QTime, Qt
-from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import QGraphicsDropShadowEffect
-from PySide2.QtGui import QColor
+from PySide2 import QtUiTools
+from PySide2 import QtCore
+from PySide2 import QtWidgets
+from PySide2 import QtGui
+from PySide2.QtCore import Qt
 
 
 class UINoteEditor:
 	def __init__(self):
-		self.dialog = QUiLoader().load("./uis/res/ui_note_editor.ui")
+		self.dialog = QtUiTools.QUiLoader().load("./uis/res/ui_note_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)
 		self.dialog.setWindowFlags(Qt.FramelessWindowHint)
 		self.dialog.setAttribute(Qt.WA_TranslucentBackground, True)
 
-		shadow = QGraphicsDropShadowEffect(self.dialog)
+		shadow = QtWidgets.QGraphicsDropShadowEffect(self.dialog)
 		shadow.setBlurRadius(30)
 		shadow.setOffset(0)
-		shadow.setColor(QColor(0, 0, 0, 100))
+		shadow.setColor(QtGui.QColor(0, 0, 0, 100))
 		self.dialog.frame.setGraphicsEffect(shadow)
 		self.dialog.description_edit.setPlaceholderText("Add description⬤⚫⬤")
 
@@ -37,12 +38,12 @@ class UINoteEditor:
 	def show_updated(self):
 		"""Reset any previous inputs and update date and time picker before showing"""
 		self.clear()
-		now = QTime.currentTime()
+		now = QtCore.QTime.currentTime()
 		next_quarter = (now.minute() + 18) // 15 * 15
-		time = QTime(now.hour() + next_quarter // 60, next_quarter % 60)
+		time = QtCore.QTime(now.hour() + next_quarter // 60, next_quarter % 60)
 
 		self.dialog.time_picker.setTime(time)
-		self.dialog.date_picker.setDate(QDate.currentDate())
+		self.dialog.date_picker.setDate(QtCore.QDate.currentDate())
 		self.dialog.show()
 		self.dialog.title_edit.setFocus()
 

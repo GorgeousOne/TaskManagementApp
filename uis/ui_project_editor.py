@@ -1,26 +1,61 @@
 
-from PySide2.QtCore import QDate, QTime, Qt
-from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import QGraphicsDropShadowEffect
-from PySide2.QtGui import QColor
+from PySide2 import QtWidgets
+from PySide2 import QtGui
+from PySide2 import QtUiTools
+from PySide2.QtCore import Qt
 
 
 class UIProjectEditor:
 	def __init__(self):
-		self.dialog = QUiLoader().load("./uis/res/ui_project_editor.ui")
+		self.dialog = QtUiTools.QUiLoader().load("./uis/res/ui_project_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)
 		self.dialog.setWindowFlags(Qt.FramelessWindowHint)
 		self.dialog.setAttribute(Qt.WA_TranslucentBackground, True)
 
-		shadow = QGraphicsDropShadowEffect(self.dialog)
+		shadow = QtWidgets.QGraphicsDropShadowEffect(self.dialog)
 		shadow.setBlurRadius(30)
 		shadow.setOffset(0)
-		shadow.setColor(QColor(0, 0, 0, 100))
+		shadow.setColor(QtGui.QColor(0, 0, 0, 100))
 		self.dialog.frame.setGraphicsEffect(shadow)
+
+		self.finest_color_selection = [
+			QtGui.QColor(214, 0, 0),
+			QtGui.QColor(244, 81, 30),
+			QtGui.QColor(255, 195, 18),
+			QtGui.QColor(163, 203, 56),
+			QtGui.QColor(0, 148, 50),
+			QtGui.QColor(18, 203, 196),
+			QtGui.QColor(63, 81, 181),
+			QtGui.QColor(137, 131, 227),
+			QtGui.QColor(142, 36, 170),
+			QtGui.QColor(181, 52, 113),
+			QtGui.QColor(230, 124, 115)
+		]
+
+		model = self.dialog.color_combo.model()
+
+		for color in self.finest_color_selection:
+			color_item = QtGui.QStandardItem("⬤")
+			color_item.setForeground(color)
+			color_item.setTextAlignment(Qt.AlignHCenter)
+			model.appendRow(color_item)
+
+		self.setup_ui_functions()
+
+	def setup_ui_functions(self):
 		self.dialog.name_edit.textChanged.connect(self.toggle_btn_create)
 		self.dialog.cancel_btn.clicked.connect(self.dialog.hide)
-		
+
+		self.dialog.color_combo.currentIndexChanged.connect(self.change_selected_color)
+		self.dialog.color_combo.setCurrentIndex(6)
+
 	def toggle_btn_create(self, text):
 		"""enable or disable the create button depending if the title is set"""
 		enable = len(text.strip()) > 0
 		self.dialog.create_btn.setEnabled(enable)
+
+	def change_selected_color(self, index=-1):
+		self.dialog.color_combo.setStyleSheet("color: " + self.finest_color_selection[index].name())
+
+	def get_selected_color(self):
+		return self.finest_color_selection[self.dialog.color_combo.currentIndex()]

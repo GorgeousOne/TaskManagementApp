@@ -1,8 +1,8 @@
 import re
 
-from PySide2.QtWidgets import QFrame, QVBoxLayout, QGraphicsDropShadowEffect, QGraphicsColorizeEffect
-from PySide2.QtGui import QColor
-from PySide2.QtUiTools import QUiLoader
+from PySide2 import QtWidgets
+from PySide2 import QtGui
+from PySide2 import QtUiTools
 
 
 def reference_urls(text):
@@ -16,7 +16,7 @@ def reference_urls(text):
 	return " ".join(hyper_words)
 
 
-class UINoteEntry(QFrame):
+class UINoteEntry(QtWidgets.QFrame):
 	def __init__(self, note, section):
 		super().__init__()
 
@@ -31,38 +31,38 @@ class UINoteEntry(QFrame):
 			"""
 		)
 
-		self.verticalLayout = QVBoxLayout(self)
+		self.verticalLayout = QtWidgets.QVBoxLayout(self)
 		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
 		self.setMaximumWidth(1400)
 		self.verticalLayout.setObjectName("verticalLayout")
 
-		self.content = QUiLoader().load("./uis/res/ui_note_entry.ui")
+		self.content = QtUiTools.QUiLoader().load("./uis/res/ui_note_entry.ui")
 		self.verticalLayout.addWidget(self.content)
 
 		self.content.description_label.setOpenExternalLinks(True)
 		self.content.title_label.setOpenExternalLinks(True)
 
-		self.shadow_effect = QGraphicsDropShadowEffect(self._section)
+		self.shadow_effect = QtWidgets.QGraphicsDropShadowEffect(self._section)
 		self.shadow_effect.setBlurRadius(10)
 		self.shadow_effect.setOffset(0)
-		self.shadow_effect.setColor(QColor(0, 0, 0, 40))
+		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 40))
 		self.setGraphicsEffect(self.shadow_effect)
 
 		self.content.details_widget.hide()
 
-		self.gray_out_effect = QGraphicsColorizeEffect(self)
-		self.gray_out_effect.setColor(QColor(255, 255, 255))
+		self.gray_out_effect = QtWidgets.QGraphicsColorizeEffect(self)
+		self.gray_out_effect.setColor(QtGui.QColor(255, 255, 255))
 		self.gray_out_effect.setStrength(0.95)
 		self.content.button_bar.setGraphicsEffect(self.gray_out_effect)
 
 		self.update_data()
 
 	def enterEvent(self, event):
-		self.shadow_effect.setColor(QColor(0, 0, 0, 60))
+		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 60))
 		self.gray_out_effect.setEnabled(False)
 
 	def leaveEvent(self, event):
-		self.shadow_effect.setColor(QColor(0, 0, 0, 39))
+		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 39))
 		self.gray_out_effect.setEnabled(True)
 
 	def mouseReleaseEvent(self, event):
