@@ -66,13 +66,13 @@ class MainHandler:
 		item.content.edit_btn.clicked.connect(lambda: self.start_editing_note(new_note))
 
 	def create_project(self, project_form):
-		project_form.dialog.hide()
+		# project_form.dialog.hide()
 		name = project_form.dialog.name_edit.text().strip()
 		color = project_form.get_selected_color()
 		new_project = Project(uuid.uuid4(), name, color)
 
 		self.note_handler.add_project(new_project)
-
+		self.main_ui.projects_bar.add_project(new_project)
 
 	def toggle_note_completion(self, note):
 		note.toggle_is_done()

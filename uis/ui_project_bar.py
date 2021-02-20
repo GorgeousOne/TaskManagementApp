@@ -1,21 +1,18 @@
 import bisect
 
-from PySide2 import QtCore
-
 from uis.ui_project_item import UiProjectItem
 
 
-class UiProjectBar:
+class UiProjectsBar:
 	def __init__(self, container):
 		self.container = container
 		self.layout = container.layout
-		self.projects = []
+		self.project_items = []
 
 	def add_project(self, new_project):
-		index = bisect.bisect_right(self.projects, new_project)
 		new_item = UiProjectItem(new_project, self)
+		index = bisect.bisect_right(self.project_items, new_project) + 1  # plus one for the already existent "All Projects" button
 
-		# self.projects.insert(index, new_time)
-		# self.note_area.layout().insertWidget(index, new_item)
-		# self.items.insert(index, new_item)
+		self.layout().insertWidget(index, new_item)
+		self.project_items.insert(index, new_item)
 		return new_item

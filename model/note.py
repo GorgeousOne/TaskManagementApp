@@ -10,7 +10,7 @@ class Note:
 		self._listeners = []
 
 	def add_listener(self, listener):
-		update_method = getattr(self, "update_data", None)
+		update_method = getattr(listener, "update_data", None)
 		if not callable(update_method):
 			raise Exception("Could not add listener to note missing the update_data method")
 		self._listeners.append(listener)
@@ -51,13 +51,13 @@ class Note:
 		if not isinstance(other, Note):
 			return False
 
-		if self.date == other.date:
-			return self.date.daysTo(other.date) < 0
+		if not self.date == other.date:
+			return self.date.daysTo(other.date) > 0
 		if not self.time:
-			return False
-		if not other.time:
 			return True
-		return self.time.secsTo(other.time) < 0
+		if not other.time:
+			return False
+		return self.time.secsTo(other.time) > 0
 
 	def __repr__(self):
 		return f"<Note: {self.title}>"

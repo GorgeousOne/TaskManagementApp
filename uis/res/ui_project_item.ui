@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>233</width>
+    <height>42</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
     <horstretch>0</horstretch>
@@ -15,7 +23,7 @@
 	background: rgba(0, 0, 0, 0);
 }
 .QPushButton:hover:!pressed {
-		background: rgba(0, 0, 0, 20);
+		background: rgba(0, 0, 0, 40);
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -48,7 +56,10 @@
 	background: rgba(0, 0, 0, 0);
 }
 .QFrame:hover:!pressed {
-		background: rgba(0, 0, 0, 20);
+		background: rgba(0, 0, 0, 40);
+}
+.QLabel{
+	color: white
 }</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -75,15 +86,15 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="maximumSize">
+        <property name="minimumSize">
          <size>
-          <width>40</width>
-          <height>40</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: rgb(255, 0, 0);
-border-radius: 20px;
+         <string notr="true">background: rgb(63, 81, 181);
+border-radius: 16px;
 </string>
         </property>
         <property name="text">
@@ -114,60 +125,77 @@ border-radius: 20px;
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="button_layout">
-     <item>
-      <widget class="QPushButton" name="edit_btn">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-image: url(./uis/res/icons/pencil.png);
+    <widget class="QWidget" name="button_bar" native="true">
+     <layout class="QHBoxLayout" name="button_layout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="edit_btn">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-image: url(./uis/res/icons/pencil.png);
 /*background-image: url(:/images/icons/pencil.png);*/</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>40</width>
-         <height>40</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="edit_btn_2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-image: url(./uis/res/icons/pencil.png);
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="edit_btn_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-image: url(./uis/res/icons/pencil.png);
 /*background-image: url(:/images/icons/pencil.png);*/</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>40</width>
-         <height>40</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-    </layout>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

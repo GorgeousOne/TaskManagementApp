@@ -1,7 +1,7 @@
-
 import re
 from PySide2 import QtWidgets, QtGui, QtUiTools
 from PySide2.QtCore import Qt
+import utils
 
 
 def highlight_urls(text):
@@ -89,11 +89,19 @@ class UiNoteItem(QtWidgets.QFrame):
 
 		if self._note.get_is_done():
 			self.content.toggle_done_btn.setText("Undo")
-			self.setStyleSheet(self.styleSheet() + "background: rgb(240, 245, 255);")
-			self.setStyleSheet(self.styleSheet() + "color: rgb(200, 200, 200);")
 			self.shadow_effect.setEnabled(False)
+			styles = utils.replace_property(self.styleSheet(), "background", "rgb(240, 245, 255)")
+			styles = utils.replace_property(styles, "color", "rgb(200, 200, 200)")
+			self.setStyleSheet(styles)
+
 		else:
 			self.content.toggle_done_btn.setText("Complete")
-			self.setStyleSheet(self.styleSheet() + "background: rgb(255, 255, 255);")
-			self.setStyleSheet(self.styleSheet() + "color: rgb(0, 0, 0);")
 			self.shadow_effect.setEnabled(True)
+			styles = utils.replace_property(self.styleSheet(), "background", "rgb(255, 255, 255)")
+			styles = utils.replace_property(styles, "color", "rgb(0, 0, 0)")
+			self.setStyleSheet(styles)
+
+	def __lt__(self, other):
+		if not isinstance(other, UiNoteItem):
+			return False
+		return self._note < other._note

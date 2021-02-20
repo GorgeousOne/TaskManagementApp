@@ -1,5 +1,7 @@
 from PySide2 import QtWidgets, QtUiTools
 
+import utils
+
 
 class UiProjectItem(QtWidgets.QWidget):
 	def __init__(self, project, project_bar):
@@ -13,23 +15,18 @@ class UiProjectItem(QtWidgets.QWidget):
 
 		self.content = QtUiTools.QUiLoader().load("./uis/res/ui_project_item.ui")
 		self.verticalLayout.addWidget(self.content)
-
-		# self.gray_out_effect = QtWidgets.QGraphicsColorizeEffect(self)
-		# self.gray_out_effect.setColor(Qt.black)
-		# self.gray_out_effect.setStrength(0.95)
-		# self.content.button_layout.setGraphicsEffect(self.gray_out_effect)
-
+		self.content.button_bar.hide()
 		self.update_data()
 
 	def enterEvent(self, event):
-		# self.gray_out_effect.setEnabled(False)
-		self.content.button_layout.show()
+		self.content.button_bar.show()
 
 	def leaveEvent(self, event):
-		# self.gray_out_effect.setEnabled(True)
-		self.content.button_layout.hide()
+		self.content.button_bar.hide()
 
 	def update_data(self):
 		project_name = self.project.get_name()
-		self.content.name_label.setTexst(project_name)
-		self.content.icon_label(project_name[0].upper())
+		self.content.name_label.setText(project_name)
+		self.content.icon_label.setText(project_name[0].upper())
+		icon_style = utils.replace_property(self.content.icon_label.styleSheet(), "background", self.project.get_color().name())
+		self.content.icon_label.setStyleSheet(icon_style)
