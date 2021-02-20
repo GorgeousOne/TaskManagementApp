@@ -28,7 +28,7 @@ class MainHandler:
 
 	def setup_ui(self):
 		for note in self.note_handler.get_notes():
-			self.create_entry(note)
+			self.create_item(note)
 		self.note_editor.dialog.create_btn.setText("Save")
 
 	def setup_ui_functions(self):
@@ -44,9 +44,9 @@ class MainHandler:
 		self.note_editor.dialog.create_btn.clicked.connect(self.finish_editing_note)
 
 	def create_note(self, note_form):
-		note_form.dialog.hide()
-		title = note_form.dialog.title_edit.text().strip()
 		dialog = note_form.dialog
+		dialog.hide()
+		title = dialog.title_edit.text().strip()
 		description = dialog.description_edit.toPlainText().strip()
 		date = dialog.date_picker.date()
 
@@ -54,23 +54,25 @@ class MainHandler:
 		new_note = Note(uuid.uuid4(), title, date, description, time)
 
 		self.note_handler.add_note(new_note)
-		self.create_entry(new_note)
+		self.create_item(new_note)
 
-	def create_entry(self, new_note):
+	def create_item(self, new_note):
 		self.main_ui.window.empty_timeline_label.hide()
 		self.main_ui.window.timeline_area.show()
 
-		entry = self.main_ui.timeline.display_note(new_note)
-		entry.content.toggle_done_btn.clicked.connect(lambda: self.toggle_note_completion(new_note))
-		entry.content.delete_btn.clicked.connect(lambda: self.delete_note(new_note))
-		entry.content.edit_btn.clicked.connect(lambda: self.start_editing_note(new_note))
+		item = self.main_ui.timeline.display_note(new_note)
+		item.content.toggle_done_btn.clicked.connect(lambda: self.toggle_note_completion(new_note))
+		item.content.delete_btn.clicked.connect(lambda: self.delete_note(new_note))
+		item.content.edit_btn.clicked.connect(lambda: self.start_editing_note(new_note))
 
 	def create_project(self, project_form):
 		project_form.dialog.hide()
 		name = project_form.dialog.name_edit.text().strip()
 		color = project_form.get_selected_color()
 		new_project = Project(uuid.uuid4(), name, color)
-		print(new_project.name, new_project.color)
+
+		self.note_handler.add_project(new_project)
+
 
 	def toggle_note_completion(self, note):
 		note.toggle_is_done()
@@ -98,8 +100,8 @@ class MainHandler:
 		self.edited_note.time = form.time_picker.time() if form.enable_time_check.isChecked() else None
 
 		self.edited_note.update_listeners()
-		for entry in self.edited_note._listeners:
-			entry._section.update_entry(entry)
+		for item in self.edited_note._listeners:
+			item.date_section.update_item(item)
 
 		self.note_editor.dialog.hide()
 		self.note_editor.clear()

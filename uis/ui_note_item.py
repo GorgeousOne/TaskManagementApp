@@ -1,9 +1,10 @@
 
 import re
 from PySide2 import QtWidgets, QtGui, QtUiTools
+from PySide2.QtCore import Qt
 
 
-def reference_urls(text):
+def highlight_urls(text):
 	"""A primitive method to turn some types of urls inside a string into hyperlinks"""
 	hyper_words = []
 	for word in text.split():
@@ -14,14 +15,13 @@ def reference_urls(text):
 	return " ".join(hyper_words)
 
 
-class UiNoteEntry(QtWidgets.QFrame):
-	def __init__(self, note, section):
+class UiNoteItem(QtWidgets.QFrame):
+	def __init__(self, note, date_section):
 		super().__init__()
 
 		note.add_listener(self)
 		self._note = note
-		self._section = section
-
+		self.date_section = date_section
 		self.setStyleSheet(
 			"""
 			border: 0px solid;
@@ -32,15 +32,13 @@ class UiNoteEntry(QtWidgets.QFrame):
 		self.verticalLayout = QtWidgets.QVBoxLayout(self)
 		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
 		self.setMaximumWidth(1400)
-		self.verticalLayout.setObjectName("verticalLayout")
 
-		self.content = QtUiTools.QUiLoader().load("./uis/res/ui_note_entry.ui")
+		self.content = QtUiTools.QUiLoader().load("./uis/res/ui_note_item.ui")
 		self.verticalLayout.addWidget(self.content)
 
 		self.content.description_label.setOpenExternalLinks(True)
-		self.content.title_label.setOpenExternalLinks(True)
 
-		self.shadow_effect = QtWidgets.QGraphicsDropShadowEffect(self._section)
+		self.shadow_effect = QtWidgets.QGraphicsDropShadowEffect(self.date_section)
 		self.shadow_effect.setBlurRadius(10)
 		self.shadow_effect.setOffset(0)
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 40))
@@ -49,7 +47,7 @@ class UiNoteEntry(QtWidgets.QFrame):
 		self.content.details_widget.hide()
 
 		self.gray_out_effect = QtWidgets.QGraphicsColorizeEffect(self)
-		self.gray_out_effect.setColor(QtGui.QColor(255, 255, 255))
+		self.gray_out_effect.setColor(Qt.white)
 		self.gray_out_effect.setStrength(0.95)
 		self.content.button_bar.setGraphicsEffect(self.gray_out_effect)
 
@@ -60,7 +58,7 @@ class UiNoteEntry(QtWidgets.QFrame):
 		self.gray_out_effect.setEnabled(False)
 
 	def leaveEvent(self, event):
-		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 39))
+		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 40))
 		self.gray_out_effect.setEnabled(True)
 
 	def mouseReleaseEvent(self, event):
@@ -81,7 +79,7 @@ class UiNoteEntry(QtWidgets.QFrame):
 	def update_data(self):
 		"""Updates the displayed information about the note."""
 		self.content.title_label.setText(self._note.title)
-		self.content.description_label.setText(reference_urls(self._note.description))
+		self.content.description_label.setText(highlight_urls(self._note.description))
 
 		if self._note.time:
 			self.content.time_label.show()

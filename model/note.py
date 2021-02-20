@@ -10,6 +10,9 @@ class Note:
 		self._listeners = []
 
 	def add_listener(self, listener):
+		update_method = getattr(self, "update_data", None)
+		if not callable(update_method):
+			raise Exception("Could not add listener to note missing the update_data method")
 		self._listeners.append(listener)
 
 	def remove_listener(self, listener):
@@ -26,20 +29,14 @@ class Note:
 		self.is_done = not self.is_done
 
 	def __getstate__(self):
-		# Copy the object's state from self.__dict__ which contains
-		# all our instance attributes. Always use the dict.copy()
-		# method to avoid modifying the original state.
+		"""Removes the temporary listeners from the data to pickle"""
 		state = self.__dict__.copy()
-		# Remove the unpicklable entries.
 		del state['_listeners']
 		return state
 
 	def __setstate__(self, state):
-		# Restore instance attributes (i.e., filename and lineno).
+		"""Ensures listeners not to be None after unpickeling"""
 		self.__dict__.update(state)
-		# Restore the previously opened file's state. To do so, we need to
-		# reopen it and read from it until the line count is restored.
-		# Finally, save the file.
 		self._listeners = []
 
 	def __hash__(self):
@@ -49,19 +46,18 @@ class Note:
 		if not isinstance(other, Note):
 			return False
 		return self.uuid == other.uuid
-		# if self.title == other.title and self.date == other.date:
-		# 	return self.time == other.time
-		# return False
 
 	def __lt__(self, other):
 		if not isinstance(other, Note):
 			return False
-		day_diff = self.date.daysTo(other.date)
-		if day_diff != 0:
-			return day_diff < 0
-		if self.time:
-			return 0
-		return False
+
+		if self.date == other.date:
+			return self.date.daysTo(other.date) < 0
+		if not self.time:
+			return False
+		if not other.time:
+			return True
+		return self.time.secsTo(other.time) < 0
 
 	def __repr__(self):
 		return f"<Note: {self.title}>"
