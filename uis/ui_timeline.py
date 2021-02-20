@@ -1,10 +1,9 @@
 import bisect
+from uis.ui_date_section import UiDateSection
 
-from uis.ui_date_section import UIDateSection
 
-
-class UITimeline:
-
+class UiTimeline:
+	"""Takes the given widget and adds notes to it in form of note entries which are sorted by date sections"""
 	def __init__(self, container):
 		self.container = container
 		self.layout = container.layout()
@@ -41,7 +40,7 @@ class UITimeline:
 			self.remove_section(section)
 
 	def insert_date(self, new_date):
-		new_section = UIDateSection(new_date)
+		new_section = UiDateSection(new_date)
 		index = bisect.bisect(self.dates, new_date)
 
 		self.dates.insert(index, new_date)

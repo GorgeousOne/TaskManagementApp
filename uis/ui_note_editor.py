@@ -1,12 +1,9 @@
 
-from PySide2 import QtUiTools
-from PySide2 import QtCore
-from PySide2 import QtWidgets
-from PySide2 import QtGui
+from PySide2 import QtUiTools, QtCore, QtWidgets, QtGui
 from PySide2.QtCore import Qt
 
 
-class UINoteEditor:
+class UiNoteEditor:
 	def __init__(self):
 		self.dialog = QtUiTools.QUiLoader().load("./uis/res/ui_note_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)
@@ -18,7 +15,7 @@ class UINoteEditor:
 		shadow.setOffset(0)
 		shadow.setColor(QtGui.QColor(0, 0, 0, 100))
 		self.dialog.frame.setGraphicsEffect(shadow)
-		self.dialog.description_edit.setPlaceholderText("Add description⬤⚫⬤")
+		self.dialog.description_edit.setPlaceholderText("Add description")
 
 		self.dialog.date_picker.calendarPopup = True
 		self.dialog.time_picker.hide()

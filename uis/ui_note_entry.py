@@ -1,8 +1,6 @@
-import re
 
-from PySide2 import QtWidgets
-from PySide2 import QtGui
-from PySide2 import QtUiTools
+import re
+from PySide2 import QtWidgets, QtGui, QtUiTools
 
 
 def reference_urls(text):
@@ -16,7 +14,7 @@ def reference_urls(text):
 	return " ".join(hyper_words)
 
 
-class UINoteEntry(QtWidgets.QFrame):
+class UiNoteEntry(QtWidgets.QFrame):
 	def __init__(self, note, section):
 		super().__init__()
 

@@ -5,17 +5,18 @@ from PySide2 import QtWidgets
 
 from control.note_handler import NoteHandler
 from model.note import Note
-from uis.ui_main import UIMainWindow
-from uis.ui_note_editor import UINoteEditor
-from uis.ui_project_editor import UIProjectEditor
+from model.project import Project
+from uis.ui_main import UiMainWindow
+from uis.ui_note_editor import UiNoteEditor
+from uis.ui_project_editor import UiProjectEditor
 
 
 class MainHandler:
 	def __init__(self):
-		self.main_ui = UIMainWindow()
-		self.note_creator = UINoteEditor()
-		self.note_editor = UINoteEditor()
-		self.project_editor = UIProjectEditor()
+		self.main_ui = UiMainWindow()
+		self.note_creator = UiNoteEditor()
+		self.note_editor = UiNoteEditor()
+		self.project_editor = UiProjectEditor()
 
 		self.note_handler = NoteHandler()
 
@@ -36,12 +37,14 @@ class MainHandler:
 			lambda: self.main_ui.timeline.set_done_notes_visible(
 				not self.main_ui.window.finished_notes_check.isChecked()))
 
-		self.main_ui.window.page3_btn.clicked.connect(self.project_editor.dialog.show)
+		self.main_ui.window.create_project_btn.clicked.connect(self.project_editor.dialog.show)
+		self.project_editor.dialog.create_btn.clicked.connect(lambda: self.create_project(self.project_editor))
 
 		self.note_creator.dialog.create_btn.clicked.connect(lambda: self.create_note(self.note_creator))
 		self.note_editor.dialog.create_btn.clicked.connect(self.finish_editing_note)
 
 	def create_note(self, note_form):
+		note_form.dialog.hide()
 		title = note_form.dialog.title_edit.text().strip()
 		dialog = note_form.dialog
 		description = dialog.description_edit.toPlainText().strip()
@@ -52,7 +55,6 @@ class MainHandler:
 
 		self.note_handler.add_note(new_note)
 		self.create_entry(new_note)
-		self.note_creator.dialog.hide()
 
 	def create_entry(self, new_note):
 		self.main_ui.window.empty_timeline_label.hide()
@@ -62,6 +64,13 @@ class MainHandler:
 		entry.content.toggle_done_btn.clicked.connect(lambda: self.toggle_note_completion(new_note))
 		entry.content.delete_btn.clicked.connect(lambda: self.delete_note(new_note))
 		entry.content.edit_btn.clicked.connect(lambda: self.start_editing_note(new_note))
+
+	def create_project(self, project_form):
+		project_form.dialog.hide()
+		name = project_form.dialog.name_edit.text().strip()
+		color = project_form.get_selected_color()
+		new_project = Project(uuid.uuid4(), name, color)
+		print(new_project.name, new_project.color)
 
 	def toggle_note_completion(self, note):
 		note.toggle_is_done()

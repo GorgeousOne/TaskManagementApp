@@ -1,11 +1,8 @@
-
-from PySide2 import QtWidgets
-from PySide2 import QtGui
-from PySide2 import QtUiTools
+from PySide2 import QtWidgets, QtGui, QtUiTools
 from PySide2.QtCore import Qt
 
 
-class UIProjectEditor:
+class UiProjectEditor:
 	def __init__(self):
 		self.dialog = QtUiTools.QUiLoader().load("./uis/res/ui_project_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)

@@ -1,13 +1,11 @@
 import bisect
-
-from PySide2 import QtWidgets
-from PySide2 import QtCore
+from PySide2 import QtWidgets, QtCore
 from PySide2.QtCore import Qt
 
-from uis.ui_note_entry import UINoteEntry
+from uis.ui_note_entry import UiNoteEntry
 
 
-class UIDateSection(QtWidgets.QWidget):
+class UiDateSection(QtWidgets.QWidget):
 	def __init__(self, date):
 		super().__init__()
 		self.date = date
@@ -48,7 +46,7 @@ class UIDateSection(QtWidgets.QWidget):
 	def display_note(self, new_note):
 		new_time = new_note.time if new_note.time else QtCore.QTime(0, 0)
 		index = bisect.bisect_right(self._times, new_time)
-		new_entry = UINoteEntry(new_note, self)
+		new_entry = UiNoteEntry(new_note, self)
 
 		self._times.insert(index, new_time)
 		self.note_area.layout().insertWidget(index, new_entry)
