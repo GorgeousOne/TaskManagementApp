@@ -54,7 +54,7 @@ class UiNoteItem(QtWidgets.QFrame):
 		self.update_data()
 
 	def enterEvent(self, event):
-		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 60))
+		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 80))
 		self.gray_out_effect.setEnabled(False)
 
 	def leaveEvent(self, event):
@@ -94,12 +94,19 @@ class UiNoteItem(QtWidgets.QFrame):
 			styles = utils.replace_property(styles, "color", "rgb(200, 200, 200)")
 			self.setStyleSheet(styles)
 
+			project_style = utils.replace_property(self.content.project_btn.styleSheet(), "background", "rgb(245, 245, 245)")
+			self.content.project_btn.setStyleSheet(project_style)
+
 		else:
 			self.content.toggle_done_btn.setText("Complete")
 			self.shadow_effect.setEnabled(True)
 			styles = utils.replace_property(self.styleSheet(), "background", "rgb(255, 255, 255)")
 			styles = utils.replace_property(styles, "color", "rgb(0, 0, 0)")
 			self.setStyleSheet(styles)
+
+			project_style = utils.replace_property(self.content.project_btn.styleSheet(), "background", "rgb(63, 81, 181)")
+			self.content.project_btn.setStyleSheet(project_style)
+
 
 	def __lt__(self, other):
 		if not isinstance(other, UiNoteItem):
