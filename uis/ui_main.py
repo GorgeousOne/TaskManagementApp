@@ -1,4 +1,3 @@
-from PyQt5.QtCore import Qt
 from PySide2 import QtCore, QtUiTools, QtGui
 import utils
 from uis.ui_project_bar import UiProjectsBar

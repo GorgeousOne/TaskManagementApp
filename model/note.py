@@ -12,7 +12,7 @@ class Note:
 	def add_listener(self, listener):
 		update_method = getattr(listener, "update_data", None)
 		if not callable(update_method):
-			raise Exception("Could not add listener to note missing the update_data method")
+			raise Exception("Could not add listener missing the update_data method")
 		self._listeners.append(listener)
 
 	def remove_listener(self, listener):

@@ -26,7 +26,7 @@ class UiTimeline:
 	def set_done_notes_visible(self, state):
 		for section in self.sections:
 			for item in section.note_items:
-				if item._note.is_done:
+				if item.note.is_done:
 					item.setVisible(state)
 
 	def remove_note(self, note):

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>233</width>
+    <width>250</width>
     <height>42</height>
    </rect>
   </property>
@@ -95,13 +95,13 @@
         <property name="styleSheet">
          <string notr="true">background: rgb(63, 81, 181);
 border-radius: 16px;
-</string>
+font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
         </property>
         <property name="text">
          <string>W</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignHCenter|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
@@ -157,8 +157,7 @@ border-radius: 16px;
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-image: url(./uis/res/icons/pencil.png);
-/*background-image: url(:/images/icons/pencil.png);*/</string>
+         <string notr="true">background-image: url(./uis/res/icons/pencil.png);</string>
         </property>
         <property name="iconSize">
          <size>
@@ -169,7 +168,7 @@ border-radius: 16px;
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="edit_btn_2">
+       <widget class="QPushButton" name="delete_btn">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -183,8 +182,7 @@ border-radius: 16px;
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-image: url(./uis/res/icons/pencil.png);
-/*background-image: url(:/images/icons/pencil.png);*/</string>
+         <string notr="true">background-image: url(./uis/res/icons/trashcan.png);</string>
         </property>
         <property name="iconSize">
          <size>

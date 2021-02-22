@@ -1,5 +1,5 @@
 import bisect
-from PySide2 import QtWidgets, QtCore
+from PySide2 import QtWidgets
 from PySide2.QtCore import Qt
 
 from uis.ui_note_item import UiNoteItem
@@ -52,10 +52,9 @@ class UiDateSection(QtWidgets.QWidget):
 	def remove_note(self, note):
 		for i in range(len(self.note_items)):
 			item = self.note_items[i]
-			if item._note == note:
+			if item.note == note:
 				item.hide()
 				item.deleteLater()
 
 				self.note_items.remove(item)
-				self._times.pop(i)
 				return

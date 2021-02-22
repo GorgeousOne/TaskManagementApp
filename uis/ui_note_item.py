@@ -20,7 +20,7 @@ class UiNoteItem(QtWidgets.QFrame):
 		super().__init__()
 
 		note.add_listener(self)
-		self._note = note
+		self.note = note
 		self.date_section = date_section
 		self.setStyleSheet(
 			"""
@@ -78,16 +78,16 @@ class UiNoteItem(QtWidgets.QFrame):
 
 	def update_data(self):
 		"""Updates the displayed information about the note."""
-		self.content.title_label.setText(self._note.title)
-		self.content.description_label.setText(highlight_urls(self._note.description))
+		self.content.title_label.setText(self.note.title)
+		self.content.description_label.setText(highlight_urls(self.note.description))
 
-		if self._note.time:
+		if self.note.time:
 			self.content.time_label.show()
-			self.content.time_label.setText(self._note.time.toString("HH:mm"))
+			self.content.time_label.setText(self.note.time.toString("HH:mm"))
 		else:
 			self.content.time_label.hide()
 
-		if self._note.get_is_done():
+		if self.note.get_is_done():
 			self.content.toggle_done_btn.setText("Undo")
 			self.shadow_effect.setEnabled(False)
 			styles = utils.replace_property(self.styleSheet(), "background", "rgb(240, 245, 255)")
@@ -104,4 +104,4 @@ class UiNoteItem(QtWidgets.QFrame):
 	def __lt__(self, other):
 		if not isinstance(other, UiNoteItem):
 			return False
-		return self._note < other._note
+		return self.note < other.note

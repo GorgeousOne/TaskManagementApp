@@ -51,8 +51,17 @@ class UiProjectEditor:
 		enable = len(text.strip()) > 0
 		self.dialog.create_btn.setEnabled(enable)
 
-	def change_selected_color(self, index=-1):
-		self.dialog.color_combo.setStyleSheet("color: " + self.finest_color_selection[index].name())
+	def get_project_name(self):
+		return self.dialog.name_edit.text()
 
 	def get_selected_color(self):
 		return self.finest_color_selection[self.dialog.color_combo.currentIndex()]
+
+	def set_project_name(self, name):
+		return self.dialog.name_edit.setText(name)
+
+	def set_selected_color(self, color):
+		self.change_selected_color(self.finest_color_selection.index(color))
+
+	def change_selected_color(self, index=6):
+		self.dialog.color_combo.setStyleSheet("color: " + self.finest_color_selection[index].name())
