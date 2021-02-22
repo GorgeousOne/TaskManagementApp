@@ -17,9 +17,9 @@ class UiProjectsBar:
 		self.project_items.insert(index, new_item)
 		return new_item
 
-	def update_project(self, item):
+	def update_item(self, item):
 		self.project_items.remove(item)
-		new_index = bisect.bisect_right(self.project_items, item)
+		new_index = bisect.bisect_right(self.project_items, item) + 1
 		self.layout().insertWidget(new_index, item)
 		self.project_items.insert(new_index, item)
 

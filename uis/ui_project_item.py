@@ -7,6 +7,7 @@ class UiProjectItem(QtWidgets.QWidget):
 	def __init__(self, project, project_bar):
 		super().__init__()
 		self.project = project
+		self.project.add_listener(self)
 		self.project_bar = project_bar
 
 		self.verticalLayout = QtWidgets.QVBoxLayout(self)

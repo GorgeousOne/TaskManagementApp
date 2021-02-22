@@ -25,11 +25,12 @@ class MainHandler:
 
 		self.edited_note = None
 		self.edited_project = None
-		print(self.edited_project)
 
 	def setup_ui(self):
 		for note in self.note_handler.get_notes():
-			self.create_item(note)
+			self.create_note_item(note)
+		for project in self.note_handler.get_projects():
+			self.create_project_item(project)
 		self.note_editor.dialog.create_btn.setText("Save")
 
 	def setup_ui_functions(self):
@@ -53,9 +54,9 @@ class MainHandler:
 		new_note = Note(uuid.uuid4(), title, date, description, time)
 
 		self.note_handler.add_note(new_note)
-		self.create_item(new_note)
+		self.create_note_item(new_note)
 
-	def create_item(self, new_note):
+	def create_note_item(self, new_note):
 		self.main_ui.window.empty_timeline_label.hide()
 		self.main_ui.window.timeline_area.show()
 
@@ -69,11 +70,14 @@ class MainHandler:
 		name = project_form.get_project_name()
 		color = project_form.get_selected_color()
 		new_project = Project(uuid.uuid4(), name, color)
-		self.note_handler.add_project(new_project)
 
-		project_item = self.main_ui.projects_bar.add_project(new_project)
-		project_item.content.delete_btn.clicked.connect(lambda: self.delete_project(new_project))
-		project_item.content.edit_btn.clicked.connect(lambda: self.start_editing_project(new_project))
+		self.note_handler.add_project(new_project)
+		self.create_project_item(new_project)
+
+	def create_project_item(self, project):
+		project_item = self.main_ui.projects_bar.add_project(project)
+		project_item.content.delete_btn.clicked.connect(lambda: self.delete_project(project))
+		project_item.content.edit_btn.clicked.connect(lambda: self.start_editing_project(project))
 
 	def toggle_note_completion(self, note):
 		note.toggle_is_done()
@@ -106,8 +110,8 @@ class MainHandler:
 		self.edited_note.description = form.description_edit.toPlainText().strip()
 		self.edited_note.date = form.date_picker.date()
 		self.edited_note.time = form.time_picker.time() if form.enable_time_check.isChecked() else None
-
 		self.edited_note.update_listeners()
+
 		for item in self.edited_note._listeners:
 			item.date_section.update_item(item)
 
@@ -137,10 +141,13 @@ class MainHandler:
 
 		self.edited_project.set_name(self.project_editor.get_project_name())
 		self.edited_project.set_color(self.project_editor.get_selected_color())
+		self.edited_project.update_listeners()
 
-		self.edited_note.update_listeners()
-		for item in self.edited_note._listeners:
-			item.date_section.update_item(item)
+		for item in self.edited_project._listeners:
+			self.main_ui.projects_bar.update_item(item)
+
+		self.edited_note = None
+		self.project_editor.dialog.hide()
 
 	def delete_project(self, project):
 		self.main_ui.projects_bar.delete_project(project)
