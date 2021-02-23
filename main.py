@@ -111,9 +111,6 @@ class MainHandler:
 		self.edited_note.time = form.time_picker.time() if form.enable_time_check.isChecked() else None
 		self.edited_note.update_listeners()
 
-		for item in self.edited_note._listeners:
-			item.date_section.update_item(item)
-
 		self.note_editor.dialog.hide()
 		self.note_handler.save_notes()
 		self.edited_note = None
@@ -140,9 +137,6 @@ class MainHandler:
 		self.edited_project.set_name(self.project_editor.get_project_name())
 		self.edited_project.set_color(self.project_editor.get_selected_color())
 		self.edited_project.update_listeners()
-
-		for item in self.edited_project._listeners:
-			self.main_ui.projects_bar.update_item(item)
 
 		self.note_handler.save_projects()
 		self.edited_note = None

@@ -17,7 +17,7 @@ class UiProjectItem(QtWidgets.QWidget):
 		self.content = QtUiTools.QUiLoader().load("./uis/res/ui_project_item.ui")
 		self.verticalLayout.addWidget(self.content)
 		self.content.button_bar.hide()
-		self.project_change_event(self.project)
+		self.on_project_change(self.project)
 
 	def enterEvent(self, event):
 		self.content.button_bar.show()
@@ -25,7 +25,7 @@ class UiProjectItem(QtWidgets.QWidget):
 	def leaveEvent(self, event):
 		self.content.button_bar.hide()
 
-	def project_change_event(self, project):
+	def on_project_change(self, project):
 		project_name = self.project.get_name()
 		self.content.name_label.setText(project_name)
 		self.content.icon_label.setText(project_name[0].upper())

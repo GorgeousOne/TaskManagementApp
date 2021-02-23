@@ -41,20 +41,29 @@ class UiDateSection(QtWidgets.QWidget):
 
 		self.note_area.layout().insertWidget(index, new_item)
 		self.note_items.insert(index, new_item)
+
+		new_note.add_listener(self)
 		return new_item
 
-	def update_item(self, item):
+	def on_note_change(self, note):
+		self.update_item(note)
+
+	def update_item(self, note):
+		item = self.get_item(note)
 		self.note_items.remove(item)
 		new_index = bisect.bisect_right(self.note_items, item)
 		self.note_area.layout().insertWidget(new_index, item)
 		self.note_items.insert(new_index, item)
 
 	def remove_note(self, note):
-		for i in range(len(self.note_items)):
-			item = self.note_items[i]
-			if item.note == note:
-				item.hide()
-				item.deleteLater()
+		item = self.get_item(note)
+		item.hide()
+		item.deleteLater()
+		self.note_items.remove(item)
+		return
 
-				self.note_items.remove(item)
-				return
+	def get_item(self, note):
+		for item in self.note_items:
+			if item.note == note:
+				return item
+		raise Exception(str(note), "not listed in" + self.date.toString("dddd d. MMMM"))

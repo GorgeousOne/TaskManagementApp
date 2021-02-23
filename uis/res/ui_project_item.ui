@@ -35,7 +35,7 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item alignment="Qt::AlignLeft">
+   <item>
     <widget class="QFrame" name="clickable_frame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -91,7 +91,7 @@ border-radius: 16px;
 font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
         </property>
         <property name="text">
-         <string>W</string>
+         <string>P</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -110,9 +110,16 @@ font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
          <string notr="true">padding-right: 10px;</string>
         </property>
         <property name="text">
-         <string>Weekend Projctyxcv</string>
+         <string>Project</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

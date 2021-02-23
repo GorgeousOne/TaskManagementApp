@@ -48,7 +48,7 @@ class UiNoteItem(QtWidgets.QFrame):
 		self.content.edit_btn.hide()
 		self.content.delete_btn.hide()
 
-		self.note_change_event(self)
+		self.on_note_change(self)
 
 	def enterEvent(self, event):
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 80))
@@ -77,7 +77,7 @@ class UiNoteItem(QtWidgets.QFrame):
 		self.content.details_widget.setVisible(False)
 		self.content.title_label.setStyleSheet("")
 
-	def note_change_event(self, note):
+	def on_note_change(self, note):
 		"""Updates the displayed information about the note."""
 		self.content.title_label.setText(self.note.title)
 		self.content.description_label.setText(highlight_urls(self.note.description))

@@ -1,6 +1,9 @@
+from model.event_source import EventSource
 
-class Note:
+
+class Note(EventSource):
 	def __init__(self, uuid, title, date, description="", time=None, project=None):
+		super().__init__("on_note_change")
 		self.uuid = uuid
 		self.title = title
 		self.description = description
@@ -8,21 +11,6 @@ class Note:
 		self.time = time
 		self.project = project
 		self.is_done = False
-
-		self._listeners = []
-
-	def add_listener(self, listener):
-		update_method = getattr(listener, "note_change_event", None)
-		if not callable(update_method):
-			raise Exception("Could not add listener missing the update_data method")
-		self._listeners.append(listener)
-
-	def remove_listener(self, listener):
-		self._listeners.remove(listener)
-
-	def update_listeners(self):
-		for listener in self._listeners:
-			listener.note_change_event(self)
 
 	def get_is_done(self):
 		return self.is_done
@@ -33,12 +21,14 @@ class Note:
 	def __getstate__(self):
 		"""Removes the temporary listeners from the data to pickle"""
 		state = self.__dict__.copy()
-		del state['_listeners']
+		del state["_event_method_name"]
+		del state["_listeners"]
 		return state
 
 	def __setstate__(self, state):
 		"""Ensures listeners not to be None after unpickeling"""
 		self.__dict__.update(state)
+		self._event_method_name = "on_note_change"
 		self._listeners = []
 
 	def __hash__(self):
