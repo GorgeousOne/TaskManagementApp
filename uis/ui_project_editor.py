@@ -43,8 +43,7 @@ class UiProjectEditor:
 		self.dialog.name_edit.textChanged.connect(self.toggle_btn_create)
 		self.dialog.cancel_btn.clicked.connect(self.dialog.hide)
 
-		self.dialog.color_combo.currentIndexChanged.connect(self.change_selected_color)
-		self.dialog.color_combo.setCurrentIndex(6)
+		self.dialog.color_combo.currentIndexChanged.connect(self.change_combo_color)
 
 	def toggle_btn_create(self, text):
 		"""enable or disable the create button depending if the title is set"""
@@ -52,7 +51,7 @@ class UiProjectEditor:
 		self.dialog.create_btn.setEnabled(enable)
 
 	def get_project_name(self):
-		return self.dialog.name_edit.text()
+		return self.dialog.name_edit.text().strip()
 
 	def get_selected_color(self):
 		return self.finest_color_selection[self.dialog.color_combo.currentIndex()]
@@ -61,7 +60,18 @@ class UiProjectEditor:
 		return self.dialog.name_edit.setText(name)
 
 	def set_selected_color(self, color):
-		self.change_selected_color(self.finest_color_selection.index(color))
+		index = self.finest_color_selection.index(color)
+		if index == -1:
+			index = 6
+		self.dialog.color_combo.setCurrentIndex(index)
 
-	def change_selected_color(self, index=6):
+	def show_reset(self):
+		self.reset()
+		self.dialog.show()
+
+	def reset(self):
+		self.set_project_name("")
+		self.set_selected_color(self.finest_color_selection[6])
+
+	def change_combo_color(self, index=6):
 		self.dialog.color_combo.setStyleSheet("color: " + self.finest_color_selection[index].name())

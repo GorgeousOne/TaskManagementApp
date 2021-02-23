@@ -1,16 +1,18 @@
 
 class Note:
-	def __init__(self, uuid, title, date, description="", time=None, priority=""):
+	def __init__(self, uuid, title, date, description="", time=None, project=None):
 		self.uuid = uuid
 		self.title = title
+		self.description = description
 		self.date = date
 		self.time = time
-		self.description = description
+		self.project = project
 		self.is_done = False
+
 		self._listeners = []
 
 	def add_listener(self, listener):
-		update_method = getattr(listener, "update_data", None)
+		update_method = getattr(listener, "note_change_event", None)
 		if not callable(update_method):
 			raise Exception("Could not add listener missing the update_data method")
 		self._listeners.append(listener)
@@ -20,7 +22,7 @@ class Note:
 
 	def update_listeners(self):
 		for listener in self._listeners:
-			listener.update_data()
+			listener.note_change_event(self)
 
 	def get_is_done(self):
 		return self.is_done
@@ -60,4 +62,4 @@ class Note:
 		return self.time.secsTo(other.time) > 0
 
 	def __repr__(self):
-		return f"<Note: {self.title}>"
+		return f"<Note {str(self.uuid)[-5:]}: {self.title}>"

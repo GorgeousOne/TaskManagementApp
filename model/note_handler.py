@@ -34,12 +34,13 @@ class NoteHandler:
 
 	def delete_project(self, project):
 		self._projects.remove(project)
-		self.save_notes()
+		self.save_projects()
 
 	def _load_notes(self):
 		if path.exists(self._note_saves) and os.stat(self._note_saves).st_size > 0:
 			with open(self._note_saves, 'rb') as infile:
 				self._notes = pickle.load(infile)
+				print(self._notes)
 				return
 		self._notes = []
 

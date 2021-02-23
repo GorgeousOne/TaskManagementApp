@@ -3,7 +3,7 @@ import uuid
 
 from PySide2 import QtWidgets, QtCore
 
-from control.note_handler import NoteHandler
+from model.note_handler import NoteHandler
 from model.note import Note
 from model.project import Project
 from uis.ui_main import UiMainWindow
@@ -34,12 +34,12 @@ class MainHandler:
 		self.note_editor.dialog.create_btn.setText("Save")
 
 	def setup_ui_functions(self):
-		self.main_ui.window.create_note_btn.clicked.connect(self.note_editor.show_updated)
+		self.main_ui.window.create_note_btn.clicked.connect(lambda: self.note_editor.show_reset(self.note_handler.get_projects()))
 		self.main_ui.window.finished_notes_check.stateChanged.connect(
 			lambda: self.main_ui.timeline.set_done_notes_visible(
 				not self.main_ui.window.finished_notes_check.isChecked()))
 
-		self.main_ui.window.create_project_btn.clicked.connect(self.project_editor.dialog.show)
+		self.main_ui.window.create_project_btn.clicked.connect(self.project_editor.show_reset)
 		self.project_editor.dialog.create_btn.clicked.connect(self.finish_editing_project)
 		self.note_editor.dialog.create_btn.clicked.connect(self.finish_editing_note)
 
@@ -85,8 +85,7 @@ class MainHandler:
 		self.note_handler.save_notes()
 
 	def start_editing_note(self, note):
-		self.note_editor.clear()
-		self.note_editor.update_date_time()
+		self.note_editor.reset(self.note_handler.get_projects())
 
 		form = self.note_editor.dialog
 		form.title_edit.setText(note.title)
@@ -116,7 +115,6 @@ class MainHandler:
 			item.date_section.update_item(item)
 
 		self.note_editor.dialog.hide()
-		self.note_editor.clear()
 		self.note_handler.save_notes()
 		self.edited_note = None
 
@@ -146,6 +144,7 @@ class MainHandler:
 		for item in self.edited_project._listeners:
 			self.main_ui.projects_bar.update_item(item)
 
+		self.note_handler.save_projects()
 		self.edited_note = None
 		self.project_editor.dialog.hide()
 

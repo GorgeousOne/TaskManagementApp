@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>532</width>
-    <height>229</height>
+    <height>241</height>
    </rect>
   </property>
   <property name="font">
@@ -90,6 +90,9 @@
           </property>
           <property name="styleSheet">
            <string notr="true">font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
+          </property>
+          <property name="maxLength">
+           <number>16</number>
           </property>
           <property name="placeholderText">
            <string>Project name</string>

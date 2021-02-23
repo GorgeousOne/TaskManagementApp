@@ -1,6 +1,5 @@
 import re
 from PySide2 import QtWidgets, QtGui, QtUiTools
-from PySide2.QtCore import Qt
 import utils
 
 
@@ -45,21 +44,23 @@ class UiNoteItem(QtWidgets.QFrame):
 		self.setGraphicsEffect(self.shadow_effect)
 
 		self.content.details_widget.hide()
+		self.content.toggle_done_btn.hide()
+		self.content.edit_btn.hide()
+		self.content.delete_btn.hide()
 
-		self.gray_out_effect = QtWidgets.QGraphicsColorizeEffect(self)
-		self.gray_out_effect.setColor(Qt.white)
-		self.gray_out_effect.setStrength(0.95)
-		self.content.button_bar.setGraphicsEffect(self.gray_out_effect)
-
-		self.update_data()
+		self.note_change_event(self)
 
 	def enterEvent(self, event):
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 80))
-		self.gray_out_effect.setEnabled(False)
+		self.content.toggle_done_btn.show()
+		self.content.edit_btn.show()
+		self.content.delete_btn.show()
 
 	def leaveEvent(self, event):
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 40))
-		self.gray_out_effect.setEnabled(True)
+		self.content.toggle_done_btn.hide()
+		self.content.edit_btn.hide()
+		self.content.delete_btn.hide()
 
 	def mouseReleaseEvent(self, event):
 		collapse = self.content.details_widget.isVisible()
@@ -76,7 +77,7 @@ class UiNoteItem(QtWidgets.QFrame):
 		self.content.details_widget.setVisible(False)
 		self.content.title_label.setStyleSheet("")
 
-	def update_data(self):
+	def note_change_event(self, note):
 		"""Updates the displayed information about the note."""
 		self.content.title_label.setText(self.note.title)
 		self.content.description_label.setText(highlight_urls(self.note.description))
@@ -106,7 +107,6 @@ class UiNoteItem(QtWidgets.QFrame):
 
 			project_style = utils.replace_property(self.content.project_btn.styleSheet(), "background", "rgb(63, 81, 181)")
 			self.content.project_btn.setStyleSheet(project_style)
-
 
 	def __lt__(self, other):
 		if not isinstance(other, UiNoteItem):

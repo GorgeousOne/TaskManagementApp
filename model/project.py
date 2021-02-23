@@ -19,8 +19,8 @@ class Project:
 		self.color = color
 
 	def add_listener(self, listener):
-		update_method = getattr(listener, "update_data", None)
-		if not callable(update_method):
+		event_method = getattr(listener, "project_change_event", None)
+		if not callable(event_method):
 			raise Exception("Could not add listener missing the update_data method")
 		self._listeners.append(listener)
 
@@ -29,7 +29,18 @@ class Project:
 
 	def update_listeners(self):
 		for listener in self._listeners:
-			listener.update_data()
+			listener.project_change_event(self)
+
+	def __getstate__(self):
+		"""Removes the temporary listeners from the data to pickle"""
+		state = self.__dict__.copy()
+		del state['_listeners']
+		return state
+
+	def __setstate__(self, state):
+		"""Ensures listeners not to be None after unpickeling"""
+		self.__dict__.update(state)
+		self._listeners = []
 
 	def __lt__(self, other):
 		if not isinstance(other, Project):

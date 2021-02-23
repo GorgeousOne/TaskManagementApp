@@ -32,14 +32,17 @@ class UiNoteEditor:
 		enable = len(text.strip()) > 0
 		self.dialog.create_btn.setEnabled(enable)
 
-	def show_updated(self):
-		"""Reset any previous inputs and update date and time picker before showing"""
-		self.clear()
-		self.update_date_time()
+	def show_reset(self, projects_list):
+		self.reset(projects_list)
 		self.dialog.show()
 		self.dialog.title_edit.setFocus()
 
-	def update_date_time(self):
+	def reset(self, project_list):
+		self.dialog.title_edit.setText("")
+		self.dialog.description_edit.setPlainText("")
+		self.dialog.enable_time_check.setChecked(False)
+		self.dialog.create_btn.setEnabled(False)
+		"""update default date/time and list of projects"""
 		now = QtCore.QTime.currentTime()
 		next_quarter = (now.minute() + 18) // 15 * 15
 		time = QtCore.QTime(now.hour() + next_quarter // 60, next_quarter % 60)
@@ -47,8 +50,15 @@ class UiNoteEditor:
 		self.dialog.time_picker.setTime(time)
 		self.dialog.date_picker.setDate(QtCore.QDate.currentDate())
 
-	def clear(self):
-		self.dialog.title_edit.setText("")
-		self.dialog.description_edit.setPlainText("")
-		self.dialog.enable_time_check.setChecked(False)
-		self.dialog.create_btn.setEnabled(False)
+		projects_combo = self.dialog.projects_combo
+		projects_combo.clear()
+		projects_combo.addItem("No project")
+
+		for project in project_list:
+			projects_combo.addItem(project.get_name())
+
+	# def clear(self):
+	# 	self.dialog.title_edit.setText("")
+	# 	self.dialog.description_edit.setPlainText("")
+	# 	self.dialog.enable_time_check.setChecked(False)
+	# 	self.dialog.create_btn.setEnabled(False)
