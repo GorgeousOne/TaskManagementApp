@@ -44,17 +44,15 @@ class MainHandler:
 		self.note_editor.dialog.create_btn.clicked.connect(self.finish_editing_note)
 
 	def create_note(self, note_form):
-		dialog = note_form.dialog
-		dialog.hide()
-		title = dialog.title_edit.text().strip()
-		description = dialog.description_edit.toPlainText().strip()
-		date = dialog.date_picker.date()
+		title = note_form.get_title()
+		description = note_form.get_description()
+		date = note_form.get_date()
+		time = note_form.get_time()
+		project = note_form.get_project()
 
-		time = dialog.time_picker.time() if dialog.enable_time_check.isChecked() else None
-		new_note = Note(uuid.uuid4(), title, date, description, time)
-
-		self.note_handler.add_note(new_note)
+		new_note = Note(uuid.uuid4(), title, description, date, time, project)
 		self.create_note_item(new_note)
+		self.note_handler.add_note(new_note)
 
 	def create_note_item(self, new_note):
 		self.main_ui.window.empty_timeline_label.hide()
@@ -66,7 +64,6 @@ class MainHandler:
 		item.content.edit_btn.clicked.connect(lambda: self.start_editing_note(new_note))
 
 	def create_project(self, project_form):
-		project_form.dialog.hide()
 		name = project_form.get_project_name()
 		color = project_form.get_selected_color()
 		new_project = Project(uuid.uuid4(), name, color)
@@ -100,18 +97,20 @@ class MainHandler:
 		form.show()
 
 	def finish_editing_note(self):
+		self.note_editor.dialog.hide()
+
 		if not self.edited_note:
 			self.create_note(self.note_editor)
 			return
 
-		form = self.note_editor.dialog
-		self.edited_note.title = form.title_edit.text().strip()
-		self.edited_note.description = form.description_edit.toPlainText().strip()
-		self.edited_note.date = form.date_picker.date()
-		self.edited_note.time = form.time_picker.time() if form.enable_time_check.isChecked() else None
+		self.edited_note.title = self.note_editor.get_title()
+		self.edited_note.description = self.note_editor.get_description()
+		self.edited_note.date = self.note_editor.get_date()
+		self.edited_note.time = self.note_editor.get_time()
+		self.edited_note.project = self.note_editor.get_project()
+
 		self.edited_note.update_listeners()
 
-		self.note_editor.dialog.hide()
 		self.note_handler.save_notes()
 		self.edited_note = None
 
@@ -130,6 +129,8 @@ class MainHandler:
 		self.edited_project = project
 
 	def finish_editing_project(self):
+		self.project_editor.dialog.hide()
+
 		if not self.edited_project:
 			self.create_project(self.project_editor)
 			return
@@ -140,7 +141,6 @@ class MainHandler:
 
 		self.note_handler.save_projects()
 		self.edited_note = None
-		self.project_editor.dialog.hide()
 
 	def delete_project(self, project):
 		self.main_ui.projects_bar.delete_project(project)

@@ -2,7 +2,7 @@ from model.event_source import EventSource
 
 
 class Note(EventSource):
-	def __init__(self, uuid, title, date, description="", time=None, project=None):
+	def __init__(self, uuid, title, description, date, time=None, project=None):
 		super().__init__("on_note_change")
 		self.uuid = uuid
 		self.title = title

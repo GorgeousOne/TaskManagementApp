@@ -22,6 +22,26 @@ class UiNoteEditor:
 		self.dialog.enable_time_check.stateChanged.connect(self.toggle_time_visibility)
 		self.dialog.title_edit.textChanged.connect(self.toggle_btn_create)
 		self.dialog.cancel_btn.clicked.connect(self.dialog.hide)
+		self.projects = None
+
+	def get_title(self):
+		return self.dialog.title_edit.text().strip()
+
+	def get_description(self):
+		return self.dialog.description_edit.toPlainText().strip()
+
+	def get_date(self):
+		return self.dialog.date_picker.date()
+
+	def get_time(self):
+		self.dialog.time_picker.time() if self.dialog.enable_time_check.isChecked() else None
+
+	def get_project(self):
+		project_index = self.dialog.projects_combo.currentIndex()
+		if project_index == 0:
+			return None
+		else:
+			return self.projects[project_index - 1]
 
 	def toggle_time_visibility(self):
 		"""show or hide the time picker when checked"""
@@ -37,12 +57,14 @@ class UiNoteEditor:
 		self.dialog.show()
 		self.dialog.title_edit.setFocus()
 
-	def reset(self, project_list):
+	def reset(self, projects_list):
+		""""""
+		self.projects = projects_list
 		self.dialog.title_edit.setText("")
 		self.dialog.description_edit.setPlainText("")
 		self.dialog.enable_time_check.setChecked(False)
 		self.dialog.create_btn.setEnabled(False)
-		"""update default date/time and list of projects"""
+
 		now = QtCore.QTime.currentTime()
 		next_quarter = (now.minute() + 18) // 15 * 15
 		time = QtCore.QTime(now.hour() + next_quarter // 60, next_quarter % 60)
@@ -54,11 +76,6 @@ class UiNoteEditor:
 		projects_combo.clear()
 		projects_combo.addItem("No project")
 
-		for project in project_list:
+		for project in projects_list:
 			projects_combo.addItem(project.get_name())
 
-	# def clear(self):
-	# 	self.dialog.title_edit.setText("")
-	# 	self.dialog.description_edit.setPlainText("")
-	# 	self.dialog.enable_time_check.setChecked(False)
-	# 	self.dialog.create_btn.setEnabled(False)

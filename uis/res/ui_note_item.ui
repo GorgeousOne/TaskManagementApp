@@ -137,7 +137,7 @@ background: rgba(0, 0, 0, 0)</string>
             <string notr="true">border: 0px solid;
 border-radius: 16px;
 color: rgb(255, 255, 255);
-background: rgb(63, 81, 181);
+background: rgb(245, 245, 245);
 font: 63 12pt &quot;Segoe UI Semibold&quot;;</string>
            </property>
            <property name="text">
@@ -156,7 +156,7 @@ font: 63 12pt &quot;Segoe UI Semibold&quot;;</string>
         <property name="minimumSize">
          <size>
           <width>180</width>
-          <height>0</height>
+          <height>50</height>
          </size>
         </property>
         <property name="styleSheet">

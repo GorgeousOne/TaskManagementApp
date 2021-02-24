@@ -1,6 +1,7 @@
 import re
 from PySide2 import QtWidgets, QtGui, QtUiTools
 import utils
+from model.event_source import EventSource
 
 
 def highlight_urls(text):
@@ -14,12 +15,20 @@ def highlight_urls(text):
 	return " ".join(hyper_words)
 
 
-class UiNoteItem(QtWidgets.QFrame):
+class UiNoteItem(QtWidgets.QFrame, EventSource):
 	def __init__(self, note, date_section):
-		super().__init__()
+		QtWidgets.QFrame.__init__(self)
+		EventSource.__init__(self, "on_note_item_change")
 
-		note.add_listener(self)
 		self.note = note
+		self.note.add_listener(self)
+
+		if self.note.project:
+			self.project = self.note.project
+			self.project.add_listener(self)
+		else:
+			self.project = None
+
 		self.date_section = date_section
 		self.setStyleSheet(
 			"""
@@ -47,8 +56,9 @@ class UiNoteItem(QtWidgets.QFrame):
 		self.content.toggle_done_btn.hide()
 		self.content.edit_btn.hide()
 		self.content.delete_btn.hide()
+		self.content.project_btn.hide()
 
-		self.on_note_change(self)
+		self.on_note_change(self.note)
 
 	def enterEvent(self, event):
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 80))
@@ -79,25 +89,36 @@ class UiNoteItem(QtWidgets.QFrame):
 
 	def on_note_change(self, note):
 		"""Updates the displayed information about the note."""
-		self.content.title_label.setText(self.note.title)
-		self.content.description_label.setText(highlight_urls(self.note.description))
+		self.content.title_label.setText(note.title)
+		self.content.description_label.setText(highlight_urls(note.description))
 
-		if self.note.time:
+		if note.time:
 			self.content.time_label.show()
-			self.content.time_label.setText(self.note.time.toString("HH:mm"))
+			self.content.time_label.setText(note.time.toString("HH:mm"))
 		else:
 			self.content.time_label.hide()
 
-		if self.note.get_is_done():
+		if self.project:
+			self.project.remove_listener(self)
+			self.content.project_btn.hide()
+		if note.project:
+			self.project = note.project
+			self.project.add_listener(self)
+			self.on_project_change(note.project)
+			self.content.project_btn.show()
+
+		if note.get_is_done():
 			self.content.toggle_done_btn.setText("Undo")
 			self.shadow_effect.setEnabled(False)
 			styles = utils.replace_property(self.styleSheet(), "background", "rgb(240, 245, 255)")
 			styles = utils.replace_property(styles, "color", "rgb(200, 200, 200)")
 			self.setStyleSheet(styles)
 
-			project_style = utils.replace_property(self.content.project_btn.styleSheet(), "background", "rgb(245, 245, 245)")
-			self.content.project_btn.setStyleSheet(project_style)
-
+			if note.project:
+				project_style = self.content.project_btn.styleSheet()
+				self.content.project_btn.setStyleSheet(project_style)
+			else:
+				pass
 		else:
 			self.content.toggle_done_btn.setText("Complete")
 			self.shadow_effect.setEnabled(True)
@@ -105,8 +126,19 @@ class UiNoteItem(QtWidgets.QFrame):
 			styles = utils.replace_property(styles, "color", "rgb(0, 0, 0)")
 			self.setStyleSheet(styles)
 
-			project_style = utils.replace_property(self.content.project_btn.styleSheet(), "background", "rgb(63, 81, 181)")
-			self.content.project_btn.setStyleSheet(project_style)
+			if note.project:
+				project_style = self.content.project_btn.styleSheet()
+				project_style = utils.replace_property(project_style, "background", note.project.get_color().name())
+				self.content.project_btn.setStyleSheet(project_style)
+
+		self.update_listeners()
+
+	def on_project_change(self, project):
+		self.content.project_btn.setText(project.get_name()[:1].upper())
+		project_style = self.content.project_btn.styleSheet()
+		new_color = "rgb(245, 245, 245)" if self.note.get_is_done() else project.get_color().name()
+		project_style = utils.replace_property(project_style, "background", new_color)
+		self.content.project_btn.setStyleSheet(project_style)
 
 	def __lt__(self, other):
 		if not isinstance(other, UiNoteItem):

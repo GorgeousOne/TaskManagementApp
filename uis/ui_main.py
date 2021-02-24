@@ -14,8 +14,8 @@ class UiMainWindow:
 
 		self.window.timeline_area.hide()
 
-		# self.window.projects_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-		# self.window.projects_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+		self.window.projects_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+		self.window.projects_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
 		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(55, 250))
 		self.timeline = UiTimeline(self.window.timeline_area)
