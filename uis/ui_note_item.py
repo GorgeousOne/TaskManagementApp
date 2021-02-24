@@ -15,6 +15,14 @@ def highlight_urls(text):
 	return " ".join(hyper_words)
 
 
+def lighten(color):
+
+	return QtGui.QColor(
+		min(255, color.red() + 50),
+		min(255, color.green() + 50),
+		min(255, color.green() + 50))
+
+
 class UiNoteItem(QtWidgets.QFrame, EventSource):
 	def __init__(self, note, date_section):
 		QtWidgets.QFrame.__init__(self)
@@ -101,6 +109,7 @@ class UiNoteItem(QtWidgets.QFrame, EventSource):
 		if self.project:
 			self.project.remove_listener(self)
 			self.content.project_btn.hide()
+			self.project = None
 		if note.project:
 			self.project = note.project
 			self.project.add_listener(self)
@@ -134,11 +143,11 @@ class UiNoteItem(QtWidgets.QFrame, EventSource):
 		self.update_listeners()
 
 	def on_project_change(self, project):
-		self.content.project_btn.setText(project.get_name()[:1].upper())
+		new_color = QtGui.QColor(235, 235, 235) if self.note.get_is_done() else project.get_color()
 		project_style = self.content.project_btn.styleSheet()
-		new_color = "rgb(245, 245, 245)" if self.note.get_is_done() else project.get_color().name()
-		project_style = utils.replace_property(project_style, "background", new_color)
+		project_style = utils.replace_property(project_style, "background", new_color.name())
 		self.content.project_btn.setStyleSheet(project_style)
+		self.content.project_btn.setText(project.get_name()[0].upper())
 
 	def __lt__(self, other):
 		if not isinstance(other, UiNoteItem):

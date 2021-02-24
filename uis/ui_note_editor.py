@@ -4,7 +4,9 @@ from PySide2.QtCore import Qt
 
 
 class UiNoteEditor:
-	def __init__(self):
+	def __init__(self, projects):
+		self.projects = projects
+
 		self.dialog = QtUiTools.QUiLoader().load("./uis/res/ui_note_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)
 		self.dialog.setWindowFlags(Qt.FramelessWindowHint)
@@ -22,7 +24,6 @@ class UiNoteEditor:
 		self.dialog.enable_time_check.stateChanged.connect(self.toggle_time_visibility)
 		self.dialog.title_edit.textChanged.connect(self.toggle_btn_create)
 		self.dialog.cancel_btn.clicked.connect(self.dialog.hide)
-		self.projects = None
 
 	def get_title(self):
 		return self.dialog.title_edit.text().strip()
@@ -34,7 +35,7 @@ class UiNoteEditor:
 		return self.dialog.date_picker.date()
 
 	def get_time(self):
-		self.dialog.time_picker.time() if self.dialog.enable_time_check.isChecked() else None
+		return self.dialog.time_picker.time() if self.dialog.enable_time_check.isChecked() else None
 
 	def get_project(self):
 		project_index = self.dialog.projects_combo.currentIndex()
@@ -52,14 +53,13 @@ class UiNoteEditor:
 		enable = len(text.strip()) > 0
 		self.dialog.create_btn.setEnabled(enable)
 
-	def show_reset(self, projects_list):
-		self.reset(projects_list)
+	def show_reset(self):
+		self.reset()
 		self.dialog.show()
 		self.dialog.title_edit.setFocus()
 
-	def reset(self, projects_list):
+	def reset(self):
 		""""""
-		self.projects = projects_list
 		self.dialog.title_edit.setText("")
 		self.dialog.description_edit.setPlainText("")
 		self.dialog.enable_time_check.setChecked(False)
@@ -76,6 +76,21 @@ class UiNoteEditor:
 		projects_combo.clear()
 		projects_combo.addItem("No project")
 
-		for project in projects_list:
+		for project in self.projects:
 			projects_combo.addItem(project.get_name())
 
+	def fill_in(self, note):
+		self.dialog.title_edit.setText(note.title)
+		self.dialog.description_edit.setPlainText(note.description)
+		self.dialog.date_picker.setDate(note.date)
+		self.set_project(note.project)
+
+		if note.time:
+			self.dialog.time_picker.setTime(note.time)
+			self.dialog.enable_time_check.setChecked(True)
+
+	def set_project(self, project):
+		if not project:
+			return
+		index = self.projects.index(project) + 1
+		self.dialog.projects_combo.setCurrentIndex(index)

@@ -34,7 +34,15 @@ class Project(EventSource):
 		self._event_method_name = "on_project_change"
 		self._listeners = []
 
+	def __eq__(self, other):
+		if not isinstance(other, Project):
+			return False
+		return self.uuid == other.uuid
+
 	def __lt__(self, other):
 		if not isinstance(other, Project):
 			return False
 		return self.name < other.name
+
+	def __repr__(self):
+		return f"<Note {str(self.uuid)[-5:]}: {self.name}>"

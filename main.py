@@ -14,10 +14,10 @@ from uis.ui_project_editor import UiProjectEditor
 class MainHandler:
 	def __init__(self):
 		self.main_ui = UiMainWindow()
-		self.note_editor = UiNoteEditor()
 		self.project_editor = UiProjectEditor()
 
 		self.note_handler = NoteHandler()
+		self.note_editor = UiNoteEditor(self.note_handler.get_projects())
 
 		self.setup_ui()
 		self.setup_ui_functions()
@@ -34,7 +34,7 @@ class MainHandler:
 		self.note_editor.dialog.create_btn.setText("Save")
 
 	def setup_ui_functions(self):
-		self.main_ui.window.create_note_btn.clicked.connect(lambda: self.note_editor.show_reset(self.note_handler.get_projects()))
+		self.main_ui.window.create_note_btn.clicked.connect(self.note_editor.show_reset)
 		self.main_ui.window.finished_notes_check.stateChanged.connect(
 			lambda: self.main_ui.timeline.set_done_notes_visible(
 				not self.main_ui.window.finished_notes_check.isChecked()))
@@ -82,19 +82,10 @@ class MainHandler:
 		self.note_handler.save_notes()
 
 	def start_editing_note(self, note):
-		self.note_editor.reset(self.note_handler.get_projects())
-
-		form = self.note_editor.dialog
-		form.title_edit.setText(note.title)
-		form.description_edit.setPlainText(note.description)
-		form.date_picker.setDate(note.date)
-
-		if note.time:
-			form.time_picker.setTime(note.time)
-			form.enable_time_check.setChecked(True)
-
+		self.note_editor.reset()
+		self.note_editor.fill_in(note)
+		self.note_editor.dialog.show()
 		self.edited_note = note
-		form.show()
 
 	def finish_editing_note(self):
 		self.note_editor.dialog.hide()
@@ -123,8 +114,7 @@ class MainHandler:
 			self.main_ui.window.empty_timeline_label.show()
 
 	def start_editing_project(self, project):
-		self.project_editor.set_project_name(project.name)
-		self.project_editor.set_selected_color(project.color)
+		self.project_editor.fill_in(project)
 		self.project_editor.dialog.show()
 		self.edited_project = project
 
@@ -140,7 +130,7 @@ class MainHandler:
 		self.edited_project.update_listeners()
 
 		self.note_handler.save_projects()
-		self.edited_note = None
+		self.edited_project = None
 
 	def delete_project(self, project):
 		self.main_ui.projects_bar.delete_project(project)
@@ -152,4 +142,3 @@ if __name__ == "__main__":
 	app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 	MainHandler()
 	sys.exit(app.exec_())
-

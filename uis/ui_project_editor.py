@@ -73,5 +73,9 @@ class UiProjectEditor:
 		self.set_project_name("")
 		self.set_selected_color(self.finest_color_selection[6])
 
+	def fill_in(self, project):
+		self.set_project_name(project.name)
+		self.set_selected_color(project.color)
+
 	def change_combo_color(self, index=6):
 		self.dialog.color_combo.setStyleSheet("color: " + self.finest_color_selection[index].name())

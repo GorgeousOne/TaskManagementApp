@@ -45,11 +45,11 @@ class Note(EventSource):
 
 		if not self.date == other.date:
 			return self.date.daysTo(other.date) > 0
-		if not self.time:
-			return True
-		if not other.time:
-			return False
-		return self.time.secsTo(other.time) > 0
+		if self.time:
+			return self.time.secsTo(other.time) > 0 if other.time else False
+		else:
+			# sort alphabetically if neither of them has a specific time
+			return True if other.time else self.title == min(self.title, other.title)
 
 	def __repr__(self):
 		return f"<Note {str(self.uuid)[-5:]}: {self.title}>"
