@@ -11,6 +11,11 @@ class UiTimeline:
 		self.dates = []
 		self.sections = []
 
+		self.are_done_notes_visible = True
+		self.filtered_project = None
+
+		self.out_filtered_items = []
+
 	def display_note(self, note):
 		date = note.date
 		section = None
@@ -24,10 +29,28 @@ class UiTimeline:
 		return section.display_note(note)
 
 	def set_done_notes_visible(self, state):
+		self.are_done_notes_visible = state
+
 		for section in self.sections:
 			for item in section.note_items:
-				if item.note.is_done:
+				if item.note.is_done and item not in self.out_filtered_items:
 					item.setVisible(state)
+
+	def filter_project(self, project):
+		"""Hides all elements in the timeline that do not belong to the project (shows all which were hidden before)"""
+		for item in self.out_filtered_items:
+			item.setVisible(not item.note.is_done or self.are_done_notes_visible)
+
+		self.out_filtered_items.clear()
+		self.filtered_project = project
+
+		if not project:
+			return
+		for section in self.sections:
+			for item in section.note_items:
+				if item.note.project != project:
+					item.setVisible(False)
+					self.out_filtered_items.append(item)
 
 	def remove_note(self, note):
 		date = note.date

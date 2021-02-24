@@ -42,6 +42,7 @@ class MainHandler:
 		self.main_ui.window.create_project_btn.clicked.connect(self.project_editor.show_reset)
 		self.project_editor.dialog.create_btn.clicked.connect(self.finish_editing_project)
 		self.note_editor.dialog.create_btn.clicked.connect(self.finish_editing_note)
+		self.main_ui.window.all_projects_btn.clicked.connect(lambda: self.main_ui.timeline.filter_project(None))
 
 	def create_note(self, note_form):
 		title = note_form.get_title()
@@ -75,6 +76,7 @@ class MainHandler:
 		project_item = self.main_ui.projects_bar.add_project(project)
 		project_item.content.delete_btn.clicked.connect(lambda: self.delete_project(project))
 		project_item.content.edit_btn.clicked.connect(lambda: self.start_editing_project(project))
+		project_item.connect_click(lambda: self.main_ui.timeline.filter_project(project))
 
 	def toggle_note_completion(self, note):
 		note.toggle_is_done()

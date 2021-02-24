@@ -15,14 +15,6 @@ def highlight_urls(text):
 	return " ".join(hyper_words)
 
 
-def lighten(color):
-
-	return QtGui.QColor(
-		min(255, color.red() + 50),
-		min(255, color.green() + 50),
-		min(255, color.green() + 50))
-
-
 class UiNoteItem(QtWidgets.QFrame, EventSource):
 	def __init__(self, note, date_section):
 		QtWidgets.QFrame.__init__(self)
