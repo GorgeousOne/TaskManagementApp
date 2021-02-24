@@ -1,23 +1,16 @@
+from model.event_source import EventSource
 
-class Note:
-	def __init__(self, uuid, title, date, description="", time=None, priority=""):
+
+class Note(EventSource):
+	def __init__(self, uuid, title, description, date, time=None, project=None):
+		super().__init__("on_note_change")
 		self.uuid = uuid
 		self.title = title
+		self.description = description
 		self.date = date
 		self.time = time
-		self.description = description
+		self.project = project
 		self.is_done = False
-		self._listeners = []
-
-	def add_listener(self, listener):
-		self._listeners.append(listener)
-
-	def remove_listener(self, listener):
-		self._listeners.remove(listener)
-
-	def update_listeners(self):
-		for listener in self._listeners:
-			listener.update_data()
 
 	def get_is_done(self):
 		return self.is_done
@@ -26,20 +19,16 @@ class Note:
 		self.is_done = not self.is_done
 
 	def __getstate__(self):
-		# Copy the object's state from self.__dict__ which contains
-		# all our instance attributes. Always use the dict.copy()
-		# method to avoid modifying the original state.
+		"""Removes the temporary listeners from the data to pickle"""
 		state = self.__dict__.copy()
-		# Remove the unpicklable entries.
-		del state['_listeners']
+		del state["_event_method_name"]
+		del state["_listeners"]
 		return state
 
 	def __setstate__(self, state):
-		# Restore instance attributes (i.e., filename and lineno).
+		"""Ensures listeners not to be None after unpickeling"""
 		self.__dict__.update(state)
-		# Restore the previously opened file's state. To do so, we need to
-		# reopen it and read from it until the line count is restored.
-		# Finally, save the file.
+		self._event_method_name = "on_note_change"
 		self._listeners = []
 
 	def __hash__(self):
@@ -49,19 +38,18 @@ class Note:
 		if not isinstance(other, Note):
 			return False
 		return self.uuid == other.uuid
-		# if self.title == other.title and self.date == other.date:
-		# 	return self.time == other.time
-		# return False
 
 	def __lt__(self, other):
 		if not isinstance(other, Note):
 			return False
-		day_diff = self.date.daysTo(other.date)
-		if day_diff != 0:
-			return day_diff < 0
+
+		if not self.date == other.date:
+			return self.date.daysTo(other.date) > 0
 		if self.time:
-			return 0
-		return False
+			return self.time.secsTo(other.time) > 0 if other.time else False
+		else:
+			# sort alphabetically if neither of them has a specific time
+			return True if other.time else self.title == min(self.title, other.title)
 
 	def __repr__(self):
-		return f"<Note: {self.title}>"
+		return f"<Note {str(self.uuid)[-5:]}: {self.title}>"

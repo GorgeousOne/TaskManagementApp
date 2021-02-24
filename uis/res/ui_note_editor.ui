@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>410</width>
-    <height>480</height>
+    <width>460</width>
+    <height>551</height>
    </rect>
   </property>
   <property name="font">
@@ -123,6 +123,15 @@
        </widget>
       </item>
       <item>
+       <widget class="QComboBox" name="projects_combo">
+        <item>
+         <property name="text">
+          <string>No project</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
        <widget class="QWidget" name="widget" native="true">
         <layout class="QGridLayout" name="gridLayout_3">
          <property name="leftMargin">
@@ -186,6 +195,9 @@
          <widget class="QPushButton" name="cancel_btn">
           <property name="text">
            <string>Cancel</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
