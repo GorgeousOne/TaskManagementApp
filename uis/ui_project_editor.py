@@ -3,12 +3,14 @@ from PySide2.QtCore import Qt
 
 
 class UiProjectEditor:
+	"""A form for creating and editing projects"""
 	def __init__(self):
 		self.dialog = QtUiTools.QUiLoader().load("./uis/res/ui_project_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)
 		self.dialog.setWindowFlags(Qt.FramelessWindowHint)
 		self.dialog.setAttribute(Qt.WA_TranslucentBackground, True)
 
+		# adds a drop shadow around the dialog
 		shadow = QtWidgets.QGraphicsDropShadowEffect(self.dialog)
 		shadow.setBlurRadius(30)
 		shadow.setOffset(0)
@@ -31,6 +33,7 @@ class UiProjectEditor:
 
 		model = self.dialog.color_combo.model()
 
+		# adds a list item with a colored bullet as text to the color combo box for every color
 		for color in self.finest_color_selection:
 			color_item = QtGui.QStandardItem("⬤")
 			color_item.setForeground(color)
@@ -38,15 +41,15 @@ class UiProjectEditor:
 			model.appendRow(color_item)
 
 		self.setup_ui_functions()
+		self.reset()
 
 	def setup_ui_functions(self):
 		self.dialog.name_edit.textChanged.connect(self.toggle_btn_create)
 		self.dialog.cancel_btn.clicked.connect(self.dialog.hide)
-
-		self.dialog.color_combo.currentIndexChanged.connect(self.change_combo_color)
+		self.dialog.color_combo.currentIndexChanged.connect(self.update_combo_color)
 
 	def toggle_btn_create(self, text):
-		"""enable or disable the create button depending if the title is set"""
+		"""Enables or disables the create button depending if the title is set"""
 		enable = len(text.strip()) > 0
 		self.dialog.create_btn.setEnabled(enable)
 
@@ -71,11 +74,12 @@ class UiProjectEditor:
 
 	def reset(self):
 		self.set_project_name("")
-		self.set_selected_color(self.finest_color_selection[6])
+		self.update_combo_color()
 
 	def fill_in(self, project):
 		self.set_project_name(project.name)
 		self.set_selected_color(project.color)
 
-	def change_combo_color(self, index=6):
+	def update_combo_color(self, index=6):
+		"""Sets the color of the color picker by index"""
 		self.dialog.color_combo.setStyleSheet("color: " + self.finest_color_selection[index].name())

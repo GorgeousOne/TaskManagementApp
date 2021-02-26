@@ -4,17 +4,18 @@ from uis.ui_project_item import UiProjectItem
 
 
 class UiProjectsBar:
+	"""Handles adding and removing of project items for projects in the sidebar"""
 	def __init__(self, container):
-		self.container = container
 		self.layout = container.layout
 		self.project_items = []
 
 	def add_project(self, new_project):
-		new_item = UiProjectItem(new_project, self)
-		index = bisect.bisect_right(self.project_items, new_project) + 1  # +1 for the already existent "All Projects" button
+		new_item = UiProjectItem(new_project)
+		# finds the projects index in alphabetically order, +1 for the "All Projects" button
+		index = bisect.bisect_right(self.project_items, new_project) + 1
 
-		self.layout().insertWidget(index, new_item)
 		self.project_items.insert(index, new_item)
+		self.layout().insertWidget(index, new_item)
 
 		new_project.add_listener(self)
 		return new_item
@@ -23,6 +24,7 @@ class UiProjectsBar:
 		self.update_item(project)
 
 	def update_item(self, project):
+		"""Updates the index of the project item when it's name is changed"""
 		item = self.get_item(project)
 		self.project_items.remove(item)
 		new_index = bisect.bisect_right(self.project_items, item) + 1
@@ -39,6 +41,7 @@ class UiProjectsBar:
 			return
 
 	def get_item(self, project):
+		"""Finds the item connected to a project"""
 		for item in self.project_items:
 			if item.project == project:
 				return item

@@ -4,14 +4,17 @@ from PySide2.QtCore import Qt
 
 
 class UiNoteEditor:
+	"""A form for creating or editing notes"""
 	def __init__(self, projects):
 		self.projects = projects
 
+		# makes the dialog always stay on top, frameless and translucent on the rounded edges
 		self.dialog = QtUiTools.QUiLoader().load("./uis/res/ui_note_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)
 		self.dialog.setWindowFlags(Qt.FramelessWindowHint)
 		self.dialog.setAttribute(Qt.WA_TranslucentBackground, True)
 
+		# adds a drop shadow around the dialog
 		shadow = QtWidgets.QGraphicsDropShadowEffect(self.dialog)
 		shadow.setBlurRadius(30)
 		shadow.setOffset(0)
@@ -45,11 +48,11 @@ class UiNoteEditor:
 			return self.projects[project_index - 1]
 
 	def toggle_time_visibility(self):
-		"""show or hide the time picker when checked"""
+		"""Toggles visibility of the time picker when check or unchecked"""
 		self.dialog.time_picker.setVisible(self.dialog.enable_time_check.isChecked())
 
 	def toggle_btn_create(self, text):
-		"""enable or disable the create button depending if the title is set"""
+		"""Enables or disables the create button depending if the title is set"""
 		enable = len(text.strip()) > 0
 		self.dialog.create_btn.setEnabled(enable)
 
@@ -59,7 +62,7 @@ class UiNoteEditor:
 		self.dialog.title_edit.setFocus()
 
 	def reset(self):
-		""""""
+		"""Resets all input fields and update date and time picker to current time"""
 		self.dialog.title_edit.setText("")
 		self.dialog.description_edit.setPlainText("")
 		self.dialog.enable_time_check.setChecked(False)
@@ -80,6 +83,7 @@ class UiNoteEditor:
 			projects_combo.addItem(project.get_name())
 
 	def fill_in(self, note):
+		"""Fills in the data of a note into the inputs for it to get edited"""
 		self.dialog.title_edit.setText(note.title)
 		self.dialog.description_edit.setPlainText(note.description)
 		self.dialog.date_picker.setDate(note.date)

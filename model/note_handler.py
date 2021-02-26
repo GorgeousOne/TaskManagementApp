@@ -11,8 +11,8 @@ class NoteHandler:
 		self._note_saves = self._saves_dir + path.sep + "notes.json"
 		self._project_saves = self._saves_dir + path.sep + "projects.json"
 
-		self._load_notes()
 		self._load_projects()
+		self._load_notes()
 
 	def get_notes(self):
 		return self._notes
@@ -39,12 +39,17 @@ class NoteHandler:
 				note.project = None
 				note.update_listeners()
 		self.save_projects()
+		self.save_notes()
 
 	def _load_notes(self):
 		if path.exists(self._note_saves) and os.stat(self._note_saves).st_size > 0:
 			with open(self._note_saves, 'rb') as infile:
 				self._notes = pickle.load(infile)
-				return
+			# ersetzt die von pickle doppelt generierten Projekte in jeder Notiz, ein work around
+			for note in self._notes:
+				if note.project:
+					note.project = self._projects[self._projects.index(note.project)]
+			return
 		self._notes = []
 
 	def _load_projects(self):

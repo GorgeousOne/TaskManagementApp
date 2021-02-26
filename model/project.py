@@ -2,6 +2,7 @@ from model.event_source import EventSource
 
 
 class Project(EventSource):
+	"""Stores all information about a project."""
 	def __init__(self, uuid, name, color):
 		super().__init__("on_project_change")
 		self.uuid = uuid
@@ -22,16 +23,13 @@ class Project(EventSource):
 		self.color = color
 
 	def __getstate__(self):
-		"""Removes the temporary listeners from the data to pickle"""
+		"""Removes the listeners bound to the running session from the data to dump"""
 		state = self.__dict__.copy()
-		del state['_event_method_name']
 		del state['_listeners']
 		return state
 
 	def __setstate__(self, state):
-		"""Ensures listeners not to be None after unpickeling"""
 		self.__dict__.update(state)
-		self._event_method_name = "on_project_change"
 		self._listeners = []
 
 	def __eq__(self, other):

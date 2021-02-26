@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="vertical_layout">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -54,7 +54,7 @@
    </item>
    <item>
     <widget class="QWidget" name="note_area" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="vertical_layout_2">
       <property name="leftMargin">
        <number>0</number>
       </property>

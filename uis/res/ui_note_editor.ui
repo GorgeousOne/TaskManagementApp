@@ -25,7 +25,7 @@
   <property name="styleSheet">
    <string notr="true">font: 25 12pt &quot;Segoe UI Light&quot;;</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="vertical_layout">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -56,7 +56,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="vertical_layout_2">
       <property name="spacing">
        <number>25</number>
       </property>
@@ -190,7 +190,7 @@
        </spacer>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QHBoxLayout" name="horizontal:layout_4">
         <item>
          <widget class="QPushButton" name="cancel_btn">
           <property name="text">

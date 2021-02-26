@@ -13,10 +13,10 @@ from uis.ui_project_editor import UiProjectEditor
 
 class MainHandler:
 	def __init__(self):
-		self.main_ui = UiMainWindow()
-		self.project_editor = UiProjectEditor()
-
 		self.note_handler = NoteHandler()
+
+		self.main_ui = UiMainWindow(self)
+		self.project_editor = UiProjectEditor()
 		self.note_editor = UiNoteEditor(self.note_handler.get_projects())
 
 		self.setup_ui()
@@ -27,17 +27,16 @@ class MainHandler:
 		self.edited_project = None
 
 	def setup_ui(self):
-		for note in self.note_handler.get_notes():
-			self.create_note_item(note)
 		for project in self.note_handler.get_projects():
 			self.create_project_item(project)
-		self.note_editor.dialog.create_btn.setText("Save")
+		for note in self.note_handler.get_notes():
+			self.create_note_item(note)
 
 	def setup_ui_functions(self):
 		self.main_ui.window.create_note_btn.clicked.connect(self.note_editor.show_reset)
-		self.main_ui.window.finished_notes_check.stateChanged.connect(
+		self.main_ui.window.hide_done_notes_check.stateChanged.connect(
 			lambda: self.main_ui.timeline.set_done_notes_visible(
-				not self.main_ui.window.finished_notes_check.isChecked()))
+				not self.main_ui.window.hide_done_notes_check.isChecked()))
 
 		self.main_ui.window.create_project_btn.clicked.connect(self.project_editor.show_reset)
 		self.project_editor.dialog.create_btn.clicked.connect(self.finish_editing_project)
@@ -58,11 +57,7 @@ class MainHandler:
 	def create_note_item(self, new_note):
 		self.main_ui.window.empty_timeline_label.hide()
 		self.main_ui.window.timeline_area.show()
-
-		item = self.main_ui.timeline.display_note(new_note)
-		item.content.toggle_done_btn.clicked.connect(lambda: self.toggle_note_completion(new_note))
-		item.content.delete_btn.clicked.connect(lambda: self.delete_note(new_note))
-		item.content.edit_btn.clicked.connect(lambda: self.start_editing_note(new_note))
+		self.main_ui.timeline.display_note(new_note)
 
 	def create_project(self, project_form):
 		name = project_form.get_project_name()
