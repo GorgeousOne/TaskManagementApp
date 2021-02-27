@@ -4,7 +4,6 @@ from uis.ui_date_section import UiDateSection
 
 class UiTimeline:
 	"""Takes the given widget and adds notes to it in form of note entries which are sorted by date sections"""
-
 	def __init__(self, container, main_handler):
 		self.main_handler = main_handler
 		self.container = container

@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>800</width>
-    <height>500</height>
-   </rect>
-  </property>
+ <class>main_window</class>
+ <widget class="QMainWindow" name="main_window">
   <property name="minimumSize">
    <size>
     <width>800</width>
     <height>500</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>16777215</height>
    </size>
   </property>
   <property name="font">
@@ -36,6 +22,12 @@
   </property>
   <property name="styleSheet">
    <string notr="true">font: 25 12pt &quot;Segoe UI Light&quot;;</string>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>64</width>
+    <height>64</height>
+   </size>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="vertical_layout">

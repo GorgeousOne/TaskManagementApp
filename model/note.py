@@ -60,3 +60,24 @@ class Note(EventSource):
 
 	def __repr__(self):
 		return f"<Note {str(self.uuid)[-5:]}: {self.title}>"
+
+	def text(self, project_pad):
+		stringified = ""
+
+		if self.time:
+			stringified += self.time.toString("HH:mm")
+
+		if self.is_done:
+			stringified = stringified.ljust(7)
+			stringified += "✓ "
+
+		stringified = stringified.ljust(9)
+		stringified += self.title
+
+		if self.project:
+			stringified = stringified.ljust(11 + project_pad)
+			stringified += "(" + self.project.get_name() + ")"
+
+		if len(self.description) > 0:
+			stringified += "\n" + " "*11 + self.description
+		return stringified

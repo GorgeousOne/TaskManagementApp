@@ -3,6 +3,7 @@ import uuid
 
 from PySide2 import QtWidgets, QtCore
 
+from cli import CommandHandler
 from model.note_handler import NoteHandler
 from model.note import Note
 from model.project import Project
@@ -96,7 +97,6 @@ class MainHandler:
 		self.edited_note.date = self.note_editor.get_date()
 		self.edited_note.time = self.note_editor.get_time()
 		self.edited_note.project = self.note_editor.get_project()
-
 		self.edited_note.update_listeners()
 
 		self.note_handler.save_notes()
@@ -135,6 +135,11 @@ class MainHandler:
 
 
 if __name__ == "__main__":
+
+	if len(sys.argv) > 1:
+		CommandHandler(sys.argv)
+		exit(-1)
+
 	app = QtWidgets.QApplication(sys.argv)
 	app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 	MainHandler()

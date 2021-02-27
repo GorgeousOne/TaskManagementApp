@@ -14,8 +14,15 @@ class NoteHandler:
 		self._load_projects()
 		self._load_notes()
 
-	def get_notes(self):
-		return self._notes
+	def get_notes(self, hide_completed=False, project=None):
+		filtered_notes = []
+		for note in self._notes:
+			if hide_completed and note.is_done:
+				continue
+			if project and note.project != project:
+				continue
+			filtered_notes.append(note)
+		return filtered_notes
 
 	def get_projects(self):
 		return self._projects
@@ -45,7 +52,7 @@ class NoteHandler:
 		if path.exists(self._note_saves) and os.stat(self._note_saves).st_size > 0:
 			with open(self._note_saves, 'rb') as infile:
 				self._notes = pickle.load(infile)
-			# ersetzt die von pickle doppelt generierten Projekte in jeder Notiz, ein work around
+			# replaces doppelganger projects pickle created when loading the notes
 			for note in self._notes:
 				if note.project:
 					note.project = self._projects[self._projects.index(note.project)]
