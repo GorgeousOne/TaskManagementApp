@@ -1,5 +1,4 @@
 import sys
-import uuid
 
 from PySide2 import QtWidgets, QtCore
 
@@ -51,7 +50,7 @@ class MainHandler:
 		time = note_form.get_time()
 		project = note_form.get_project()
 
-		new_note = Note(uuid.uuid4(), title, description, date, time, project)
+		new_note = Note(title, description, date, time, project)
 		self.create_note_item(new_note)
 		self.note_handler.add_note(new_note)
 
@@ -63,7 +62,7 @@ class MainHandler:
 	def create_project(self, project_form):
 		name = project_form.get_project_name()
 		color = project_form.get_selected_color()
-		new_project = Project(uuid.uuid4(), name, color)
+		new_project = Project(name, color)
 
 		self.note_handler.add_project(new_project)
 		self.create_project_item(new_project)

@@ -26,7 +26,7 @@ class UiTimeline:
 				break
 
 		if not section:
-			section = self._insert_date(date)
+			section = self.insert_date(date)
 
 		self.displayed_notes[note] = section
 		note.add_listener(self)
@@ -74,10 +74,10 @@ class UiTimeline:
 		section.remove_note(note)
 
 		if section.get_note_count() == 0:
-			self._remove_section(section)
+			self.remove_section(section)
 		del self.displayed_notes[note]
 
-	def _insert_date(self, new_date):
+	def insert_date(self, new_date):
 		new_section = UiDateSection(new_date)
 		index = bisect.bisect(self.date_sections, new_section)
 
@@ -85,7 +85,7 @@ class UiTimeline:
 		self.layout.insertWidget(index, new_section)
 		return new_section
 
-	def _remove_section(self, section):
+	def remove_section(self, section):
 		section.hide()
 		section.deleteLater()
 		self.date_sections.remove(section)

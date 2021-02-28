@@ -17,7 +17,7 @@ class UiDateSection(QtWidgets.QWidget):
 
 		self.date_label = QtWidgets.QLabel(self)
 		self.date_label.setMaximumHeight(20)
-		self.date_label.setText(self.date.toString("dddd d. MMMM"))
+		self.date_label.setText(self.date.toString("dddd, d. MMMM yy"))
 		self.date_label.setStyleSheet("font: 8pt \"Segoe UI\";")
 		self.vertical_layout.addWidget(self.date_label, 0, Qt.AlignHCenter)
 
@@ -69,7 +69,7 @@ class UiDateSection(QtWidgets.QWidget):
 		for item in self.note_items:
 			if item.note == note:
 				return item
-		raise Exception(str(note), "not listed in" + self.date.toString("dddd d. MMMM"))
+		raise Exception(str(note), "not listed in" + self.date.toString("d. MMMM yy"))
 
 	def __lt__(self, other):
 		if not isinstance(other, UiDateSection):
