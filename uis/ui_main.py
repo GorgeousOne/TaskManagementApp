@@ -9,6 +9,8 @@ class UiMainWindow:
 	def __init__(self, main_handler):
 		self.window = QtUiTools.QUiLoader().load("./uis/res/ui_main.ui")
 		self.window.setWindowTitle("Task Management App")
+		self.window.setWindowIcon(QtGui.QIcon("./uis/res/icons/squiggle3.png"))
+
 		self.window.toggle_menu_btn.setIcon(QtGui.QIcon(utils.icons_folder + "burger.png"))
 		self.window.create_project_btn.setIcon(QtGui.QIcon(utils.icons_folder + "plus.png"))
 		self.window.create_project_btn.setIconSize(QtCore.QSize(50, 50))

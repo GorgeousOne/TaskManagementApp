@@ -140,6 +140,12 @@ if __name__ == "__main__":
 		CommandHandler(sys.argv)
 		exit(-1)
 
+	# changes user model ID so the icon can be displayed in windows taskbar
+	if sys.platform == "win32":
+		import ctypes
+		my_app_id = "taskmanagementapp.1-0"
+		ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(my_app_id)
+
 	app = QtWidgets.QApplication(sys.argv)
 	app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 	MainHandler()

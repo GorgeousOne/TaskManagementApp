@@ -77,3 +77,9 @@ class NoteHandler:
 			os.makedirs(self._saves_dir)
 		with open(self._project_saves, 'wb') as outfile:
 			pickle.dump(self._projects, outfile)
+
+	def match_project(self, name):
+		for project in self._projects:
+			if project.get_name() == name:
+				return project
+		return None
