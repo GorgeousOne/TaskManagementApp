@@ -20,7 +20,7 @@ class UiMainWindow:
 		self.window.projects_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 		self.window.projects_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(55, 250))
+		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(55, 300))
 		self.timeline = UiTimeline(self.window.timeline_area, main_handler)
 		self.projects_bar = UiProjectsBar(self.window.projects_area)
 

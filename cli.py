@@ -11,7 +11,6 @@ from model.project import Project
 class CommandHandler:
 	def __init__(self, sys_args):
 		self.note_handler = NoteHandler()
-
 		main_cmd = ParentCommand("main")
 
 		notes_cmd = ParentCommand("task")
@@ -128,6 +127,7 @@ class CommandHandler:
 			print(args.index, "not in range of tasks (" + str(len(self.note_handler.get_notes())) + ")")
 
 	def print_notes(self, note_list):
+		print("-" * 20, "Projects", "-" * 20)
 		index_pad = len(str(len(self.note_handler.get_notes()))) + 2
 		current_date = None
 

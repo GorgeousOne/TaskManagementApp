@@ -118,6 +118,7 @@ class MainHandler:
 		try:
 			if not self.edited_project:
 				self.create_project(self.project_editor)
+				self.project_editor.dialog.hide()
 				return
 			self.note_handler.rename_project(self.edited_project, self.project_editor.get_project_name())
 		except Exception as e:

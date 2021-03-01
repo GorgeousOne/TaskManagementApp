@@ -12,7 +12,7 @@ class UiProjectsBar:
 	def add_project(self, new_project):
 		new_item = UiProjectItem(new_project)
 		# finds the projects index in alphabetically order, +1 for the "All Projects" button
-		index = bisect.bisect_right(self.project_items, new_project) + 1
+		index = bisect.bisect_right(self.project_items, new_item) + 1
 
 		self.project_items.insert(index, new_item)
 		self.layout().insertWidget(index, new_item)

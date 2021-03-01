@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>main_window</class>
  <widget class="QMainWindow" name="main_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>500</height>
+   </rect>
+  </property>
   <property name="minimumSize">
    <size>
     <width>800</width>
@@ -50,7 +58,7 @@
      <widget class="QFrame" name="sidebar_frame">
       <property name="maximumSize">
        <size>
-        <width>250</width>
+        <width>55</width>
         <height>16777215</height>
        </size>
       </property>
@@ -430,7 +438,7 @@ QCheckBox:hover:!pressed {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>550</width>
+            <width>745</width>
             <height>449</height>
            </rect>
           </property>
