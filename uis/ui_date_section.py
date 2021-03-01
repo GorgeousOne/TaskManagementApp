@@ -69,7 +69,7 @@ class UiDateSection(QtWidgets.QWidget):
 		for item in self.note_items:
 			if item.note == note:
 				return item
-		raise Exception(str(note), "not listed in" + self.date.toString("d. MMMM yy"))
+		raise Exception(str(note) + " not listed in " + self.date.toString("d. MMMM yy"))
 
 	def __lt__(self, other):
 		if not isinstance(other, UiDateSection):

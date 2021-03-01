@@ -43,7 +43,19 @@ class NoteHandler:
 		return note
 
 	def add_project(self, project):
+		for other in self.projects:
+			if other.get_name() == project.get_name():
+				raise Exception("There already exists a project named '{}'.".format(project.get_name()))
 		bisect.insort(self.projects, project)
+		self.save_projects()
+
+	def rename_project(self, project, new_name):
+		if new_name == project.get_name():
+			return
+		for other in self.projects:
+			if other.get_name() == new_name:
+				raise Exception("There already exists a project named '{}'.".format(new_name))
+		project.set_name(new_name)
 		self.save_projects()
 
 	def delete_project(self, project):
@@ -73,6 +85,7 @@ class NoteHandler:
 			self.save_projects()
 
 	def save_notes(self):
+		self.notes.sort()
 		if not path.exists(self.saves_dir):
 			os.makedirs(self.saves_dir)
 		with open(self.note_saves, 'wb') as outfile:
@@ -88,4 +101,4 @@ class NoteHandler:
 		for project in self.projects:
 			if project.get_name() == name:
 				return project
-		raise Exception("No project found with name:", name)
+		raise Exception("No project found with name: " + name)

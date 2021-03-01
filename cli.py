@@ -1,4 +1,3 @@
-import argparse
 import textwrap
 
 from PySide2 import QtCore
@@ -6,6 +5,7 @@ from PySide2 import QtCore
 from command import ParentCommand, ArgCommand
 from model.note import Note
 from model.note_handler import NoteHandler
+from model.project import Project
 
 
 class CommandHandler:
@@ -47,13 +47,35 @@ class CommandHandler:
 		parser = close_note_cmd.get_parser()
 		parser.add_argument("index", type=int, help="index of task in list")
 
+		projects_cmd = ParentCommand("project")
+		main_cmd.add_child(projects_cmd)
+
+		list_projects_cmd = ArgCommand("list", self.list_projects)
+		projects_cmd.add_child(list_projects_cmd)
+
+		create_project_cmd = ArgCommand("create", self.create_project)
+		projects_cmd.add_child(create_project_cmd)
+		parser = create_project_cmd.get_parser()
+		parser.add_argument("name", help="name for the project (must be unique)")
+
+		rename_project_cmd = ArgCommand("rename", self.rename_project)
+		projects_cmd.add_child(rename_project_cmd)
+		parser = rename_project_cmd.get_parser()
+		parser.add_argument("name", help="name of the project to rename")
+		parser.add_argument("new_name", help="new name for the project")
+
+		delete_project_cmd = ArgCommand("delete", self.delete_note)
+		projects_cmd.add_child(delete_project_cmd)
+		parser = delete_project_cmd.get_parser()
+		parser.add_argument("project", help="name of the project to delete")
+
 		main_cmd.execute(sys_args[1:])
 
 	def list_notes(self, args):
 		try:
-			project = self.get_project(args)
+			project = self.deserialize_project(args.project) if args.project else None
 		except Exception as e:
-			print(str(e))
+			print(e)
 			return
 		note_list = self.note_handler.get_notes(args.uncompleted, project)
 		if len(note_list) == 0:
@@ -63,31 +85,47 @@ class CommandHandler:
 
 	def create_note(self, args):
 		try:
-			title = args.title[:64]
+			title = self.format_title(args.title)
 			description = args.description if args.description else ""
-			date = self.get_date(args.date)
-			time = self.get_time(args)
-			project = self.get_project(args)
+			date = self.deserialize_date(args.date)
+			time = self.deserialize_time(args.time) if args.time else None
+			project = self.deserialize_project(args.project) if args.project else None
 
 			note = Note(title, description, date, time, project)
 			self.note_handler.add_note(note)
-			print("Added task '" + note.title + "' for", note.date.toString("dddd, d. MMMM yy."))
+			print("Added task '{}' for {}".format(note.title, note.date.toString("dddd, d. MMMM yy.")))
 		except Exception as e:
-			print(str(e))
+			print(e)
 
 	def edit_note(self, args):
-		pass
+		try:
+			note = self.note_handler.get_notes()[args.index - 1]
+			if args.title is not None:
+				note.title = self.format_title(args.title)
+			if args.description is not None:
+				note.description = args.description
+			if args.date is not None:
+				note.date = self.deserialize_date(args.date)
+			if args.time is not None:
+				note.time = self.deserialize_time(args.time)
+			if args.project is not None:
+				note.project = self.deserialize_project(args.project)
+			self.note_handler.save_notes()
+			print("Edited task '{}'.".format(note.title))
+		except IndexError:
+			print(args.index, "not in range of tasks ({})".format(str(len(self.note_handler.get_notes()))))
+		except Exception as e:
+			print(e)
 
 	def delete_note(self, args):
 		if len(self.note_handler.get_notes()) == 0:
 			print("No tasks left to delete.")
 			return
 		try:
-			deleted_note = self.note_handler.pop_note(args.index-1)
-			print("Deleted task '" + deleted_note.title + "'.")
-		except IndexError as e:
-			print(args.index, "not in list range (" + str(len(self.note_handler.get_notes())) + ")")
-
+			deleted_note = self.note_handler.pop_note(args.index - 1)
+			print("Deleted task '{}'.".format(deleted_note.title))
+		except IndexError:
+			print(args.index, "not in range of tasks (" + str(len(self.note_handler.get_notes())) + ")")
 
 	def print_notes(self, note_list):
 		index_pad = len(str(len(self.note_handler.get_notes()))) + 2
@@ -97,7 +135,7 @@ class CommandHandler:
 			index = self.note_handler.get_notes().index(note) + 1
 			if current_date != note.date:
 				current_date = note.date
-				print("-"*20, current_date.toString("dddd, d. MMMM"), "-"*20)
+				print("-" * 20, current_date.toString("dddd, d. MMMM"), "-" * 20)
 			self.print_note(note, index, index_pad)
 
 	def print_note(self, note, index, index_pad):
@@ -105,27 +143,28 @@ class CommandHandler:
 		if note.time:
 			header += note.time.toString("HH:mm")
 			print(header)
-			header = " "*index_pad
+			header = " " * index_pad
 
 		if note.is_done:
 			header += "✓ "
 		header += note.title
 		if note.project:
-			header += " "*3 + "(" + note.project.get_name() + ")"
+			header += " " * 3 + "({})".format(note.project.get_name())
 		print(header)
 		if len(note.description) > 0:
 			print(self.wrap_text(note.description, index_pad + 3, 80))
 
 	def wrap_text(self, text, indent, margin):
-		lines = textwrap.fill(text, margin-indent)
-		return " "*indent + lines.replace("\n", "\n" + " "*indent)
+		lines = textwrap.fill(text, margin - indent)
+		return " " * indent + lines.replace("\n", "\n" + " " * indent)
 
-	def get_project(self, args):
-		if args.project:
-			return self.note_handler.match_project(args.project)
-		return None
+	def format_title(self, title):
+		title = title.strip()
+		if title == "":
+			raise Exception("Title cannot be empty or white spaces only.")
+		return title[:64]
 
-	def get_date(self, str_date):
+	def deserialize_date(self, str_date):
 		date = None
 		if str_date.endswith("."):
 			current_date = QtCore.QDate.currentDate()
@@ -137,16 +176,51 @@ class CommandHandler:
 			date = QtCore.QDate.fromString(str_date, "d.M.yyyy")
 
 		if date.year() == 0:
-			raise Exception("Invalid date:'" + str_date + "'. Please enter the date in the format dd.mm. or dd.mm.yyyy")
+			raise Exception("Invalid date:''. Please enter the date in the format dd.mm. or dd.mm.yyyy".format(str_date))
 		return date
 
-	def get_time(self, args):
-		if not args.time:
+	def deserialize_time(self, str_time):
+		if str_time == "":
 			return None
-		time = QtCore.QTime.fromString(args.time, "h:mm")
-
+		time = QtCore.QTime.fromString(str_time, "h:mm")
 		if time.hour() == -1:
-			raise Exception("Invalid time: '" + args.time + "'. Please enter the time in the format hh:mm (24h format)")
+			raise Exception("Invalid time: '{}'. Please enter the time in the format hh:mm (24h format)".format(str_time))
 		return time
 
+	def deserialize_project(self, project_name):
+		if project_name == "":
+			return None
+		return self.note_handler.match_project(project_name)
 
+	def list_projects(self, args):
+		projects = self.note_handler.get_projects()
+		print("-" * 20, "Projects", "-" * 20)
+		for i in range(len(projects)):
+			print(projects[i].get_name())
+
+	def create_project(self, args):
+		try:
+			project = Project(args.name.strip())
+			self.note_handler.add_project(project)
+			print("Create project '{}'.".format(project.name))
+		except Exception as e:
+			print(e)
+
+	def rename_project(self, args):
+		try:
+			project = self.deserialize_project(args.name)
+			new_name = args.new_name.strip()
+			if not new_name:
+				raise Exception("Project name cannot be empty or white spaces only.")
+			self.note_handler.rename_project(project, args.new_name.strip())
+			print("Renamed project to '{}'".format(new_name))
+		except Exception as e:
+			print(e)
+
+	def delete_project(self, args):
+		try:
+			project = self.deserialize_project(args.name)
+			self.note_handler.delete_project(project)
+			print("Deleted project to'{}'".format(project.get_name()))
+		except Exception as e:
+			print(e)

@@ -115,18 +115,26 @@ class MainHandler:
 		self.edited_project = project
 
 	def finish_editing_project(self):
-		self.project_editor.dialog.hide()
-
-		if not self.edited_project:
-			self.create_project(self.project_editor)
+		try:
+			if not self.edited_project:
+				self.create_project(self.project_editor)
+				return
+			self.note_handler.rename_project(self.edited_project, self.project_editor.get_project_name())
+		except Exception as e:
+			msg = QtWidgets.QMessageBox()
+			msg.setIcon(QtWidgets.QMessageBox.Critical)
+			msg.setText(str(e))
+			msg.setWindowTitle("Duplicate project name")
+			msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+			msg.exec_()
 			return
 
-		self.edited_project.set_name(self.project_editor.get_project_name())
 		self.edited_project.set_color(self.project_editor.get_selected_color())
 		self.edited_project.update_listeners()
 
 		self.note_handler.save_projects()
 		self.edited_project = None
+		self.project_editor.dialog.hide()
 
 	def delete_project(self, project):
 		self.main_ui.projects_bar.delete_project(project)
@@ -134,11 +142,9 @@ class MainHandler:
 
 
 if __name__ == "__main__":
-
 	if len(sys.argv) > 1:
 		CommandHandler(sys.argv)
 		exit(-1)
-
 	# changes user model ID so the icon can be displayed in windows taskbar
 	if sys.platform == "win32":
 		import ctypes

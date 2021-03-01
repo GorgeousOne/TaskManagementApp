@@ -1,11 +1,13 @@
 import uuid
 
+from PySide2 import QtGui
+
 from model.event_source import EventSource
 
 
 class Project(EventSource):
 	"""Stores all information about a project."""
-	def __init__(self, name, color):
+	def __init__(self, name, color=QtGui.QColor(63, 81, 181)):
 		super().__init__("on_project_change")
 		self.uuid = uuid.uuid4()
 		self.name = name

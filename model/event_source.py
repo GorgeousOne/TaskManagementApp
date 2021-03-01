@@ -9,7 +9,7 @@ class EventSource:
 	def add_listener(self, listener):
 		update_method = getattr(listener, self.event_method_name, None)
 		if not callable(update_method):
-			raise Exception("Could not add listener missing the " + self.event_method_name + " method.")
+			raise Exception("Could not add listener missing the {} method.".format(self.event_method_name))
 		self.listeners.append(listener)
 
 	def remove_listener(self, listener):

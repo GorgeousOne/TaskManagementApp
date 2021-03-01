@@ -9,7 +9,7 @@ def replace_property(stylesheet, key, value):
 	"""Replaces a property value in the string of a stylesheet"""  # because I could not get PyQt's unpolish() and polish() to work
 	index = stylesheet.rfind(key)
 	if index == -1:
-		return stylesheet + key + ":" + value + ";"
+		return stylesheet + "{}: {};".format(key, value)
 	else:
 		index += len(key) + 1
 		semicolon = stylesheet.find(";", index)
