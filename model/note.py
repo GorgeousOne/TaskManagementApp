@@ -1,11 +1,13 @@
+import uuid
+
 from model.event_source import EventSource
 
 
 class Note(EventSource):
 	"""Stores all information about a task."""
-	def __init__(self, uuid, title, description, date, time=None, project=None):
+	def __init__(self, title, description, date, time=None, project=None):
 		super().__init__("on_note_change")
-		self.uuid = uuid
+		self.uuid = uuid.uuid4()
 		self.title = title
 		self.description = description
 		self.date = date
@@ -25,16 +27,6 @@ class Note(EventSource):
 	def toggle_is_done(self):
 		self.is_done = not self.is_done
 
-	def __getstate__(self):
-		"""Removes the listeners bound to the running session from the data to dump"""
-		state = self.__dict__.copy()
-		del state["_listeners"]
-		return state
-
-	def __setstate__(self, state):
-		self.__dict__.update(state)
-		self._listeners = []
-
 	def __hash__(self):
 		return hash(self.uuid)
 
@@ -47,7 +39,6 @@ class Note(EventSource):
 		"""Compares the time difference between a not and another one"""
 		if not isinstance(other, Note):
 			return False
-
 		# compare day difference
 		if not self.date == other.date:
 			return self.date.daysTo(other.date) > 0

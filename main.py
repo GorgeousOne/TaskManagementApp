@@ -1,8 +1,8 @@
 import sys
-import uuid
 
 from PySide2 import QtWidgets, QtCore
 
+from cli import CommandHandler
 from model.note_handler import NoteHandler
 from model.note import Note
 from model.project import Project
@@ -50,7 +50,7 @@ class MainHandler:
 		time = note_form.get_time()
 		project = note_form.get_project()
 
-		new_note = Note(uuid.uuid4(), title, description, date, time, project)
+		new_note = Note(title, description, date, time, project)
 		self.create_note_item(new_note)
 		self.note_handler.add_note(new_note)
 
@@ -62,7 +62,7 @@ class MainHandler:
 	def create_project(self, project_form):
 		name = project_form.get_project_name()
 		color = project_form.get_selected_color()
-		new_project = Project(uuid.uuid4(), name, color)
+		new_project = Project(name, color)
 
 		self.note_handler.add_project(new_project)
 		self.create_project_item(new_project)
@@ -96,7 +96,6 @@ class MainHandler:
 		self.edited_note.date = self.note_editor.get_date()
 		self.edited_note.time = self.note_editor.get_time()
 		self.edited_note.project = self.note_editor.get_project()
-
 		self.edited_note.update_listeners()
 
 		self.note_handler.save_notes()
@@ -116,18 +115,27 @@ class MainHandler:
 		self.edited_project = project
 
 	def finish_editing_project(self):
-		self.project_editor.dialog.hide()
-
-		if not self.edited_project:
-			self.create_project(self.project_editor)
+		try:
+			if not self.edited_project:
+				self.create_project(self.project_editor)
+				self.project_editor.dialog.hide()
+				return
+			self.note_handler.rename_project(self.edited_project, self.project_editor.get_project_name())
+		except Exception as e:
+			msg = QtWidgets.QMessageBox()
+			msg.setIcon(QtWidgets.QMessageBox.Critical)
+			msg.setText(str(e))
+			msg.setWindowTitle("Duplicate project name")
+			msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+			msg.exec_()
 			return
 
-		self.edited_project.set_name(self.project_editor.get_project_name())
 		self.edited_project.set_color(self.project_editor.get_selected_color())
 		self.edited_project.update_listeners()
 
 		self.note_handler.save_projects()
 		self.edited_project = None
+		self.project_editor.dialog.hide()
 
 	def delete_project(self, project):
 		self.main_ui.projects_bar.delete_project(project)
@@ -135,6 +143,15 @@ class MainHandler:
 
 
 if __name__ == "__main__":
+	if len(sys.argv) > 1:
+		CommandHandler(sys.argv)
+		exit(-1)
+	# changes user model ID so the icon can be displayed in windows taskbar
+	if sys.platform == "win32":
+		import ctypes
+		my_app_id = "taskmanagementapp.1-0"
+		ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(my_app_id)
+
 	app = QtWidgets.QApplication(sys.argv)
 	app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 	MainHandler()

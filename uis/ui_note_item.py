@@ -24,7 +24,7 @@ class UiNoteItem(QtWidgets.QFrame, EventSource):
 
 		self.vertical_layout = QtWidgets.QVBoxLayout(self)
 		self.vertical_layout.setContentsMargins(0, 0, 0, 0)
-		self.setMaximumWidth(1400)
+		self.setMaximumWidth(1300)
 
 		self.content = QtUiTools.QUiLoader().load("./uis/res/ui_note_item.ui")
 		self.vertical_layout.addWidget(self.content)

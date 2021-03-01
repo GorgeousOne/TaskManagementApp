@@ -8,6 +8,8 @@ class UiMainWindow:
 	"""Loads the main window with most of the elements in it"""
 	def __init__(self, main_handler):
 		self.window = QtUiTools.QUiLoader().load("./uis/res/ui_main.ui")
+		self.window.setWindowTitle("Task Management App")
+		self.window.setWindowIcon(QtGui.QIcon("./uis/res/icons/squiggle3.png"))
 
 		self.window.toggle_menu_btn.setIcon(QtGui.QIcon(utils.icons_folder + "burger.png"))
 		self.window.create_project_btn.setIcon(QtGui.QIcon(utils.icons_folder + "plus.png"))
@@ -18,7 +20,7 @@ class UiMainWindow:
 		self.window.projects_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 		self.window.projects_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(55, 250))
+		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(55, 300))
 		self.timeline = UiTimeline(self.window.timeline_area, main_handler)
 		self.projects_bar = UiProjectsBar(self.window.projects_area)
 

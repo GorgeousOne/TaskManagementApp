@@ -74,7 +74,7 @@ class UiProjectEditor:
 
 	def reset(self):
 		self.set_project_name("")
-		self.update_combo_color()
+		self.set_selected_color(self.finest_color_selection[6])
 
 	def fill_in(self, project):
 		self.set_project_name(project.name)

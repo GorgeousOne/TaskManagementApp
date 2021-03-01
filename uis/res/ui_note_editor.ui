@@ -86,6 +86,9 @@
         <property name="styleSheet">
          <string notr="true">font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
         </property>
+        <property name="maxLength">
+         <number>64</number>
+        </property>
         <property name="placeholderText">
          <string>Add title</string>
         </property>
@@ -220,7 +223,7 @@
            <bool>false</bool>
           </property>
           <property name="text">
-           <string>Create</string>
+           <string>Save</string>
           </property>
           <property name="flat">
            <bool>false</bool>
