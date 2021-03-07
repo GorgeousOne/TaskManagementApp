@@ -5,7 +5,7 @@ from PySide2.QtCore import Qt
 class UiProjectEditor:
 	"""A form for creating and editing projects"""
 	def __init__(self):
-		self.dialog = QtUiTools.QUiLoader().load("./uis/res/ui_project_editor.ui")
+		self.dialog = QtUiTools.QUiLoader().load("./uis/scripts/ui_project_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)
 		self.dialog.setWindowFlags(Qt.FramelessWindowHint)
 		self.dialog.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -31,15 +31,6 @@ class UiProjectEditor:
 			QtGui.QColor(230, 124, 115)
 		]
 
-		model = self.dialog.color_combo.model()
-
-		# adds a list item with a colored bullet as text to the color combo box for every color
-		for color in self.finest_color_selection:
-			color_item = QtGui.QStandardItem("⬤")
-			color_item.setForeground(color)
-			color_item.setTextAlignment(Qt.AlignHCenter)
-			model.appendRow(color_item)
-
 		self.setup_ui_functions()
 		self.reset()
 
@@ -47,6 +38,14 @@ class UiProjectEditor:
 		self.dialog.name_edit.textChanged.connect(self.toggle_btn_create)
 		self.dialog.cancel_btn.clicked.connect(self.dialog.hide)
 		self.dialog.color_combo.currentIndexChanged.connect(self.update_combo_color)
+
+		model = self.dialog.color_combo.model()
+		# adds a colored bullet to the color combo box as list item for every color
+		for color in self.finest_color_selection:
+			color_item = QtGui.QStandardItem("⬤")
+			color_item.setForeground(color)
+			color_item.setTextAlignment(Qt.AlignHCenter)
+			model.appendRow(color_item)
 
 	def toggle_btn_create(self, text):
 		"""Enables or disables the create button depending if the title is set"""
@@ -63,6 +62,7 @@ class UiProjectEditor:
 		return self.dialog.name_edit.setText(name)
 
 	def set_selected_color(self, color):
+		"""Sets the editor's color for the project. Must be one of the predefined colors"""
 		index = self.finest_color_selection.index(color)
 		if index == -1:
 			index = 6
@@ -77,6 +77,7 @@ class UiProjectEditor:
 		self.set_selected_color(self.finest_color_selection[6])
 
 	def fill_in(self, project):
+		"""Fills in the details of the project into the editor"""
 		self.set_project_name(project.name)
 		self.set_selected_color(project.color)
 

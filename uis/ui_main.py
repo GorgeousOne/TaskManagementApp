@@ -1,26 +1,27 @@
 from PySide2 import QtCore, QtUiTools, QtGui
-import utils
 from uis.ui_project_bar import UiProjectsBar
 from uis.ui_timeline import UiTimeline
 
 
 class UiMainWindow:
-	"""Loads the main window with most of the elements in it"""
+	"""Loads the main window with the ui elements for the top bar, projects bar and task timeline in it"""
 	def __init__(self, main_handler):
-		self.window = QtUiTools.QUiLoader().load("./uis/res/ui_main.ui")
+		self.window = QtUiTools.QUiLoader().load("./uis/scripts/ui_main.ui")
 		self.window.setWindowTitle("Task Management App")
-		self.window.setWindowIcon(QtGui.QIcon("./uis/res/icons/squiggle3.png"))
+		self.window.setWindowIcon(QtGui.QIcon("./res/icons/squiggle3.png"))
 
-		self.window.toggle_menu_btn.setIcon(QtGui.QIcon(utils.icons_folder + "burger.png"))
-		self.window.create_project_btn.setIcon(QtGui.QIcon(utils.icons_folder + "plus.png"))
+		self.window.toggle_menu_btn.setIcon(QtGui.QIcon("./res/icons/burger.png"))
+		self.window.create_note_btn.setIcon(QtGui.QIcon("./res/icons/plus.png"))
+		self.window.create_project_btn.setIcon(QtGui.QIcon("./res/icons/circled-plus.png"))
 		self.window.create_project_btn.setIconSize(QtCore.QSize(50, 50))
+
+		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(55, 300))
 
 		self.window.timeline_area.hide()
 
 		self.window.projects_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 		self.window.projects_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-		self.window.toggle_menu_btn.clicked.connect(lambda: self.toggle_menu(55, 300))
 		self.timeline = UiTimeline(self.window.timeline_area, main_handler)
 		self.projects_bar = UiProjectsBar(self.window.projects_area)
 

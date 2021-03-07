@@ -18,8 +18,32 @@ class Note(EventSource):
 	def get_title(self):
 		return self.title
 
+	def set_title(self, title):
+		self.title = title
+
+	def get_description(self):
+		return self.description
+
+	def set_description(self, description):
+		self.description = description
+
 	def get_date(self):
 		return self.date
+
+	def set_date(self, qdate):
+		self.date = qdate
+
+	def get_time(self):
+		return self.time
+
+	def set_time(self, qtime):
+		self.time = qtime
+
+	def get_project(self):
+		return self.project
+
+	def set_project(self, project):
+		self.project = project
 
 	def get_is_done(self):
 		return self.is_done
@@ -36,7 +60,7 @@ class Note(EventSource):
 		return self.uuid == other.uuid
 
 	def __lt__(self, other):
-		"""Compares the time difference between a not and another one"""
+		"""Compares the time difference between itself and another note"""
 		if not isinstance(other, Note):
 			return False
 		# compare day difference

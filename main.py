@@ -12,6 +12,7 @@ from uis.ui_project_editor import UiProjectEditor
 
 
 class MainHandler:
+	"""Sets up the whole GUI and it's functionality"""
 	def __init__(self):
 		self.note_handler = NoteHandler()
 
@@ -27,12 +28,14 @@ class MainHandler:
 		self.edited_project = None
 
 	def setup_ui(self):
+		"""Displays all projects / tasks in the project bar / task timeline"""
 		for project in self.note_handler.get_projects():
 			self.create_project_item(project)
 		for note in self.note_handler.get_notes():
 			self.create_note_item(note)
 
 	def setup_ui_functions(self):
+		"""Connects main ui buttons and editor buttons to their tasks"""
 		self.main_ui.window.create_note_btn.clicked.connect(self.note_editor.show_reset)
 		self.main_ui.window.hide_done_notes_check.stateChanged.connect(
 			lambda: self.main_ui.timeline.set_done_notes_visible(
@@ -55,6 +58,7 @@ class MainHandler:
 		self.note_handler.add_note(new_note)
 
 	def create_note_item(self, new_note):
+		"""creates a ui item in the timeline for a task"""
 		self.main_ui.window.empty_timeline_label.hide()
 		self.main_ui.window.timeline_area.show()
 		self.main_ui.timeline.display_note(new_note)
@@ -68,40 +72,47 @@ class MainHandler:
 		self.create_project_item(new_project)
 
 	def create_project_item(self, project):
+		"""Creates project item in the project bar and gives connects it's buttons functionality"""
 		project_item = self.main_ui.projects_bar.add_project(project)
 		project_item.content.delete_btn.clicked.connect(lambda: self.delete_project(project))
 		project_item.content.edit_btn.clicked.connect(lambda: self.start_editing_project(project))
 		project_item.connect_click(lambda: self.main_ui.timeline.filter_project(project))
 
 	def toggle_note_completion(self, note):
+		"""Toggles if a note id completed and saves"""
 		note.toggle_is_done()
 		note.update_listeners()
 		self.note_handler.save_notes()
 
 	def start_editing_note(self, note):
+		"""Opens note editor and fills in details of note to edit"""
 		self.note_editor.reset()
 		self.note_editor.fill_in(note)
 		self.note_editor.dialog.show()
 		self.edited_note = note
 
 	def finish_editing_note(self):
+		"""Called when "Create" button in note editor is clicked.
+		If a note was being edited the changes will be saved, otherwise a new note will be created+displayed"""
+
 		self.note_editor.dialog.hide()
 
 		if not self.edited_note:
 			self.create_note(self.note_editor)
 			return
 
-		self.edited_note.title = self.note_editor.get_title()
-		self.edited_note.description = self.note_editor.get_description()
-		self.edited_note.date = self.note_editor.get_date()
-		self.edited_note.time = self.note_editor.get_time()
-		self.edited_note.project = self.note_editor.get_project()
+		self.edited_note.set_title(self.note_editor.get_title())
+		self.edited_note.set_description(self.note_editor.get_description())
+		self.edited_note.set_date(self.note_editor.get_date())
+		self.edited_note.set_time(self.note_editor.get_time())
+		self.edited_note.set_project(self.note_editor.get_project())
 		self.edited_note.update_listeners()
 
 		self.note_handler.save_notes()
 		self.edited_note = None
 
 	def delete_note(self, note):
+		"""Deletes a note and hides the time ine if no other notes are left"""
 		self.main_ui.timeline.remove_note(note)
 		self.note_handler.delete_note(note)
 
@@ -110,11 +121,14 @@ class MainHandler:
 			self.main_ui.window.empty_timeline_label.show()
 
 	def start_editing_project(self, project):
+		"""Opens the project editor and fills in the details of this project"""
 		self.project_editor.fill_in(project)
 		self.project_editor.dialog.show()
 		self.edited_project = project
 
 	def finish_editing_project(self):
+		"""Called when the "Create" button in the project editor is hit.
+		Either a new project will be created or the one that was being edited is being updated"""
 		try:
 			if not self.edited_project:
 				self.create_project(self.project_editor)
@@ -151,6 +165,11 @@ if __name__ == "__main__":
 		import ctypes
 		my_app_id = "taskmanagementapp.1-0"
 		ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(my_app_id)
+
+	# id = QFontDatabase.addApplicationFont("/PATH/party.ttf")
+	# _fontstr = QFontDatabase.applicationFontFamilies(id).at(0)
+	# _font = QFont(_fontstr, 8)
+	# app.setFont(font)
 
 	app = QtWidgets.QApplication(sys.argv)
 	app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)

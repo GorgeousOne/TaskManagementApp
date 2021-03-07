@@ -125,16 +125,19 @@
           <item>
            <widget class="QPushButton" name="toggle_menu_btn">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
             <property name="minimumSize">
              <size>
-              <width>55</width>
+              <width>0</width>
               <height>50</height>
              </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">text-align: left;</string>
             </property>
             <property name="text">
              <string/>
@@ -144,6 +147,29 @@
               <width>50</width>
               <height>50</height>
              </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="all_projects_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">padding-left: 15px;
+text-align:left;</string>
+            </property>
+            <property name="text">
+             <string>All tasks</string>
             </property>
            </widget>
           </item>
@@ -175,7 +201,7 @@
             <x>0</x>
             <y>0</y>
             <width>300</width>
-            <height>450</height>
+            <height>400</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -231,9 +257,9 @@
                <number>0</number>
               </property>
               <item>
-               <widget class="QPushButton" name="all_projects_btn">
+               <widget class="QPushButton" name="create_project_btn">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
@@ -245,33 +271,10 @@
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">padding-left: 15px;
-text-align:left;</string>
+                 <string notr="true">text-align: left;</string>
                 </property>
                 <property name="text">
-                 <string>All tasks</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="create_project_btn">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>50</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>50</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-image: url(./res/icons/plus.png);</string>
-                </property>
-                <property name="text">
-                 <string/>
+                 <string>Add project</string>
                 </property>
                </widget>
               </item>
@@ -327,14 +330,6 @@ text-align:left;</string>
 	background: rgb(140, 187, 255);
 	background-image: url(./res/icons/banner.png);
 }
-.QPushButton {
-	color: white;
-	background: rgba(0, 0, 0, 0);
-	border: none;
-}
-.QPushButton:hover:!pressed {
-	background: rgba(0, 0, 0, 50);
-}
 </string>
          </property>
          <property name="frameShape">
@@ -353,6 +348,9 @@ text-align:left;</string>
           <property name="topMargin">
            <number>0</number>
           </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
@@ -365,12 +363,18 @@ text-align:left;</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">QPushButton{
-	background-image: url(./res/icons/plus.png);
-}</string>
+             <string notr="true">.QPushButton {
+	background: rgba(0, 0, 0, 0);
+	border: none;
+	padding-right: 17px;
+}
+.QPushButton:hover:!pressed {
+	background: rgba(0, 0, 0, 50);
+}
+</string>
             </property>
             <property name="text">
-             <string/>
+             <string>Add task</string>
             </property>
             <property name="iconSize">
              <size>
@@ -381,6 +385,19 @@ text-align:left;</string>
            </widget>
           </item>
           <item>
+           <spacer name="spacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QCheckBox" name="hide_done_notes_check">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
@@ -388,12 +405,8 @@ text-align:left;</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="layoutDirection">
-             <enum>Qt::RightToLeft</enum>
-            </property>
             <property name="styleSheet">
              <string notr="true">QCheckBox {
-	color: white;
 	background: rgba(0, 0, 0, 0);
 	padding-left: 17px;
 	padding-right: 17px;
@@ -401,9 +414,7 @@ text-align:left;</string>
 QCheckBox:hover:!pressed {
 	background: rgba(0, 0, 0, 50);
 }
-/*QCheckBox::indicator {
-	background: rgba(0, 0, 0, 50);
-}*/</string>
+</string>
             </property>
             <property name="text">
              <string>Hide completed</string>
@@ -412,19 +423,6 @@ QCheckBox:hover:!pressed {
              <bool>false</bool>
             </property>
            </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>

@@ -3,8 +3,9 @@ from uis.ui_date_section import UiDateSection
 
 
 class UiTimeline:
-	"""Takes the given widget and adds notes to it in form of note entries which are sorted by date sections"""
+	"""Handles displaying of tasks in a linear timeline, split into sections for each day"""
 	def __init__(self, container, main_handler):
+		"""container: QWidget that will be used to display the tasks"""
 		self.main_handler = main_handler
 		self.container = container
 		self.layout = container.layout()
@@ -17,16 +18,17 @@ class UiTimeline:
 		self.out_filtered_items = []
 
 	def display_note(self, note):
-		date = note.date
+		"""Displays a task in the timeline. Creates a new section if there was no section with the tasks date before"""
+		date = note.get_date()
 		section = None
 
 		for existing_section in self.date_sections:
-			if existing_section.date == note.date:
+			if existing_section.date == note.get_date():
 				section = existing_section
 				break
 
 		if not section:
-			section = self.insert_date(date)
+			section = self.insert_section(date)
 
 		self.displayed_notes[note] = section
 		note.add_listener(self)
@@ -37,14 +39,16 @@ class UiTimeline:
 		item.content.edit_btn.clicked.connect(lambda: self.main_handler.start_editing_note(note))
 
 	def on_note_change(self, note):
+		"""Reorders a task after it's date/time was potentially being changed"""
 		section = self.displayed_notes[note]
-		if section.date == note.date:
+		if section.date == note.get_date():
 			section.update_item(note)
 		else:
 			self.remove_note(note)
 			self.display_note(note)
 
 	def set_done_notes_visible(self, state):
+		"""Hides or displays all tasks that are completed"""
 		self.are_done_notes_visible = state
 
 		for section in self.date_sections:
@@ -53,7 +57,7 @@ class UiTimeline:
 					item.setVisible(state)
 
 	def filter_project(self, project):
-		"""Hides all elements in the timeline that do not belong to the project (shows all which were hidden before)"""
+		"""Hides all elements in the timeline that do not belong to the project"""
 		for item in self.out_filtered_items:
 			item.setVisible(not item.note.is_done or self.are_done_notes_visible)
 
@@ -64,7 +68,7 @@ class UiTimeline:
 			return
 		for section in self.date_sections:
 			for item in section.note_items:
-				if item.note.project != project:
+				if item.note.get_project() != project:
 					item.setVisible(False)
 					self.out_filtered_items.append(item)
 
@@ -77,7 +81,8 @@ class UiTimeline:
 			self.remove_section(section)
 		del self.displayed_notes[note]
 
-	def insert_date(self, new_date):
+	def insert_section(self, new_date):
+		"""Inserts a section for a new date"""
 		new_section = UiDateSection(new_date)
 		index = bisect.bisect(self.date_sections, new_section)
 

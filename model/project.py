@@ -26,6 +26,9 @@ class Project(EventSource):
 	def set_color(self, color):
 		self.color = color
 
+	def get_id(self):
+		return self.uuid
+
 	def __eq__(self, other):
 		if not isinstance(other, Project):
 			return False

@@ -92,7 +92,7 @@
            <string notr="true">font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
           </property>
           <property name="maxLength">
-           <number>16</number>
+           <number>64</number>
           </property>
           <property name="placeholderText">
            <string>Project name</string>

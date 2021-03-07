@@ -9,7 +9,7 @@ class UiNoteEditor:
 		self.projects = projects
 
 		# makes the dialog always stay on top, frameless and translucent on the rounded edges
-		self.dialog = QtUiTools.QUiLoader().load("./uis/res/ui_note_editor.ui")
+		self.dialog = QtUiTools.QUiLoader().load("./uis/scripts/ui_note_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)
 		self.dialog.setWindowFlags(Qt.FramelessWindowHint)
 		self.dialog.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -84,13 +84,13 @@ class UiNoteEditor:
 
 	def fill_in(self, note):
 		"""Fills in the data of a note into the inputs for it to get edited"""
-		self.dialog.title_edit.setText(note.title)
-		self.dialog.description_edit.setPlainText(note.description)
-		self.dialog.date_picker.setDate(note.date)
-		self.set_project(note.project)
+		self.dialog.title_edit.setText(note.get_title())
+		self.dialog.description_edit.setPlainText(note.get_description())
+		self.dialog.date_picker.setDate(note.get_date())
+		self.set_project(note.get_project())
 
-		if note.time:
-			self.dialog.time_picker.setTime(note.time)
+		if note.get_time():
+			self.dialog.time_picker.setTime(note.get_time())
 			self.dialog.enable_time_check.setChecked(True)
 
 	def set_project(self, project):

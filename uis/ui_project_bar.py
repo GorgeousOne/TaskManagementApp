@@ -10,9 +10,9 @@ class UiProjectsBar:
 		self.project_items = []
 
 	def add_project(self, new_project):
+		"""Adds project item for project, sorting the items alphabetically"""
 		new_item = UiProjectItem(new_project)
-		# finds the projects index in alphabetically order, +1 for the "All Projects" button
-		index = bisect.bisect_right(self.project_items, new_item) + 1
+		index = bisect.bisect_right(self.project_items, new_item)
 
 		self.project_items.insert(index, new_item)
 		self.layout().insertWidget(index, new_item)
@@ -27,7 +27,7 @@ class UiProjectsBar:
 		"""Updates the index of the project item when it's name is changed"""
 		item = self.get_item(project)
 		self.project_items.remove(item)
-		new_index = bisect.bisect_right(self.project_items, item) + 1
+		new_index = bisect.bisect_right(self.project_items, item)
 		self.layout().insertWidget(new_index, item)
 		self.project_items.insert(new_index, item)
 

@@ -2,7 +2,7 @@ import argparse
 
 
 class Command:
-	"""Abstract class for commands"""
+	"""An abstract class for commands"""
 	def __init__(self, name, description=""):
 		self.name = name
 		self.description = description
@@ -15,7 +15,7 @@ class Command:
 
 
 class ParentCommand(Command):
-	"""Can have other commands as children and will delegate arguments to them"""
+	"""A command that has other commands as children and will delegate arguments to them"""
 	def __init__(self, name, description=""):
 		super().__init__(name, description)
 		self.children = []
@@ -37,7 +37,7 @@ class ParentCommand(Command):
 
 
 class ArgCommand(Command):
-	"""Command that actually interprets arguments (aka wrapper for argument parser)"""
+	"""A command that interprets arguments with an ArgumentParser"""
 	def __init__(self, name, method, description=""):
 		super().__init__(name, description)
 		self.method = method

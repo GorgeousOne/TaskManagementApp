@@ -176,7 +176,7 @@ class CommandHandler:
 			date = QtCore.QDate.fromString(str_date, "d.M.yyyy")
 
 		if date.year() == 0:
-			raise Exception("Invalid date:''. Please enter the date in the format dd.mm. or dd.mm.yyyy".format(str_date))
+			raise Exception("Invalid date:'{}'. Please enter the date in the format dd.mm. or dd.mm.yyyy".format(str_date))
 		return date
 
 	def deserialize_time(self, str_time):
@@ -190,7 +190,7 @@ class CommandHandler:
 	def deserialize_project(self, project_name):
 		if project_name == "":
 			return None
-		return self.note_handler.match_project(project_name)
+		return self.note_handler.get_project_bye_name(project_name)
 
 	def list_projects(self, args):
 		projects = self.note_handler.get_projects()

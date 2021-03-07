@@ -26,7 +26,7 @@ class UiNoteItem(QtWidgets.QFrame, EventSource):
 		self.vertical_layout.setContentsMargins(0, 0, 0, 0)
 		self.setMaximumWidth(1300)
 
-		self.content = QtUiTools.QUiLoader().load("./uis/res/ui_note_item.ui")
+		self.content = QtUiTools.QUiLoader().load("./uis/scripts/ui_note_item.ui")
 		self.vertical_layout.addWidget(self.content)
 
 		self.content.description_label.setOpenExternalLinks(True)
@@ -44,7 +44,7 @@ class UiNoteItem(QtWidgets.QFrame, EventSource):
 		self.content.project_btn.hide()
 
 		self.on_note_change(self.note)
-		self.on_project_change(self.note.project)
+		self.on_project_change(self.note.get_project())
 
 	def enterEvent(self, event):
 		"""Amplifies the drop shadow of the item when hovered over it"""
@@ -77,16 +77,16 @@ class UiNoteItem(QtWidgets.QFrame, EventSource):
 
 	def on_note_change(self, note):
 		"""Updates the displayed information about the note when it calls an update event"""
-		self.content.title_label.setText(note.title)
-		self.content.description_label.setText(utils.highlight_urls(note.description))
+		self.content.title_label.setText(note.get_title())
+		self.content.description_label.setText(utils.highlight_urls(note.get_description()))
 
-		if note.time:
+		if note.get_time():
 			self.content.time_label.show()
-			self.content.time_label.setText(note.time.toString("HH:mm"))
+			self.content.time_label.setText(note.get_time().toString("HH:mm"))
 		else:
 			self.content.time_label.hide()
 
-		self.on_project_change(note.project)
+		self.on_project_change(note.get_project())
 
 		# updates the col
 		if note.get_is_done():

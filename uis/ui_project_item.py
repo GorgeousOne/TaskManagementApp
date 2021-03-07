@@ -13,7 +13,7 @@ class UiProjectItem(QtWidgets.QWidget):
 		self.vertical_layout = QtWidgets.QVBoxLayout(self)
 		self.vertical_layout.setContentsMargins(0, 0, 0, 0)
 
-		self.content = QtUiTools.QUiLoader().load("./uis/res/ui_project_item.ui")
+		self.content = QtUiTools.QUiLoader().load("./uis/scripts/ui_project_item.ui")
 		self.content.clickable_frame.installEventFilter(self)
 
 		self.vertical_layout.addWidget(self.content)

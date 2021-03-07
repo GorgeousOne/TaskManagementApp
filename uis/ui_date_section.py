@@ -6,7 +6,7 @@ from uis.ui_note_item import UiNoteItem
 
 
 class UiDateSection(QtWidgets.QWidget):
-	"""An widget for displaying all note items of one day together with a dividing line and date title"""
+	"""A widget for displaying all note items of one day together with a date as header"""
 	def __init__(self, date):
 		super().__init__()
 		self.date = date
@@ -15,6 +15,7 @@ class UiDateSection(QtWidgets.QWidget):
 		self.vertical_layout = QtWidgets.QVBoxLayout(self)
 		self.vertical_layout.setContentsMargins(0, 0, 0, 0)
 
+		# creates the header
 		self.date_label = QtWidgets.QLabel(self)
 		self.date_label.setMaximumHeight(20)
 		self.date_label.setText(self.date.toString("dddd, d. MMMM yy"))
@@ -27,6 +28,7 @@ class UiDateSection(QtWidgets.QWidget):
 		self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
 		self.vertical_layout.addWidget(self.line)
 
+		# creates the area for the tasks to be displayed
 		self.note_area = QtWidgets.QWidget(self)
 		self.vertical_layout.addWidget(self.note_area)
 
@@ -35,9 +37,11 @@ class UiDateSection(QtWidgets.QWidget):
 		self.vertical_layout_2.setSpacing(10)
 
 	def get_note_count(self):
+		"""Returns the amount of notes listed in this section"""
 		return len(self.note_items)
 
 	def any_notes_are_visible(self):
+		"""Returns if any of the notes inside this section are visible with the currently applied project filter"""
 		for note in self.note_items:
 			if note.isVisible():
 				return True
@@ -52,6 +56,7 @@ class UiDateSection(QtWidgets.QWidget):
 		return new_item
 
 	def update_item(self, note):
+		"""Updates the position of an item inside this section after being changed"""
 		item = self.get_item(note)
 		self.note_items.remove(item)
 		new_index = bisect.bisect_right(self.note_items, item)
@@ -66,6 +71,7 @@ class UiDateSection(QtWidgets.QWidget):
 		return
 
 	def get_item(self, note):
+		"""Returns the task item from this section associated with the given task"""
 		for item in self.note_items:
 			if item.note == note:
 				return item

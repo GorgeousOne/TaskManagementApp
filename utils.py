@@ -1,12 +1,9 @@
-import os
-from os.path import sep
 import re
-
-icons_folder = os.path.dirname(os.path.abspath("main.py")) + sep + "uis" + sep + "res" + sep + "icons" + sep
 
 
 def replace_property(stylesheet, key, value):
-	"""Replaces a property value in the string of a stylesheet"""  # because I could not get PyQt's unpolish() and polish() to work
+	"""Replaces a property value in the string of a stylesheet"""
+	# because I could not get PyQt's unpolish() and polish() to work
 	index = stylesheet.rfind(key)
 	if index == -1:
 		return stylesheet + "{}: {};".format(key, value)
@@ -17,7 +14,7 @@ def replace_property(stylesheet, key, value):
 
 
 def highlight_urls(text):
-	"""Turns a small selection of urls types inside a string into PyQt's hyperlinks for"""
+	"""Used to turn some types of urls in task descriptions into hyperlinks"""
 	hyper_words = []
 	for word in text.split():
 		if re.search("\.[com|net|org|io|de]", word):
