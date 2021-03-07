@@ -92,7 +92,7 @@ class CommandHandler:
 
 			note = Note(title, description, date, time, project)
 			self.note_handler.add_note(note)
-			print("Added task '{}' for {}".format(note.title, note.date.toString("dddd, d. MMMM yy.")))
+			print("Added task '{}' for {}".format(note.get_title(), note.get_date().toString("dddd, d. MMMM yy.")))
 		except Exception as e:
 			print(e)
 
@@ -100,17 +100,17 @@ class CommandHandler:
 		try:
 			note = self.note_handler.get_notes()[args.index - 1]
 			if args.title is not None:
-				note.title = self.format_title(args.title)
+				note.set_title(self.format_title(args.title))
 			if args.description is not None:
-				note.description = args.description
+				note.set_description(args.description)
 			if args.date is not None:
-				note.date = self.deserialize_date(args.date)
+				note.set_date(self.deserialize_date(args.date))
 			if args.time is not None:
-				note.time = self.deserialize_time(args.time)
+				note.set_time(self.deserialize_time(args.time))
 			if args.project is not None:
-				note.project = self.deserialize_project(args.project)
+				note.set_project(self.deserialize_project(args.project))
 			self.note_handler.save_notes()
-			print("Edited task '{}'.".format(note.title))
+			print("Edited task '{}'.".format(note.get_title()))
 		except IndexError:
 			print(args.index, "not in range of tasks ({})".format(str(len(self.note_handler.get_notes()))))
 		except Exception as e:
@@ -122,7 +122,7 @@ class CommandHandler:
 			return
 		try:
 			deleted_note = self.note_handler.pop_note(args.index - 1)
-			print("Deleted task '{}'.".format(deleted_note.title))
+			print("Deleted task '{}'.".format(deleted_note.get_title()))
 		except IndexError:
 			print(args.index, "not in range of tasks (" + str(len(self.note_handler.get_notes())) + ")")
 
@@ -133,26 +133,26 @@ class CommandHandler:
 
 		for note in note_list:
 			index = self.note_handler.get_notes().index(note) + 1
-			if current_date != note.date:
-				current_date = note.date
+			if current_date != note.get_date():
+				current_date = note.get_date()
 				print("-" * 20, current_date.toString("dddd, d. MMMM"), "-" * 20)
 			self.print_note(note, index, index_pad)
 
 	def print_note(self, note, index, index_pad):
 		header = str(index).ljust(index_pad)
-		if note.time:
-			header += note.time.toString("HH:mm")
+		if note.get_time():
+			header += note.get_time().toString("HH:mm")
 			print(header)
 			header = " " * index_pad
 
 		if note.is_done:
 			header += "✓ "
-		header += note.title
-		if note.project:
-			header += " " * 3 + "({})".format(note.project.get_name())
+		header += note.get_title()
+		if note.get_project():
+			header += " " * 3 + "({})".format(note.get_project().get_name())
 		print(header)
-		if len(note.description) > 0:
-			print(self.wrap_text(note.description, index_pad + 3, 80))
+		if len(note.get_description()) > 0:
+			print(self.wrap_text(note.get_description(), index_pad + 3, 80))
 
 	def wrap_text(self, text, indent, margin):
 		lines = textwrap.fill(text, margin - indent)
@@ -200,7 +200,7 @@ class CommandHandler:
 
 	def create_project(self, args):
 		try:
-			project = Project(args.name.strip())
+			project = Project(args.name.strip()[:64])
 			self.note_handler.add_project(project)
 			print("Create project '{}'.".format(project.name))
 		except Exception as e:

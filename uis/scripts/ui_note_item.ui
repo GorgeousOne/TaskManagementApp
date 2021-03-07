@@ -81,6 +81,12 @@ background: rgba(0, 0, 0, 0)</string>
          </item>
          <item>
           <widget class="QLabel" name="title_label">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="font">
             <font>
              <family>Segoe UI Light</family>
@@ -155,7 +161,7 @@ font: 63 12pt &quot;Segoe UI Semibold&quot;;</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>180</width>
+          <width>220</width>
           <height>50</height>
          </size>
         </property>
@@ -239,7 +245,7 @@ padding: 5px;
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-image: url(./uis/res/icons/pencil.png);
+            <string notr="true">background-image: url(./res/icons/pencil.png);
 /*background-image: url(:/images/icons/pencil.png);*/</string>
            </property>
            <property name="iconSize">
@@ -271,7 +277,7 @@ padding: 5px;
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">background-image: url(./uis/res/icons/trashcan.png);
+            <string notr="true">background-image: url(./res/icons/trashcan.png);
 /*background-image: url(:/images/icons/trashcan.png);*/</string>
            </property>
            <property name="iconSize">

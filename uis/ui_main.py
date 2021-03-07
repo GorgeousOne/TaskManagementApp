@@ -30,8 +30,8 @@ class UiMainWindow:
 		width_extend = max_extend if width == min_extend else min_extend
 
 		self.window.animation = QtCore.QPropertyAnimation(self.window.sidebar_frame, b"maximumWidth")
-		self.window.animation.setDuration(400)
+		self.window.animation.setDuration(500)
 		self.window.animation.setStartValue(width)
 		self.window.animation.setEndValue(width_extend)
-		self.window.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
+		self.window.animation.setEasingCurve(QtCore.QEasingCurve.InOutCubic)
 		self.window.animation.start()

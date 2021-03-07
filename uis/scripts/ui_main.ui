@@ -58,7 +58,7 @@
      <widget class="QFrame" name="sidebar_frame">
       <property name="maximumSize">
        <size>
-        <width>55</width>
+        <width>300</width>
         <height>16777215</height>
        </size>
       </property>
@@ -174,8 +174,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>10083</width>
-            <height>429</height>
+            <width>300</width>
+            <height>450</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -202,6 +202,12 @@
            </property>
            <item alignment="Qt::AlignTop">
             <widget class="QFrame" name="projects_area">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
              </property>
@@ -226,21 +232,21 @@
               </property>
               <item>
                <widget class="QPushButton" name="all_projects_btn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
                   <height>50</height>
                  </size>
                 </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>250</height>
-                 </size>
-                </property>
                 <property name="styleSheet">
                  <string notr="true">padding-left: 15px;
-padding-right: 9999px;</string>
+text-align:left;</string>
                 </property>
                 <property name="text">
                  <string>All tasks</string>
@@ -262,7 +268,7 @@ padding-right: 9999px;</string>
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-image: url(./uis/res/icons/plus.png);</string>
+                 <string notr="true">background-image: url(./res/icons/plus.png);</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -319,7 +325,7 @@ padding-right: 9999px;</string>
          <property name="styleSheet">
           <string notr="true">.QFrame {
 	background: rgb(140, 187, 255);
-	background-image: url(./uis/res/icons/banner.png);
+	background-image: url(./res/icons/banner.png);
 }
 .QPushButton {
 	color: white;
@@ -360,7 +366,7 @@ padding-right: 9999px;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton{
-	background-image: url(./uis/res/icons/plus.png);
+	background-image: url(./res/icons/plus.png);
 }</string>
             </property>
             <property name="text">
@@ -438,7 +444,7 @@ QCheckBox:hover:!pressed {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>745</width>
+            <width>500</width>
             <height>449</height>
            </rect>
           </property>
