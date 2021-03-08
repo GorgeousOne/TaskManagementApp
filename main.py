@@ -1,6 +1,6 @@
 import sys
 
-from PySide2 import QtWidgets, QtCore
+from PySide2 import QtWidgets, QtGui
 
 from cli import CommandHandler
 from model.note_handler import NoteHandler
@@ -94,7 +94,6 @@ class MainHandler:
 	def finish_editing_note(self):
 		"""Called when "Create" button in note editor is clicked.
 		If a note was being edited the changes will be saved, otherwise a new note will be created+displayed"""
-
 		self.note_editor.dialog.hide()
 
 		if not self.edited_note:
@@ -160,18 +159,18 @@ if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		CommandHandler(sys.argv)
 		exit(-1)
-	# changes user model ID so the icon can be displayed in windows taskbar
+
+	app = QtWidgets.QApplication(sys.argv)
+
+	# adds taskbar icon app in windows
 	if sys.platform == "win32":
 		import ctypes
 		my_app_id = "taskmanagementapp.1-0"
 		ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(my_app_id)
+	# loads Segoe fonts in operating systems other than windows
+	else:
+		QtGui.QFontDatabase.addApplicationFont("./res/fonts/segoeuil.ttf")
+		QtGui.QFontDatabase.addApplicationFont("./res/fonts/seguisb.ttf")
 
-	# id = QFontDatabase.addApplicationFont("/PATH/party.ttf")
-	# _fontstr = QFontDatabase.applicationFontFamilies(id).at(0)
-	# _font = QFont(_fontstr, 8)
-	# app.setFont(font)
-
-	app = QtWidgets.QApplication(sys.argv)
-	app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 	MainHandler()
 	sys.exit(app.exec_())

@@ -1,15 +1,12 @@
-from PySide2 import QtWidgets, QtGui, QtUiTools
-from model.event_source import EventSource
+from PySide2 import QtWidgets, QtGui, QtUiTools, QtCore
 
 import utils
 
 
-class UiNoteItem(QtWidgets.QFrame, EventSource):
+class UiNoteItem(QtWidgets.QFrame):
 	"""A timeline item for displaying the data of a note"""
 	def __init__(self, note, date_section):
-		QtWidgets.QFrame.__init__(self)
-		EventSource.__init__(self, "on_note_item_change")
-
+		super().__init__()
 		self.note = note
 		self.note.add_listener(self)
 		self.project = None
@@ -29,8 +26,6 @@ class UiNoteItem(QtWidgets.QFrame, EventSource):
 		self.content = QtUiTools.QUiLoader().load("./uis/scripts/ui_note_item.ui")
 		self.vertical_layout.addWidget(self.content)
 
-		self.content.description_label.setOpenExternalLinks(True)
-
 		self.shadow_effect = QtWidgets.QGraphicsDropShadowEffect(self.date_section)
 		self.shadow_effect.setBlurRadius(10)
 		self.shadow_effect.setOffset(0)
@@ -45,6 +40,10 @@ class UiNoteItem(QtWidgets.QFrame, EventSource):
 
 		self.on_note_change(self.note)
 		self.on_project_change(self.note.get_project())
+
+	def open_url(self, link_str):
+		print("hello good day")
+		QtGui.QDesktopServices.openUrl(QtCore.QUrl(link_str))
 
 	def enterEvent(self, event):
 		"""Amplifies the drop shadow of the item when hovered over it"""
@@ -95,15 +94,12 @@ class UiNoteItem(QtWidgets.QFrame, EventSource):
 			styles = utils.replace_property(self.styleSheet(), "background", "rgb(240, 245, 255)")
 			styles = utils.replace_property(styles, "color", "rgb(200, 200, 200)")
 			self.setStyleSheet(styles)
-
 		else:
 			self.content.toggle_done_btn.setText("Complete")
 			self.shadow_effect.setEnabled(True)
 			styles = utils.replace_property(self.styleSheet(), "background", "rgb(255, 255, 255)")
 			styles = utils.replace_property(styles, "color", "rgb(0, 0, 0)")
 			self.setStyleSheet(styles)
-
-		self.update_listeners()
 
 	def on_project_change(self, project):
 		"""Updates the project icon"""

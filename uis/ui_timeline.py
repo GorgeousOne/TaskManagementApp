@@ -57,14 +57,15 @@ class UiTimeline:
 					item.setVisible(state)
 
 	def filter_project(self, project):
-		"""Hides all elements in the timeline that do not belong to the project"""
+		"""Hides all elements in the timeline that do not belong to the given project"""
 		for item in self.out_filtered_items:
 			item.setVisible(not item.note.is_done or self.are_done_notes_visible)
 
 		self.out_filtered_items.clear()
-		self.filtered_project = project
+		# reset the filtered project when a project item is clicked a second time
+		self.filtered_project = project if self.filtered_project != project else None
 
-		if not project:
+		if not self.filtered_project:
 			return
 		for section in self.date_sections:
 			for item in section.note_items:

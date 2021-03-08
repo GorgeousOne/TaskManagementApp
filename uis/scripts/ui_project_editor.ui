@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>241</height>
+    <width>600</width>
+    <height>251</height>
    </rect>
   </property>
   <property name="font">
@@ -70,7 +70,7 @@
        <number>30</number>
       </property>
       <property name="bottomMargin">
-       <number>40</number>
+       <number>50</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontal:layout">

@@ -23,8 +23,7 @@ class UiNoteEditor:
 		self.dialog.description_edit.setPlaceholderText("Add description")
 
 		self.dialog.date_picker.calendarPopup = True
-		self.dialog.time_picker.hide()
-		self.dialog.enable_time_check.stateChanged.connect(self.toggle_time_visibility)
+		self.dialog.enable_all_day_check.stateChanged.connect(self.toggle_all_day)
 		self.dialog.title_edit.textChanged.connect(self.toggle_btn_create)
 		self.dialog.cancel_btn.clicked.connect(self.dialog.hide)
 
@@ -38,7 +37,7 @@ class UiNoteEditor:
 		return self.dialog.date_picker.date()
 
 	def get_time(self):
-		return self.dialog.time_picker.time() if self.dialog.enable_time_check.isChecked() else None
+		return None if self.dialog.enable_all_day_check.isChecked() else self.dialog.time_picker.time()
 
 	def get_project(self):
 		project_index = self.dialog.projects_combo.currentIndex()
@@ -47,9 +46,9 @@ class UiNoteEditor:
 		else:
 			return self.projects[project_index - 1]
 
-	def toggle_time_visibility(self):
-		"""Toggles visibility of the time picker when check or unchecked"""
-		self.dialog.time_picker.setVisible(self.dialog.enable_time_check.isChecked())
+	def toggle_all_day(self):
+		"""Toggles if time picker is enabled or disabled"""
+		self.dialog.time_picker.setEnabled(not self.dialog.enable_all_day_check.isChecked())
 
 	def toggle_btn_create(self, text):
 		"""Enables or disables the create button depending if the title is set"""
@@ -65,7 +64,7 @@ class UiNoteEditor:
 		"""Resets all input fields and update date and time picker to current time"""
 		self.dialog.title_edit.setText("")
 		self.dialog.description_edit.setPlainText("")
-		self.dialog.enable_time_check.setChecked(False)
+		self.dialog.enable_all_day_check.setChecked(False)
 		self.dialog.create_btn.setEnabled(False)
 
 		now = QtCore.QTime.currentTime()
@@ -91,7 +90,9 @@ class UiNoteEditor:
 
 		if note.get_time():
 			self.dialog.time_picker.setTime(note.get_time())
-			self.dialog.enable_time_check.setChecked(True)
+		else:
+			self.dialog.time_picker.setEnabled(False)
+			self.dialog.enable_all_day_check.setChecked(True)
 
 	def set_project(self, project):
 		if not project:

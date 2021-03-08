@@ -13,57 +13,63 @@ class CommandHandler:
 		self.note_handler = NoteHandler()
 		main_cmd = ParentCommand("main")
 
-		notes_cmd = ParentCommand("task")
+		notes_cmd = ParentCommand("task", "Parent command for all task related commands")
 		main_cmd.add_child(notes_cmd)
 
-		list_notes_cmd = ArgCommand("list", self.list_notes)
+		list_notes_cmd = ArgCommand("list", self.list_notes, "Lists all tasks with an index, optionally filters tasks of a project and/or all uncompleted tasks")
 		notes_cmd.add_child(list_notes_cmd)
 		parser = list_notes_cmd.get_parser()
-		parser.add_argument("--uncompleted", "-u", action="store_true", help="hide completed tasks")
-		parser.add_argument("--project", "-p", help="filter tasks by project name")
+		parser.add_argument("--uncompleted", "-u", action="store_true", help="hides completed tasks")
+		parser.add_argument("--project", "-p", help="name of project to filter tasks by")
 
-		create_note_cmd = ArgCommand("create", self.create_note)
+		create_note_cmd = ArgCommand("create", self.create_note, "Creates a new task")
 		notes_cmd.add_child(create_note_cmd)
 		parser = create_note_cmd.get_parser()
-		parser.add_argument("title", help="set title for task")
-		parser.add_argument("date", help="set deadline for task (dd.mm.yyyy)")
-		parser.add_argument("--description", "-d", help="add description to task")
-		parser.add_argument("--time", "-t", help="add day time to task (hh:mm 24h format)")
-		parser.add_argument("--project", "-p", help="assign task to project")
+		parser.add_argument("title", help="title text of the task")
+		parser.add_argument("date", help="date for task to be displayed at (format: dd.mm.yyyy)")
+		parser.add_argument("--description", "-d", help="description text of task")
+		parser.add_argument("--time", "-t", help="time of day for task to be displayed at (24h format: hh:mm)")
+		parser.add_argument("--project", "-p", help="name of project for task")
 
-		edit_note_cmd = ArgCommand("edit", self.edit_note)
+		edit_note_cmd = ArgCommand("edit", self.edit_note, "Edits the passed properties of a task")
 		notes_cmd.add_child(edit_note_cmd)
 		parser = edit_note_cmd.get_parser()
 		parser.add_argument("index", type=int, help="index of task in list")
-		parser.add_argument("--title", "-T", help="edit title of task")
-		parser.add_argument("--description", "-d", help="edit description of task")
-		parser.add_argument("--date", "-D", help="edit deadline of task (dd.mm.yyyy)")
-		parser.add_argument("--time", "-t", help="edit day time of task (hh:mm 24h format)")
-		parser.add_argument("--project", "-p", help="edit project of task")
+		parser.add_argument("--title", "-T", help="new title text for task")
+		parser.add_argument("--description", "-d", help="new description for task")
+		parser.add_argument("--date", "-D", help="new date of task to be displayed at (format: dd.mm.yyyy)")
+		parser.add_argument("--time", "-t", help="new day time of task (24h format: hh:mm), enter empty string to remove")
+		parser.add_argument("--project", "-p", help="name of new project for task")
 
-		close_note_cmd = ArgCommand("delete", self.delete_note)
-		notes_cmd.add_child(close_note_cmd)
-		parser = close_note_cmd.get_parser()
+		complete_note_cmd = ArgCommand("complete", self.complete_note, "Sets the completion state of a task")
+		notes_cmd.add_child(complete_note_cmd)
+		parser = complete_note_cmd.get_parser()
+		parser.add_argument("index", type=int, help="index of task in list")
+		parser.add_argument("state", help="true/false")
+
+		delete_note_cmd = ArgCommand("delete", self.delete_note, "Deletes a task")
+		notes_cmd.add_child(delete_note_cmd)
+		parser = delete_note_cmd.get_parser()
 		parser.add_argument("index", type=int, help="index of task in list")
 
-		projects_cmd = ParentCommand("project")
+		projects_cmd = ParentCommand("project", "Parent command for all project related commands")
 		main_cmd.add_child(projects_cmd)
 
-		list_projects_cmd = ArgCommand("list", self.list_projects)
+		list_projects_cmd = ArgCommand("list", self.list_projects, "Lists all projects")
 		projects_cmd.add_child(list_projects_cmd)
 
-		create_project_cmd = ArgCommand("create", self.create_project)
+		create_project_cmd = ArgCommand("create", self.create_project, "Creates a new project")
 		projects_cmd.add_child(create_project_cmd)
 		parser = create_project_cmd.get_parser()
 		parser.add_argument("name", help="name for the project (must be unique)")
 
-		rename_project_cmd = ArgCommand("rename", self.rename_project)
+		rename_project_cmd = ArgCommand("rename", self.rename_project, "Renames a project")
 		projects_cmd.add_child(rename_project_cmd)
 		parser = rename_project_cmd.get_parser()
 		parser.add_argument("name", help="name of the project to rename")
-		parser.add_argument("new_name", help="new name for the project")
+		parser.add_argument("new_name", help="new name of the project")
 
-		delete_project_cmd = ArgCommand("delete", self.delete_note)
+		delete_project_cmd = ArgCommand("delete", self.delete_note, "Deletes a project")
 		projects_cmd.add_child(delete_project_cmd)
 		parser = delete_project_cmd.get_parser()
 		parser.add_argument("project", help="name of the project to delete")
@@ -75,12 +81,13 @@ class CommandHandler:
 			project = self.deserialize_project(args.project) if args.project else None
 		except Exception as e:
 			print(e)
-			return
+			return True
 		note_list = self.note_handler.get_notes(args.uncompleted, project)
 		if len(note_list) == 0:
 			print("No tasks listed.")
-			return
-		self.print_notes(note_list)
+		else:
+			self.print_notes(note_list)
+		return True
 
 	def create_note(self, args):
 		try:
@@ -95,6 +102,7 @@ class CommandHandler:
 			print("Added task '{}' for {}".format(note.get_title(), note.get_date().toString("dddd, d. MMMM yy.")))
 		except Exception as e:
 			print(e)
+		return True
 
 	def edit_note(self, args):
 		try:
@@ -115,16 +123,48 @@ class CommandHandler:
 			print(args.index, "not in range of tasks ({})".format(str(len(self.note_handler.get_notes()))))
 		except Exception as e:
 			print(e)
+		return True
+
+	def complete_note(self, args):
+		try:
+			note = self.note_handler.get_notes()[args.index - 1]
+		except IndexError:
+			print(args.index, "not in range of tasks ({})".format(str(len(self.note_handler.get_notes()))))
+			return True
+
+		if args.state.lower() == "true":
+			should_be_done = True
+		elif args.state.lower() == "false":
+			should_be_done = False
+		else:
+			return False
+
+		if should_be_done:
+			if note.get_is_done():
+				print("Task '{}' is already completed.".format(note.get_title()))
+			else:
+				note.toggle_is_done()
+				self.note_handler.save_notes()
+				print("Completed task '{}'.".format(note.get_title()))
+		else:
+			if not note.get_is_done():
+				print("Task '{}' was not completed yet.".format(note.get_title()))
+			else:
+				note.toggle_is_done()
+				self.note_handler.save_notes()
+				print("Reset task '{}' to uncompleted.".format(note.get_title()))
+		return True
 
 	def delete_note(self, args):
 		if len(self.note_handler.get_notes()) == 0:
 			print("No tasks left to delete.")
-			return
+			return True
 		try:
 			deleted_note = self.note_handler.pop_note(args.index - 1)
 			print("Deleted task '{}'.".format(deleted_note.get_title()))
 		except IndexError:
 			print(args.index, "not in range of tasks (" + str(len(self.note_handler.get_notes())) + ")")
+		return True
 
 	def print_notes(self, note_list):
 		print("-" * 20, "Projects", "-" * 20)
@@ -197,6 +237,7 @@ class CommandHandler:
 		print("-" * 20, "Projects", "-" * 20)
 		for i in range(len(projects)):
 			print(projects[i].get_name())
+		return True
 
 	def create_project(self, args):
 		try:
@@ -205,6 +246,7 @@ class CommandHandler:
 			print("Create project '{}'.".format(project.name))
 		except Exception as e:
 			print(e)
+		return True
 
 	def rename_project(self, args):
 		try:
@@ -216,6 +258,7 @@ class CommandHandler:
 			print("Renamed project to '{}'".format(new_name))
 		except Exception as e:
 			print(e)
+		return True
 
 	def delete_project(self, args):
 		try:
@@ -224,3 +267,4 @@ class CommandHandler:
 			print("Deleted project to'{}'".format(project.get_name()))
 		except Exception as e:
 			print(e)
+		return True

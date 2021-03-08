@@ -28,11 +28,14 @@ Alle Aufgaben werden als zeitlich geordnete Liste im Hauptbereich der GUI angeze
 Tage sind durch beschriftete Trennlinien getrennt und Uhrzeiten werden in den Aufgabenkästchen angezeigt.
 Haben Aufgaben keine Uhrzeit werden sie alphabetisch am Anfang des Tages angezeigt.
 
-Wenn man mit der Maus über eine Aufgabe fährt werden all Knöpfe sichtbar, die zur Bearbeitung der Aufgabe vorhanden sind.
+*IMG*
+
 
 ### Aufgaben bearbeiten, erledigen, löschen
+Wenn man mit der Maus über eine Aufgabe fährt werden all Knöpfe sichtbar, die zur Bearbeitung der Aufgabe vorhanden sind.
+
 * Der Knopf mir dem Stift-Icon öffnet wieder das Aufgaben-Formular und Änderungen können vorgenommen und gespeichert werden.
-* Der "Completed"-Knopf markiert eine Aufgabe als erledigt und graut sie aus. Durch erneutes Klicken kann dies jederzeit wieder rückgängig gemacht werden.  
+* Der "Completed"-Knopf markiert eine Aufgabe als erledigt und graut sie aus. Durch erneutes Klicken kann dies jederzeit wieder rückgängig gemacht werden.
 Erledigte Aufgaben können auch ganz ausgeblendet werden mit dem "Hide completed"-Kontrollkästchen in der oberen Leiste.
 
 * Der Mülleimer-Knopf löscht eine Aufgabe permanent, was nicht rückgängig gemacht werden kann.
@@ -47,9 +50,38 @@ Aus dem Pool der optionalen Features habe ich mir
 * die Bedienung des Programms über ein Command-Line-Interface
 
 ausgesucht.
-  
+
 ### Projekte
 
+Projekte können in der linken Seitenleiste erstellt werden. 
+Mit einem Klick auf den "+" Knopf dort öffnet sich ein Formular zum Erstellen eines Projektes mit einem Namen und einer Farbe.
+Genauso wie eine Aufgabe kann ein Projekt bearbeitet oder gelöscht werden mit den Knöpfen, die auftauchen,
+wenn man mit der Maus über das Projekt fährt.
+
+Eine Aufgabe kann dann einem Projekt zugeordnet werden, in dem dieses im Formular zum Bearbeiten der Aufgabe ausgewählt wird. Die Zuordnung einer Aufgabe zu einem Projekt wird durch das Anzeigen Projekticons in Timeline sichtbar gemacht.
+
+Klickt man auf den Namen eines Projektes in der Seitenleiste, so werden all Aufgaben,
+die nicht zu diesem Projekt gehören, ausgeblendet. 
+Mit einem Klick auf "All tasks" werden wieder all Aufgaben angezeigt.
 
 ### CLI
 
+Befehle des Command-Line-Interfaces können mit `python3 main.py` und dem Namen eines Unterbefehls dahinter ausgeführt werden.
+
+Hier ist eine Übersicht aller Befehle:
+```
+task                    
+    list                Lists all tasks with an index, optionally filters tasks of a project and/or all uncompleted tasks
+    create              Creates a new task
+    edit                Edits the passed properties of a task
+    complete            Sets the completion state of a task
+    delete              Deletes a task
+    
+project                 
+    list                Lists all projects
+    create              Creates a new project
+    rename              Renames a project
+    delete              Deletes a project
+```
+Viele der untersten Befehle besitzen feste oder optionale Argumente. 
+Die genaue Verwendung jedes Befehls kann mit `[command] -h` eingesehen werden.

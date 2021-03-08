@@ -24,6 +24,10 @@ class ParentCommand(Command):
 		self.children.append(command)
 
 	def execute(self, str_args):
+		if len(str_args) == 0:
+			self.print_help()
+			return
+
 		for child in self.children:
 			if child.name == str_args[0]:
 				child.execute(str_args[1:])
@@ -31,9 +35,9 @@ class ParentCommand(Command):
 		self.print_help()
 
 	def print_help(self):
-		super().print_help()
+		print("sub commands:")
 		for child in self.children:
-			print(child.name, child.description)
+			print(("  " + child.name).ljust(23), child.description)
 
 
 class ArgCommand(Command):
@@ -47,8 +51,8 @@ class ArgCommand(Command):
 		return self.parser
 
 	def execute(self, str_args):
-		self.method(self.parser.parse_args(str_args))
+		if not self.method(self.parser.parse_args(str_args)):
+			self.parser.print_help()
 
 	def print_help(self):
-		super().print_help()
 		self.parser.print_help()
