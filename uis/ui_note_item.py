@@ -5,6 +5,7 @@ import utils
 
 class UiNoteItem(QtWidgets.QFrame):
 	"""A timeline item for displaying the data of a note"""
+
 	def __init__(self, note, date_section):
 		super().__init__()
 		self.note = note
@@ -41,24 +42,20 @@ class UiNoteItem(QtWidgets.QFrame):
 		self.on_note_change(self.note)
 		self.on_project_change(self.note.get_project())
 
-	def open_url(self, link_str):
-		print("hello good day")
-		QtGui.QDesktopServices.openUrl(QtCore.QUrl(link_str))
-
-	def enterEvent(self, event):
+	def enterEvent(self, event: QtCore.QEvent):
 		"""Amplifies the drop shadow of the item when hovered over it"""
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 80))
 		self.content.toggle_done_btn.show()
 		self.content.edit_btn.show()
 		self.content.delete_btn.show()
 
-	def leaveEvent(self, event):
+	def leaveEvent(self, event: QtCore.QEvent):
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 40))
 		self.content.toggle_done_btn.hide()
 		self.content.edit_btn.hide()
 		self.content.delete_btn.hide()
 
-	def mouseReleaseEvent(self, event):
+	def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
 		"""Shows and hides the description of the note when clicked"""
 		collapse = self.content.details_widget.isVisible()
 		if collapse:

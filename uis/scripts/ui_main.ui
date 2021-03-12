@@ -169,7 +169,7 @@
 text-align:left;</string>
             </property>
             <property name="text">
-             <string>All tasks</string>
+             <string>Show all tasks</string>
             </property>
            </widget>
           </item>

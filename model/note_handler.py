@@ -112,6 +112,6 @@ class NoteHandler:
 
 	def get_project_by_id(self, project_id):
 		for project in self.projects:
-			if project.get_name == project_id:
+			if project.get_id() == project_id:
 				return project
 		return None

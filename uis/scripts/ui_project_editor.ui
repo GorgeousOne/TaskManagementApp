@@ -184,6 +184,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>name_edit</tabstop>
+  <tabstop>color_combo</tabstop>
+  <tabstop>create_btn</tabstop>
+  <tabstop>cancel_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

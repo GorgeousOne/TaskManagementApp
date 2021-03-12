@@ -225,6 +225,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>title_edit</tabstop>
+  <tabstop>description_edit</tabstop>
+  <tabstop>projects_combo</tabstop>
+  <tabstop>date_picker</tabstop>
+  <tabstop>time_picker</tabstop>
+  <tabstop>enable_all_day_check</tabstop>
+  <tabstop>create_btn</tabstop>
+  <tabstop>cancel_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

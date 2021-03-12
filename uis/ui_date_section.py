@@ -11,6 +11,7 @@ class UiDateSection(QtWidgets.QWidget):
 		super().__init__()
 		self.date = date
 		self.note_items = []
+		self.visible_item_count = 0
 
 		self.vertical_layout = QtWidgets.QVBoxLayout(self)
 		self.vertical_layout.setContentsMargins(0, 0, 0, 0)
@@ -36,7 +37,7 @@ class UiDateSection(QtWidgets.QWidget):
 		self.vertical_layout_2.setContentsMargins(10, 10, 10, 10)
 		self.vertical_layout_2.setSpacing(10)
 
-	def get_note_count(self):
+	def note_count(self):
 		"""Returns the amount of notes listed in this section"""
 		return len(self.note_items)
 
@@ -53,10 +54,22 @@ class UiDateSection(QtWidgets.QWidget):
 
 		self.note_area.layout().insertWidget(index, new_item)
 		self.note_items.insert(index, new_item)
+		self.visible_item_count += 1
 		return new_item
 
+	def set_item_visible(self, item, is_visible):
+		"""Sets visibility of an item and hides the section itself if no items are visible in it"""
+		if self.visible_item_count == 0 and is_visible:
+			self.show()
+
+		item.setVisible(is_visible)
+		self.visible_item_count += 1 if is_visible else -1
+
+		if self.visible_item_count == 0:
+			self.hide()
+
 	def update_item(self, note):
-		"""Updates the position of an item inside this section after being changed"""
+		"""Updates the time/alphabet related position of an item inside this section after being changed"""
 		item = self.get_item(note)
 		self.note_items.remove(item)
 		new_index = bisect.bisect_right(self.note_items, item)
@@ -68,6 +81,7 @@ class UiDateSection(QtWidgets.QWidget):
 		item.hide()
 		item.deleteLater()
 		self.note_items.remove(item)
+		note.remove_listener(item)
 		return
 
 	def get_item(self, note):

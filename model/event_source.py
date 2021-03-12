@@ -18,7 +18,7 @@ class EventSource:
 		self.listeners.remove(listener)
 
 	def update_listeners(self):
-		"""Rotifies all listeners that something changed"""
+		"""Notifies all listeners that something changed"""
 		for listener in self.listeners:
 			getattr(listener, self.event_method_name)(self)
 

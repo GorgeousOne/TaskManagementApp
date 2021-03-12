@@ -22,10 +22,10 @@ class UiProjectItem(QtWidgets.QWidget):
 
 		self.click_method = None
 
-	def enterEvent(self, event):
+	def enterEvent(self, event: QtCore.QEvent):
 		self.content.button_bar.show()
 
-	def leaveEvent(self, event):
+	def leaveEvent(self, event: QtCore.QEvent):
 		self.content.button_bar.hide()
 
 	def eventFilter(self, obj, event):
