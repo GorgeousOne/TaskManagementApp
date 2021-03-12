@@ -167,10 +167,17 @@ if __name__ == "__main__":
 		import ctypes
 		my_app_id = "taskmanagementapp.1-0"
 		ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(my_app_id)
-	# loads Segoe fonts in operating systems other than windows
+	# loads Segoe fonts in other os's
 	else:
-		QtGui.QFontDatabase.addApplicationFont("./res/fonts/segoeuil.ttf")
-		QtGui.QFontDatabase.addApplicationFont("./res/fonts/seguisb.ttf")
+		import os
+		dir = os.path.dirname(__file__)
+		QtGui.QFontDatabase.addApplicationFont(dir + "/res/fonts/segoeui.ttf")
+		QtGui.QFontDatabase.addApplicationFont(dir + "/res/fonts/segoeuil.ttf")
+		QtGui.QFontDatabase.addApplicationFont(dir + "/res/fonts/seguisb.ttf")
+
+		# makes application visible in MacOs
+		if sys.platform == "darwin":
+			os.environ['QT_MAC_WANTS_LAYER'] = '1'
 
 	MainHandler()
 	sys.exit(app.exec_())

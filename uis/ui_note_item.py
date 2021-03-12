@@ -34,9 +34,7 @@ class UiNoteItem(QtWidgets.QFrame):
 		self.setGraphicsEffect(self.shadow_effect)
 
 		self.content.details_widget.hide()
-		self.content.toggle_done_btn.hide()
-		self.content.edit_btn.hide()
-		self.content.delete_btn.hide()
+		self.content.button_bar.hide()
 		self.content.project_btn.hide()
 
 		self.on_note_change(self.note)
@@ -45,15 +43,11 @@ class UiNoteItem(QtWidgets.QFrame):
 	def enterEvent(self, event: QtCore.QEvent):
 		"""Amplifies the drop shadow of the item when hovered over it"""
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 80))
-		self.content.toggle_done_btn.show()
-		self.content.edit_btn.show()
-		self.content.delete_btn.show()
+		self.content.button_bar.show()
 
 	def leaveEvent(self, event: QtCore.QEvent):
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 40))
-		self.content.toggle_done_btn.hide()
-		self.content.edit_btn.hide()
-		self.content.delete_btn.hide()
+		self.content.button_bar.hide()
 
 	def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
 		"""Shows and hides the description of the note when clicked"""
@@ -65,7 +59,7 @@ class UiNoteItem(QtWidgets.QFrame):
 
 	def fold_out_details(self):
 		self.content.details_widget.setVisible(True)
-		self.content.title_label.setStyleSheet("""font: 63 12pt "Segoe UI Semibold";""")
+		self.content.title_label.setStyleSheet("""font: semibold "Segoe UI";""")
 
 	def collapse_details(self):
 		self.content.details_widget.setVisible(False)
@@ -74,7 +68,13 @@ class UiNoteItem(QtWidgets.QFrame):
 	def on_note_change(self, note):
 		"""Updates the displayed information about the note when it calls an update event"""
 		self.content.title_label.setText(note.get_title())
-		self.content.description_label.setText(utils.highlight_urls(note.get_description()))
+
+		description = note.get_description()
+		if description == "":
+			self.content.description_label.hide()
+		else:
+			self.content.description_label.show()
+			self.content.description_label.setText(utils.highlight_urls(description))
 
 		if note.get_time():
 			self.content.time_label.show()
