@@ -5,7 +5,6 @@ import utils
 
 class UiNoteItem(QtWidgets.QFrame):
 	"""A timeline item for displaying the data of a note"""
-
 	def __init__(self, note, date_section):
 		super().__init__()
 		self.note = note

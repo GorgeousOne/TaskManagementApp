@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>764</width>
-    <height>148</height>
+    <height>118</height>
    </rect>
   </property>
   <property name="styleSheet">
@@ -67,7 +67,7 @@ background: rgba(0, 0, 0, 0)</string>
           <number>5</number>
          </property>
          <property name="leftMargin">
-          <number>10</number>
+          <number>15</number>
          </property>
          <property name="topMargin">
           <number>10</number>
@@ -298,13 +298,13 @@ font: 63 12pt &quot;Segoe UI Semibold&quot;;</string>
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>25</number>
+       <number>30</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>25</number>
+       <number>30</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
