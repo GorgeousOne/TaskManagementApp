@@ -61,13 +61,13 @@
        <number>25</number>
       </property>
       <property name="leftMargin">
-       <number>30</number>
+       <number>40</number>
       </property>
       <property name="topMargin">
        <number>40</number>
       </property>
       <property name="rightMargin">
-       <number>30</number>
+       <number>40</number>
       </property>
       <property name="bottomMargin">
        <number>50</number>
@@ -78,13 +78,13 @@
          <font>
           <family>Segoe UI Semibold</family>
           <pointsize>14</pointsize>
-          <weight>7</weight>
+          <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
+         <string notr="true">font: 14pt &quot;Segoe UI Semibold&quot;;</string>
         </property>
         <property name="maxLength">
          <number>64</number>

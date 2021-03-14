@@ -16,7 +16,7 @@ class CommandHandler:
 		notes_cmd = ParentCommand("task", "Parent command for all task related commands")
 		main_cmd.add_child(notes_cmd)
 
-		list_notes_cmd = ArgCommand("list", self.list_notes, "Lists all tasks with an index, optionally filters tasks of a project and/or all uncompleted tasks")
+		list_notes_cmd = ArgCommand("list", self.list_notes, "Lists all tasks with an index, optionally filters tasks of a project or uncompleted tasks")
 		notes_cmd.add_child(list_notes_cmd)
 		parser = list_notes_cmd.get_parser()
 		parser.add_argument("--uncompleted", "-u", action="store_true", help="hides completed tasks")
@@ -34,23 +34,23 @@ class CommandHandler:
 		edit_note_cmd = ArgCommand("edit", self.edit_note, "Edits the passed properties of a task")
 		notes_cmd.add_child(edit_note_cmd)
 		parser = edit_note_cmd.get_parser()
-		parser.add_argument("index", type=int, help="index of task in list")
+		parser.add_argument("index", type=int, help="index of task in task list")
 		parser.add_argument("--title", "-T", help="new title text for task")
 		parser.add_argument("--description", "-d", help="new description for task")
 		parser.add_argument("--date", "-D", help="new date of task to be displayed at (format: dd.mm.yyyy)")
-		parser.add_argument("--time", "-t", help="new day time of task (24h format: hh:mm), enter empty string to remove")
+		parser.add_argument("--time", "-t", help="new day time of task (24h format: hh:mm), enter empty quotes to mark as all-day")
 		parser.add_argument("--project", "-p", help="name of new project for task")
 
 		complete_note_cmd = ArgCommand("complete", self.complete_note, "Sets the completion state of a task")
 		notes_cmd.add_child(complete_note_cmd)
 		parser = complete_note_cmd.get_parser()
-		parser.add_argument("index", type=int, help="index of task in list")
+		parser.add_argument("index", type=int, help="index of task in task list")
 		parser.add_argument("state", help="true/false")
 
 		delete_note_cmd = ArgCommand("delete", self.delete_note, "Deletes a task")
 		notes_cmd.add_child(delete_note_cmd)
 		parser = delete_note_cmd.get_parser()
-		parser.add_argument("index", type=int, help="index of task in list")
+		parser.add_argument("index", type=int, help="index of task in task list")
 
 		projects_cmd = ParentCommand("project", "Parent command for all project related commands")
 		main_cmd.add_child(projects_cmd)
@@ -167,7 +167,6 @@ class CommandHandler:
 		return True
 
 	def print_notes(self, note_list):
-		print("-" * 20, "Projects", "-" * 20)
 		index_pad = len(str(len(self.note_handler.get_notes()))) + 2
 		current_date = None
 

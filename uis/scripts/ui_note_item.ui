@@ -19,13 +19,13 @@ background: rgba(0, 0, 0, 0)</string>
     <number>5</number>
    </property>
    <property name="leftMargin">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="topMargin">
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="bottomMargin">
     <number>15</number>
@@ -67,7 +67,7 @@ background: rgba(0, 0, 0, 0)</string>
           <number>5</number>
          </property>
          <property name="leftMargin">
-          <number>15</number>
+          <number>0</number>
          </property>
          <property name="topMargin">
           <number>10</number>
@@ -236,7 +236,7 @@ padding: 5px;
        </widget>
       </item>
       <item alignment="Qt::AlignTop">
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="project_widget" native="true">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -254,13 +254,13 @@ padding: 5px;
           <number>5</number>
          </property>
          <property name="rightMargin">
-          <number>10</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
           <number>5</number>
          </property>
          <item>
-          <widget class="QPushButton" name="project_btn">
+          <widget class="QLabel" name="project_label">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -278,10 +278,13 @@ padding: 5px;
 border-radius: 16px;
 color: rgb(255, 255, 255);
 background: rgb(245, 245, 245);
-font: 63 12pt &quot;Segoe UI Semibold&quot;;</string>
+font: 12pt &quot;Segoe UI Semibold&quot;;</string>
            </property>
            <property name="text">
             <string>W</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -298,13 +301,13 @@ font: 63 12pt &quot;Segoe UI Semibold&quot;;</string>
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>30</number>
+       <number>15</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>30</number>
+       <number>15</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>

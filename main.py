@@ -156,25 +156,20 @@ class MainHandler:
 
 
 if __name__ == "__main__":
+	# runs the command handler instead if arguments were passed
 	if len(sys.argv) > 1:
 		CommandHandler(sys.argv)
 		exit(-1)
 
 	app = QtWidgets.QApplication(sys.argv)
 
-	# adds taskbar icon app in windows
-	if sys.platform == "win32":
-		import ctypes
-		my_app_id = "taskmanagementapp.1-0"
-		ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(my_app_id)
 	# loads Segoe fonts in other os's
-	else:
+	if sys.platform != "win32":
 		import os
 		dir = os.path.dirname(__file__)
 		QtGui.QFontDatabase.addApplicationFont(dir + "/res/fonts/segoeui.ttf")
 		QtGui.QFontDatabase.addApplicationFont(dir + "/res/fonts/segoeuil.ttf")
 		QtGui.QFontDatabase.addApplicationFont(dir + "/res/fonts/seguisb.ttf")
-
 		# makes application visible in MacOs
 		if sys.platform == "darwin":
 			os.environ['QT_MAC_WANTS_LAYER'] = '1'

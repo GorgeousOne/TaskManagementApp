@@ -88,13 +88,13 @@
         <property name="styleSheet">
          <string notr="true">background: rgb(63, 81, 181);
 border-radius: 16px;
-font: 63 14pt &quot;Segoe UI Semibold&quot;;</string>
+font: 14pt &quot;Segoe UI Semibold&quot;;</string>
         </property>
         <property name="text">
          <string>P</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignHCenter|Qt::AlignTop</set>
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>

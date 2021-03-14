@@ -1,46 +1,45 @@
 # Task Management App
-Dieses Projekt wurde im Rahmen des Abschlussprojektes des Moduls "Einführung in die Programmierung" im Studiengang Informatik B.Sc. an der Bauhaus-Universität Weimar angefertigt.
+![So sieht es auf meinem PC aus](res/screenshots/example.png)
 
-Die Aufgabe bestand darin eine grafische Python-Anwendung zu entwickeln, mit der sich Aufgaben verwalten lassen.
+Task Management App ist ein Python-Projekt zum 
+Dies ist das Abschlussprojekt von  für das Modul "Einführung in die Programmierung".
 
 ## Installation
-Um das Programm auszuführen muss [Python3](https://www.python.org/downloads/) installiert sein.  
-Das Projekt benutzt die Bibliotheken:
-* PySide2
+Das Programm wurde mit [Python3](https://www.python.org/downloads/) entwickelt und benutzt die 
+die Bibliothek "PySide2".
 
-Sie sind auch in der requirements.rxt aufgelistet und können mit `pip install -r requirements.txt` installiert werden.
+Sie kann mit [pip](https://pip.pypa.io/en/stable/) direkt installiert werden: `pip install PySide2`.  
+(Oder es geht auch mit der requirements.rxt: `pip install -r requirements.txt`)
 
-Um das Programm mit GUI auszuführen, muss der Befehl `python3 main.py` ausgeführt werden.
+Mit dem Befehl `python3 main.py` kann die App dann ausgeführt werden.
 
-## Features
+## Bedienung
 
-### Aufgaben anlegen
-Mit dem "+" Knopf in der oberen blauen Leiste öffnet sich ein Formular, in dem eine Aufgabe neu erstellt werden kann.  
-*IMG*  
+Mit dem Programm kann man Aufgaben und Erinnerungen als kleine Notizen anlegen, die dann in einer Zeitleiste aufgelistet werden.
+Wird eine Notiz nicht mehr gebraucht, dann kann sie als erledigt markiert werden oder gelöscht werden.
 
-Eine Aufgabe hat immer einen Titel und ein Datum, zu dem sie gehört.
-Es kann auch eine Beschreibung hinzugefügt und eine Uhrzeit und Projekt (siehe Optionale Features) ausgewählt werden.
+#### Aufgaben anlegen
+Mit dem "+" Knopf in der oberen blauen Leiste öffnet sich ein Formular, um eine neue Aufgabe zu erstellen.  
 
-Mit einem Klick auf "Save" wird die Aufgabe nun im Hauptfenster angezeigt.
+Eine Aufgabe braucht immer einen Titel und ein Datum.
+Es kann auch eine Beschreibung hinzugefügt werden und ausgewählt werden, ob sie ganztags oder zu einer bestimmten Uhrzeit stattfindet.
+Außerdem kann jede Aufgabe einem Projekt zugeordnet werden (siehe Optionale Features).
 
-### Darstellung der Aufgaben
-Alle Aufgaben werden als zeitlich geordnete Liste im Hauptbereich der GUI angezeigt.
-Tage sind durch beschriftete Trennlinien getrennt und Uhrzeiten werden in den Aufgabenkästchen angezeigt.
-Haben Aufgaben keine Uhrzeit werden sie alphabetisch am Anfang des Tages angezeigt.
+![](res/screenshots/editor.png)
 
-*IMG*
+Sobald die Notiz mit "Save" gespeichert wird sie mit in der Zeitleiste zu sehen. 
+Die Beschreibung klappt sich unter dem Titel aus und ein, wenn man auf die Notiz klickt.
 
+#### Aufgaben bearbeiten, erledigen, löschen
+Wenn man mit der Maus über eine Aufgabe fährt, werden die Knöpfe zum Bearbeiten der Aufgabe sichtbar.
 
-### Aufgaben bearbeiten, erledigen, löschen
-Wenn man mit der Maus über eine Aufgabe fährt werden all Knöpfe sichtbar, die zur Bearbeitung der Aufgabe vorhanden sind.
-
-* Der Knopf mir dem Stift-Icon öffnet wieder das Aufgaben-Formular und Änderungen können vorgenommen und gespeichert werden.
-* Der "Completed"-Knopf markiert eine Aufgabe als erledigt und graut sie aus. Durch erneutes Klicken kann dies jederzeit wieder rückgängig gemacht werden.
-Erledigte Aufgaben können auch ganz ausgeblendet werden mit dem "Hide completed"-Kontrollkästchen in der oberen Leiste.
+* Der Knopf mir dem Stift-Icon öffnet wieder das Formular, damit Änderungen gemacht werden können.
+* Der "Completed"-Knopf markiert eine Aufgabe als erledigt und graut sie aus. Mit einem zweiten Klick auf den Knopf kann dies wieder rückgängig gemacht werden.
+Erledigte Aufgaben können auch temporär ausgeblendet werden mit dem "Hide completed"-Kontrollkästchen in der oberen Leiste.
 
 * Der Mülleimer-Knopf löscht eine Aufgabe permanent, was nicht rückgängig gemacht werden kann.
 
-### Aufgaben speichern und laden
+#### Aufgaben speichern und laden
 Aufgaben und Projekte werden immer automatisch in einem Ordner "TaskManagementApp" im Benutzer Home-Verzeichnis abgespeichert.
 
 
@@ -51,27 +50,31 @@ Aus dem Pool der optionalen Features habe ich mir
 
 ausgesucht.
 
-### Projekte
+#### Projekte
 
-Projekte können in der linken Seitenleiste erstellt werden. 
-Mit einem Klick auf den "+" Knopf dort öffnet sich ein Formular zum Erstellen eines Projektes mit einem Namen und einer Farbe.
-Genauso wie eine Aufgabe kann ein Projekt bearbeitet oder gelöscht werden mit den Knöpfen, die auftauchen,
-wenn man mit der Maus über das Projekt fährt.
+Projekte können ähnlich wie Notizen in der linken Seitenleiste erstellt werden.
+Der "+" Knopf mit dem Kreis herum, öffnet das Formular zum Erstellen eines Projektes.   Jedes Projekt braucht einen eindeutigen Namen und kann eine Farbe haben.
 
-Eine Aufgabe kann dann einem Projekt zugeordnet werden, in dem dieses im Formular zum Bearbeiten der Aufgabe ausgewählt wird. Die Zuordnung einer Aufgabe zu einem Projekt wird durch das Anzeigen Projekticons in Timeline sichtbar gemacht.
+Genauso wie Aufgaben können Projekte mit Knöpfen, die beim hinüberfahren erscheinen, bearbeitet oder gelöscht werden.
 
-Klickt man auf den Namen eines Projektes in der Seitenleiste, so werden all Aufgaben,
-die nicht zu diesem Projekt gehören, ausgeblendet. 
-Mit einem Klick auf "All tasks" werden wieder all Aufgaben angezeigt.
+![](res/screenshots/editor2.png)
 
-### CLI
+
+Im Bearbeitungsformular kann eine Aufgabe dann einem Projekt zugeordnet werden, 
+was dann an dem Projekticon in der Zeitleiste erkennbar ist.
+
+Um sich nur die Aufgaben eines Projektes anzeigen zu lassen kann man auf den Namen eines Projektes klicken,
+dann werden alle anderen Aufgaben ausgeblendet. 
+Mit den "Show all tasks" Knopf werden wieder alle Aufgaben angezeigt.
+
+#### CLI
 
 Befehle des Command-Line-Interfaces können mit `python3 main.py` und dem Namen eines Unterbefehls dahinter ausgeführt werden.
 
 Hier ist eine Übersicht aller Befehle:
 ```
 task                    
-    list                Lists all tasks with an index, optionally filters tasks of a project and/or all uncompleted tasks
+    list                Lists all tasks with an index, optionally filters tasks of a project or uncompleted tasks
     create              Creates a new task
     edit                Edits the passed properties of a task
     complete            Sets the completion state of a task
@@ -85,3 +88,32 @@ project
 ```
 Viele der untersten Befehle besitzen feste oder optionale Argumente. 
 Die genaue Verwendung jedes Befehls kann mit `[command] -h` eingesehen werden.
+
+##### Beispiele:
+Der Befehl `python3 main.py task list` z.B. listet alle Aufgaben in der Konsole auf: 
+```
+-------------------- Samstag, 13. März --------------------
+1  11:00
+   &#2713; Gemüse einkaufen
+      Paprika, Lauch, Zwiebeln, Kartoffeln
+-------------------- Mittwoch, 17. März --------------------
+2  14:00
+   Opa Fridolin anrufen   (Familie&Freunde)
+-------------------- Freitag, 2. April --------------------
+3  Bib Buch zurückgeben   (Uni)
+      Mathematik für Ingenieure und Naturwissenschaftler Band 1
+
+```
+Der Index einer Aufgabe in dieser Liste kann in anderen Befehlen verwendet werden, 
+beispielsweise um den Einkauf an einen anderen Tag zu verschieben: `python3 main.py task edit 1 --date 23.3.`
+
+Daraufhin steht diese Aufgabe an einer anderen Stelle in der Liste:
+```
+-------------------- Dienstag, 23. März --------------------
+2  11:00
+   &#2713; Gemüse einkaufen
+      Paprika, Lauch, Zwiebeln, Kartoffeln
+```
+
+## Sonstiges
+

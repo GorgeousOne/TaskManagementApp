@@ -34,13 +34,13 @@ class UiNoteItem(QtWidgets.QFrame):
 
 		self.content.details_widget.hide()
 		self.content.button_bar.hide()
-		self.content.project_btn.hide()
+		self.content.project_widget.hide()
 
 		self.on_note_change(self.note)
 		self.on_project_change(self.note.get_project())
 
 	def enterEvent(self, event: QtCore.QEvent):
-		"""Amplifies the drop shadow of the item when hovered over it"""
+		"""Amplifies the drop shadow of the item when hovering over it"""
 		self.shadow_effect.setColor(QtGui.QColor(0, 0, 0, 80))
 		self.content.button_bar.show()
 
@@ -102,7 +102,7 @@ class UiNoteItem(QtWidgets.QFrame):
 		# removes the old project in case there is no new one
 		if self.project:
 			self.project.remove_listener(self)
-			self.content.project_btn.hide()
+			self.content.project_widget.hide()
 			self.project = None
 
 		# adds the new project if not None
@@ -112,12 +112,12 @@ class UiNoteItem(QtWidgets.QFrame):
 
 			# updates the icon's color (gray if the note is completed)
 			new_color = QtGui.QColor(235, 235, 235) if self.note.get_is_done() else project.get_color()
-			project_style = self.content.project_btn.styleSheet()
+			project_style = self.content.project_label.styleSheet()
 			project_style = utils.replace_property(project_style, "background", new_color.name())
-			self.content.project_btn.setStyleSheet(project_style)
+			self.content.project_label.setStyleSheet(project_style)
 			# sets the capital letter in the icon
-			self.content.project_btn.setText(project.get_name()[0].upper())
-			self.content.project_btn.show()
+			self.content.project_label.setText(project.get_name()[0].upper())
+			self.content.project_widget.show()
 
 	def __lt__(self, other):
 		if not isinstance(other, UiNoteItem):
