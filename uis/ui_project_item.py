@@ -23,9 +23,11 @@ class UiProjectItem(QtWidgets.QWidget):
 		self.click_method = None
 
 	def enterEvent(self, event: QtCore.QEvent):
+		"""Show editing buttons on hover"""
 		self.content.button_bar.show()
 
 	def leaveEvent(self, event: QtCore.QEvent):
+		"""Hide editing buttons on hover"""
 		self.content.button_bar.hide()
 
 	def eventFilter(self, obj, event):

@@ -3,72 +3,74 @@ import sys
 from PySide2 import QtWidgets, QtGui
 
 from cli import CommandHandler
-from model.note_handler import NoteHandler
-from model.note import Note
+from model.task_handler import TaskHandler
+from model.task import Task
 from model.project import Project
 from uis.ui_main import UiMainWindow
-from uis.ui_note_editor import UiNoteEditor
+from uis.ui_task_editor import UiTaskEditor
 from uis.ui_project_editor import UiProjectEditor
 
 
 class MainHandler:
 	"""Sets up the whole GUI and it's functionality"""
 	def __init__(self):
-		self.note_handler = NoteHandler()
+		self.task_handler = TaskHandler()
 
 		self.main_ui = UiMainWindow(self)
 		self.project_editor = UiProjectEditor()
-		self.note_editor = UiNoteEditor(self.note_handler.get_projects())
+		self.task_editor = UiTaskEditor(self.task_handler.get_projects())
 
 		self.setup_ui()
 		self.setup_ui_functions()
 		self.main_ui.window.show()
 
-		self.edited_note = None
+		self.edited_task = None
 		self.edited_project = None
 
 	def setup_ui(self):
-		"""Displays all projects / tasks in the project bar / task timeline"""
-		for project in self.note_handler.get_projects():
+		"""Displays all projects and tasks in the project bar and task timeline"""
+		for project in self.task_handler.get_projects():
 			self.create_project_item(project)
-		for note in self.note_handler.get_notes():
-			self.create_note_item(note)
+		for task in self.task_handler.get_tasks():
+			self.create_task_item(task)
 
 	def setup_ui_functions(self):
 		"""Connects main ui buttons and editor buttons to their tasks"""
-		self.main_ui.window.create_note_btn.clicked.connect(self.note_editor.show_reset)
-		self.main_ui.window.hide_done_notes_check.stateChanged.connect(
-			lambda: self.main_ui.timeline.set_done_notes_visible(
-				not self.main_ui.window.hide_done_notes_check.isChecked()))
+		self.main_ui.window.create_task_btn.clicked.connect(self.task_editor.show_reset)
+		self.main_ui.window.hide_done_tasks_check.stateChanged.connect(
+			lambda: self.main_ui.timeline.set_done_tasks_visible(
+				not self.main_ui.window.hide_done_tasks_check.isChecked()))
 
 		self.main_ui.window.create_project_btn.clicked.connect(self.project_editor.show_reset)
 		self.project_editor.dialog.create_btn.clicked.connect(self.finish_editing_project)
-		self.note_editor.dialog.create_btn.clicked.connect(self.finish_editing_note)
+		self.task_editor.dialog.create_btn.clicked.connect(self.finish_editing_task)
 		self.main_ui.window.all_projects_btn.clicked.connect(lambda: self.main_ui.timeline.filter_project(None))
 
-	def create_note(self, note_form):
-		title = note_form.get_title()
-		description = note_form.get_description()
-		date = note_form.get_date()
-		time = note_form.get_time()
-		project = note_form.get_project()
+	def create_task(self, task_form):
+		"""Creates a task with the information of the form"""
+		title = task_form.get_title()
+		description = task_form.get_description()
+		date = task_form.get_date()
+		time = task_form.get_time()
+		project = task_form.get_project()
 
-		new_note = Note(title, description, date, time, project)
-		self.create_note_item(new_note)
-		self.note_handler.add_note(new_note)
+		new_task = Task(title, description, date, time, project)
+		self.create_task_item(new_task)
+		self.task_handler.add_task(new_task)
 
-	def create_note_item(self, new_note):
+	def create_task_item(self, new_task):
 		"""creates a ui item in the timeline for a task"""
 		self.main_ui.window.empty_timeline_label.hide()
 		self.main_ui.window.timeline_area.show()
-		self.main_ui.timeline.display_note(new_note)
+		self.main_ui.timeline.display_task(new_task)
 
 	def create_project(self, project_form):
+		"""Creates a project with the information of the form"""
 		name = project_form.get_project_name()
 		color = project_form.get_selected_color()
 		new_project = Project(name, color)
 
-		self.note_handler.add_project(new_project)
+		self.task_handler.add_project(new_project)
 		self.create_project_item(new_project)
 
 	def create_project_item(self, project):
@@ -78,44 +80,44 @@ class MainHandler:
 		project_item.content.edit_btn.clicked.connect(lambda: self.start_editing_project(project))
 		project_item.connect_click(lambda: self.main_ui.timeline.filter_project(project))
 
-	def toggle_note_completion(self, note):
-		"""Toggles if a note id completed and saves"""
-		note.toggle_is_done()
-		note.update_listeners()
-		self.note_handler.save_notes()
+	def toggle_task_completion(self, task):
+		"""Toggles if a task id completed and saves"""
+		task.toggle_is_done()
+		task.update_listeners()
+		self.task_handler.save_tasks()
 
-	def start_editing_note(self, note):
-		"""Opens note editor and fills in details of note to edit"""
-		self.note_editor.reset()
-		self.note_editor.fill_in(note)
-		self.note_editor.dialog.show()
-		self.edited_note = note
+	def start_editing_task(self, task):
+		"""Opens task editor and fills in details of task to edit"""
+		self.task_editor.reset()
+		self.task_editor.fill_in(task)
+		self.task_editor.dialog.show()
+		self.edited_task = task
 
-	def finish_editing_note(self):
-		"""Called when "Create" button in note editor is clicked.
-		If a note was being edited the changes will be saved, otherwise a new note will be created+displayed"""
-		self.note_editor.dialog.hide()
+	def finish_editing_task(self):
+		"""Called when "Create" button in task editor is clicked.
+		If a task was being edited the changes will be saved, otherwise a new task will be created+displayed"""
+		self.task_editor.dialog.hide()
 
-		if not self.edited_note:
-			self.create_note(self.note_editor)
+		if not self.edited_task:
+			self.create_task(self.task_editor)
 			return
 
-		self.edited_note.set_title(self.note_editor.get_title())
-		self.edited_note.set_description(self.note_editor.get_description())
-		self.edited_note.set_date(self.note_editor.get_date())
-		self.edited_note.set_time(self.note_editor.get_time())
-		self.edited_note.set_project(self.note_editor.get_project())
-		self.edited_note.update_listeners()
+		self.edited_task.set_title(self.task_editor.get_title())
+		self.edited_task.set_description(self.task_editor.get_description())
+		self.edited_task.set_date(self.task_editor.get_date())
+		self.edited_task.set_time(self.task_editor.get_time())
+		self.edited_task.set_project(self.task_editor.get_project())
+		self.edited_task.update_listeners()
 
-		self.note_handler.save_notes()
-		self.edited_note = None
+		self.task_handler.save_tasks()
+		self.edited_task = None
 
-	def delete_note(self, note):
-		"""Deletes a note and hides the time ine if no other notes are left"""
-		self.main_ui.timeline.remove_note(note)
-		self.note_handler.delete_note(note)
+	def delete_task(self, task):
+		"""Deletes a task and hides the time ine if no other tasks are left"""
+		self.main_ui.timeline.remove_task(task)
+		self.task_handler.delete_task(task)
 
-		if len(self.note_handler.get_notes()) == 0:
+		if len(self.task_handler.get_tasks()) == 0:
 			self.main_ui.window.timeline_area.hide()
 			self.main_ui.window.empty_timeline_label.show()
 
@@ -133,7 +135,7 @@ class MainHandler:
 				self.create_project(self.project_editor)
 				self.project_editor.dialog.hide()
 				return
-			self.note_handler.rename_project(self.edited_project, self.project_editor.get_project_name())
+			self.task_handler.rename_project(self.edited_project, self.project_editor.get_project_name())
 		except Exception as e:
 			msg = QtWidgets.QMessageBox()
 			msg.setIcon(QtWidgets.QMessageBox.Critical)
@@ -146,30 +148,30 @@ class MainHandler:
 		self.edited_project.set_color(self.project_editor.get_selected_color())
 		self.edited_project.update_listeners()
 
-		self.note_handler.save_projects()
+		self.task_handler.save_projects()
 		self.edited_project = None
 		self.project_editor.dialog.hide()
 
 	def delete_project(self, project):
 		self.main_ui.projects_bar.delete_project(project)
-		self.note_handler.delete_project(project)
+		self.task_handler.delete_project(project)
 
 
 if __name__ == "__main__":
-	# runs the command handler instead if arguments were passed
+	# runs the command handler instead of the GUI if arguments were passed
 	if len(sys.argv) > 1:
 		CommandHandler(sys.argv)
 		exit(-1)
 
 	app = QtWidgets.QApplication(sys.argv)
 
-	# loads Segoe fonts in other os's
+	# loads Segoe fonts in other OS other than Windows
 	if sys.platform != "win32":
 		import os
-		dir = os.path.dirname(__file__)
-		QtGui.QFontDatabase.addApplicationFont(dir + "/res/fonts/segoeui.ttf")
-		QtGui.QFontDatabase.addApplicationFont(dir + "/res/fonts/segoeuil.ttf")
-		QtGui.QFontDatabase.addApplicationFont(dir + "/res/fonts/seguisb.ttf")
+		app_dir = os.path.dirname(__file__)
+		QtGui.QFontDatabase.addApplicationFont(app_dir + "/res/fonts/segoeui.ttf")
+		QtGui.QFontDatabase.addApplicationFont(app_dir + "/res/fonts/segoeuil.ttf")
+		QtGui.QFontDatabase.addApplicationFont(app_dir + "/res/fonts/seguisb.ttf")
 		# makes application visible in MacOs
 		if sys.platform == "darwin":
 			os.environ['QT_MAC_WANTS_LAYER'] = '1'

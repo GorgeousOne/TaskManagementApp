@@ -355,7 +355,7 @@ text-align:left;</string>
            <number>0</number>
           </property>
           <item alignment="Qt::AlignHCenter">
-           <widget class="QPushButton" name="create_note_btn">
+           <widget class="QPushButton" name="create_task_btn">
             <property name="minimumSize">
              <size>
               <width>50</width>
@@ -398,7 +398,7 @@ text-align:left;</string>
            </spacer>
           </item>
           <item>
-           <widget class="QCheckBox" name="hide_done_notes_check">
+           <widget class="QCheckBox" name="hide_done_tasks_check">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
               <horstretch>0</horstretch>

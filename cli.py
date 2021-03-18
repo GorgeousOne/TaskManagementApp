@@ -3,37 +3,45 @@ import textwrap
 from PySide2 import QtCore
 
 from command import ParentCommand, ArgCommand
-from model.note import Note
-from model.note_handler import NoteHandler
+from model.task import Task
+from model.task_handler import TaskHandler
 from model.project import Project
 
 
 class CommandHandler:
+	"""A class that takes in the console arguments and processes them"""
+
 	def __init__(self, sys_args):
-		self.note_handler = NoteHandler()
-		main_cmd = ParentCommand("main")
+		self.task_handler = TaskHandler()
+		self.setup_commands()
+		# executes the main command with the console arguments
+		self.main_cmd.execute(sys_args[1:])
 
-		notes_cmd = ParentCommand("task", "Parent command for all task related commands")
-		main_cmd.add_child(notes_cmd)
+	def setup_commands(self):
+		"""Sets up all the possible commands and subcommands"""
+		self.main_cmd = ParentCommand("main")
 
-		list_notes_cmd = ArgCommand("list", self.list_notes, "Lists all tasks with an index, optionally filters tasks of a project or uncompleted tasks")
-		notes_cmd.add_child(list_notes_cmd)
-		parser = list_notes_cmd.get_parser()
+		tasks_cmd = ParentCommand("task", "Parent command for all task related commands")
+		self.main_cmd.add_child(tasks_cmd)
+
+		list_tasks_cmd = ArgCommand("list", self.list_tasks, "Lists all tasks with an index, optionally filters tasks of a project or uncompleted tasks")
+		tasks_cmd.add_child(list_tasks_cmd)
+		parser = list_tasks_cmd.get_parser()
 		parser.add_argument("--uncompleted", "-u", action="store_true", help="hides completed tasks")
 		parser.add_argument("--project", "-p", help="name of project to filter tasks by")
 
-		create_note_cmd = ArgCommand("create", self.create_note, "Creates a new task")
-		notes_cmd.add_child(create_note_cmd)
-		parser = create_note_cmd.get_parser()
+		create_task_cmd = ArgCommand("create", self.create_task, "Creates a new task")
+		tasks_cmd.add_child(create_task_cmd)
+		parser = create_task_cmd.get_parser()
 		parser.add_argument("title", help="title text of the task")
 		parser.add_argument("date", help="date for task to be displayed at (format: dd.mm.yyyy)")
 		parser.add_argument("--description", "-d", help="description text of task")
 		parser.add_argument("--time", "-t", help="time of day for task to be displayed at (24h format: hh:mm)")
 		parser.add_argument("--project", "-p", help="name of project for task")
 
-		edit_note_cmd = ArgCommand("edit", self.edit_note, "Edits the passed properties of a task")
-		notes_cmd.add_child(edit_note_cmd)
-		parser = edit_note_cmd.get_parser()
+		edit_task_cmd = ArgCommand("edit", self.edit_task, "Changes the passed properties of a task")
+		tasks_cmd.add_child(edit_task_cmd)
+		parser = edit_task_cmd.get_parser()
 		parser.add_argument("index", type=int, help="index of task in task list")
 		parser.add_argument("--title", "-T", help="new title text for task")
 		parser.add_argument("--description", "-d", help="new description for task")
@@ -41,19 +49,19 @@ class CommandHandler:
 		parser.add_argument("--time", "-t", help="new day time of task (24h format: hh:mm), enter empty quotes to mark as all-day")
 		parser.add_argument("--project", "-p", help="name of new project for task")
 
-		complete_note_cmd = ArgCommand("complete", self.complete_note, "Sets the completion state of a task")
-		notes_cmd.add_child(complete_note_cmd)
-		parser = complete_note_cmd.get_parser()
+		complete_task_cmd = ArgCommand("complete", self.complete_task, "Sets the completion state of a task")
+		tasks_cmd.add_child(complete_task_cmd)
+		parser = complete_task_cmd.get_parser()
 		parser.add_argument("index", type=int, help="index of task in task list")
 		parser.add_argument("state", help="true/false")
 
-		delete_note_cmd = ArgCommand("delete", self.delete_note, "Deletes a task")
-		notes_cmd.add_child(delete_note_cmd)
-		parser = delete_note_cmd.get_parser()
+		delete_task_cmd = ArgCommand("delete", self.delete_task, "Deletes a task")
+		tasks_cmd.add_child(delete_task_cmd)
+		parser = delete_task_cmd.get_parser()
 		parser.add_argument("index", type=int, help="index of task in task list")
 
 		projects_cmd = ParentCommand("project", "Parent command for all project related commands")
-		main_cmd.add_child(projects_cmd)
+		self.main_cmd.add_child(projects_cmd)
 
 		list_projects_cmd = ArgCommand("list", self.list_projects, "Lists all projects")
 		projects_cmd.add_child(list_projects_cmd)
@@ -69,27 +77,26 @@ class CommandHandler:
 		parser.add_argument("name", help="name of the project to rename")
 		parser.add_argument("new_name", help="new name of the project")
 
-		delete_project_cmd = ArgCommand("delete", self.delete_note, "Deletes a project")
+		delete_project_cmd = ArgCommand("delete", self.delete_task, "Deletes a project")
 		projects_cmd.add_child(delete_project_cmd)
 		parser = delete_project_cmd.get_parser()
 		parser.add_argument("project", help="name of the project to delete")
+		return self.main_cmd
 
-		main_cmd.execute(sys_args[1:])
-
-	def list_notes(self, args):
+	def list_tasks(self, args):
 		try:
 			project = self.deserialize_project(args.project) if args.project else None
 		except Exception as e:
 			print(e)
 			return True
-		note_list = self.note_handler.get_notes(args.uncompleted, project)
-		if len(note_list) == 0:
+		task_list = self.task_handler.get_tasks(args.uncompleted, project)
+		if len(task_list) == 0:
 			print("No tasks listed.")
 		else:
-			self.print_notes(note_list)
+			self.print_tasks(task_list)
 		return True
 
-	def create_note(self, args):
+	def create_task(self, args):
 		try:
 			title = self.format_title(args.title)
 			description = args.description if args.description else ""
@@ -97,39 +104,39 @@ class CommandHandler:
 			time = self.deserialize_time(args.time) if args.time else None
 			project = self.deserialize_project(args.project) if args.project else None
 
-			note = Note(title, description, date, time, project)
-			self.note_handler.add_note(note)
-			print("Added task '{}' for {}".format(note.get_title(), note.get_date().toString("dddd, d. MMMM yy.")))
+			task = Task(title, description, date, time, project)
+			self.task_handler.add_task(task)
+			print("Added task '{}' for {}".format(task.get_title(), task.get_date().toString("dddd, d. MMMM yy.")))
 		except Exception as e:
 			print(e)
 		return True
 
-	def edit_note(self, args):
+	def edit_task(self, args):
 		try:
-			note = self.note_handler.get_notes()[args.index - 1]
+			task = self.task_handler.get_tasks()[args.index - 1]
 			if args.title is not None:
-				note.set_title(self.format_title(args.title))
+				task.set_title(self.format_title(args.title))
 			if args.description is not None:
-				note.set_description(args.description)
+				task.set_description(args.description)
 			if args.date is not None:
-				note.set_date(self.deserialize_date(args.date))
+				task.set_date(self.deserialize_date(args.date))
 			if args.time is not None:
-				note.set_time(self.deserialize_time(args.time))
+				task.set_time(self.deserialize_time(args.time))
 			if args.project is not None:
-				note.set_project(self.deserialize_project(args.project))
-			self.note_handler.save_notes()
-			print("Edited task '{}'.".format(note.get_title()))
+				task.set_project(self.deserialize_project(args.project))
+			self.task_handler.save_tasks()
+			print("Edited task '{}'.".format(task.get_title()))
 		except IndexError:
-			print(args.index, "not in range of tasks ({})".format(str(len(self.note_handler.get_notes()))))
+			print(args.index, "not in range of tasks ({})".format(str(len(self.task_handler.get_tasks()))))
 		except Exception as e:
 			print(e)
 		return True
 
-	def complete_note(self, args):
+	def complete_task(self, args):
 		try:
-			note = self.note_handler.get_notes()[args.index - 1]
+			task = self.task_handler.get_tasks()[args.index - 1]
 		except IndexError:
-			print(args.index, "not in range of tasks ({})".format(str(len(self.note_handler.get_notes()))))
+			print(args.index, "not in range of tasks ({})".format(str(len(self.task_handler.get_tasks()))))
 			return True
 
 		if args.state.lower() == "true":
@@ -140,58 +147,58 @@ class CommandHandler:
 			return False
 
 		if should_be_done:
-			if note.get_is_done():
-				print("Task '{}' is already completed.".format(note.get_title()))
+			if task.get_is_done():
+				print("Task '{}' is already completed.".format(task.get_title()))
 			else:
-				note.toggle_is_done()
-				self.note_handler.save_notes()
-				print("Completed task '{}'.".format(note.get_title()))
+				task.toggle_is_done()
+				self.task_handler.save_tasks()
+				print("Completed task '{}'.".format(task.get_title()))
 		else:
-			if not note.get_is_done():
-				print("Task '{}' was not completed yet.".format(note.get_title()))
+			if not task.get_is_done():
+				print("Task '{}' was not completed yet.".format(task.get_title()))
 			else:
-				note.toggle_is_done()
-				self.note_handler.save_notes()
-				print("Reset task '{}' to uncompleted.".format(note.get_title()))
+				task.toggle_is_done()
+				self.task_handler.save_tasks()
+				print("Reset task '{}' to uncompleted.".format(task.get_title()))
 		return True
 
-	def delete_note(self, args):
-		if len(self.note_handler.get_notes()) == 0:
+	def delete_task(self, args):
+		if len(self.task_handler.get_tasks()) == 0:
 			print("No tasks left to delete.")
 			return True
 		try:
-			deleted_note = self.note_handler.pop_note(args.index - 1)
-			print("Deleted task '{}'.".format(deleted_note.get_title()))
+			deleted_task = self.task_handler.pop_task(args.index - 1)
+			print("Deleted task '{}'.".format(deleted_task.get_title()))
 		except IndexError:
-			print(args.index, "not in range of tasks (" + str(len(self.note_handler.get_notes())) + ")")
+			print(args.index, "not in range of tasks (" + str(len(self.task_handler.get_tasks())) + ")")
 		return True
 
-	def print_notes(self, note_list):
-		index_pad = len(str(len(self.note_handler.get_notes()))) + 2
+	def print_tasks(self, task_list):
+		index_pad = len(str(len(self.task_handler.get_tasks()))) + 2
 		current_date = None
 
-		for note in note_list:
-			index = self.note_handler.get_notes().index(note) + 1
-			if current_date != note.get_date():
-				current_date = note.get_date()
+		for task in task_list:
+			index = self.task_handler.get_tasks().index(task) + 1
+			if current_date != task.get_date():
+				current_date = task.get_date()
 				print("-" * 20, current_date.toString("dddd, d. MMMM"), "-" * 20)
-			self.print_note(note, index, index_pad)
+			self.print_task(task, index, index_pad)
 
-	def print_note(self, note, index, index_pad):
+	def print_task(self, task, index, index_pad):
 		header = str(index).ljust(index_pad)
-		if note.get_time():
-			header += note.get_time().toString("HH:mm")
+		if task.get_time():
+			header += task.get_time().toString("HH:mm")
 			print(header)
 			header = " " * index_pad
 
-		if note.is_done:
-			header += "✓ "
-		header += note.get_title()
-		if note.get_project():
-			header += " " * 3 + "({})".format(note.get_project().get_name())
+		if task.is_done:
+			header += "[Done] "
+		header += task.get_title()
+		if task.get_project():
+			header += " " * 3 + "({})".format(task.get_project().get_name())
 		print(header)
-		if len(note.get_description()) > 0:
-			print(self.wrap_text(note.get_description(), index_pad + 3, 80))
+		if len(task.get_description()) > 0:
+			print(self.wrap_text(task.get_description(), index_pad + 3, 80))
 
 	def wrap_text(self, text, indent, margin):
 		lines = textwrap.fill(text, margin - indent)
@@ -215,24 +222,28 @@ class CommandHandler:
 			date = QtCore.QDate.fromString(str_date, "d.M.yyyy")
 
 		if date.year() == 0:
-			raise Exception("Invalid date:'{}'. Please enter the date in the format dd.mm. or dd.mm.yyyy".format(str_date))
+			raise Exception(
+				"Invalid date:'{}'. Please enter the date in the format dd.mm. or dd.mm.yyyy".format(str_date))
 		return date
 
 	def deserialize_time(self, str_time):
+		"""Creates a QTime object from a string"""
 		if str_time == "":
 			return None
 		time = QtCore.QTime.fromString(str_time, "h:mm")
 		if time.hour() == -1:
-			raise Exception("Invalid time: '{}'. Please enter the time in the format hh:mm (24h format)".format(str_time))
+			raise Exception(
+				"Invalid time: '{}'. Please enter the time in the format hh:mm (24h format)".format(str_time))
 		return time
 
 	def deserialize_project(self, project_name):
+		"""Finds a project by name or """
 		if project_name == "":
 			return None
-		return self.note_handler.get_project_bye_name(project_name)
+		return self.task_handler.get_project_by_name(project_name)
 
 	def list_projects(self, args):
-		projects = self.note_handler.get_projects()
+		projects = self.task_handler.get_projects()
 		print("-" * 20, "Projects", "-" * 20)
 		for i in range(len(projects)):
 			print(projects[i].get_name())
@@ -241,7 +252,7 @@ class CommandHandler:
 	def create_project(self, args):
 		try:
 			project = Project(args.name.strip()[:64])
-			self.note_handler.add_project(project)
+			self.task_handler.add_project(project)
 			print("Create project '{}'.".format(project.name))
 		except Exception as e:
 			print(e)
@@ -253,7 +264,7 @@ class CommandHandler:
 			new_name = args.new_name.strip()
 			if not new_name:
 				raise Exception("Project name cannot be empty or white spaces only.")
-			self.note_handler.rename_project(project, args.new_name.strip())
+			self.task_handler.rename_project(project, args.new_name.strip())
 			print("Renamed project to '{}'".format(new_name))
 		except Exception as e:
 			print(e)
@@ -262,7 +273,7 @@ class CommandHandler:
 	def delete_project(self, args):
 		try:
 			project = self.deserialize_project(args.name)
-			self.note_handler.delete_project(project)
+			self.task_handler.delete_project(project)
 			print("Deleted project to'{}'".format(project.get_name()))
 		except Exception as e:
 			print(e)

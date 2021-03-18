@@ -11,56 +11,56 @@ class UiTimeline:
 		self.layout = container.layout()
 
 		self.date_sections = []
-		self.displayed_notes = dict()
+		self.displayed_tasks = dict()
 
-		self.are_done_notes_visible = True
+		self.are_done_tasks_visible = True
 		self.filtered_project = None
 		self.out_filtered_items = []
 
-	def display_note(self, note):
+	def display_task(self, task):
 		"""Displays a task in the timeline. Creates a new section if there was no section with the tasks date before"""
-		date = note.get_date()
+		date = task.get_date()
 		section = None
 
 		for existing_section in self.date_sections:
-			if existing_section.date == note.get_date():
+			if existing_section.date == task.get_date():
 				section = existing_section
 				break
 
 		if not section:
 			section = self.insert_section(date)
 
-		self.displayed_notes[note] = section
-		note.add_listener(self)
+		self.displayed_tasks[task] = section
+		task.add_listener(self)
 
-		item = section.display_note(note)
-		item.content.toggle_done_btn.clicked.connect(lambda: self.main_handler.toggle_note_completion(note))
-		item.content.delete_btn.clicked.connect(lambda: self.main_handler.delete_note(note))
-		item.content.edit_btn.clicked.connect(lambda: self.main_handler.start_editing_note(note))
+		item = section.display_task(task)
+		item.content.toggle_done_btn.clicked.connect(lambda: self.main_handler.toggle_task_completion(task))
+		item.content.delete_btn.clicked.connect(lambda: self.main_handler.delete_task(task))
+		item.content.edit_btn.clicked.connect(lambda: self.main_handler.start_editing_task(task))
 
-	def on_note_change(self, note):
+	def on_task_change(self, task):
 		"""Reorders a task after it's date/time was potentially being changed"""
-		section = self.displayed_notes[note]
-		if section.date == note.get_date():
-			section.update_item(note)
+		section = self.displayed_tasks[task]
+		if section.date == task.get_date():
+			section.update_item(task)
 		else:
-			self.remove_note(note)
-			self.display_note(note)
+			self.remove_task(task)
+			self.display_task(task)
 
-	def set_done_notes_visible(self, state):
+	def set_done_tasks_visible(self, state):
 		"""Hides or displays all tasks that are completed"""
-		self.are_done_notes_visible = state
+		self.are_done_tasks_visible = state
 
 		for section in self.date_sections:
-			for item in section.note_items:
-				if item.note.is_done and item not in self.out_filtered_items:
+			for item in section.task_items:
+				if item.task.is_done and item not in self.out_filtered_items:
 					section.set_item_visible(item, state)
 
 	def filter_project(self, project):
 		"""Hides all elements in the timeline that do not belong to the given project"""
 		for item in self.out_filtered_items:
-			if self.are_done_notes_visible or not item.note.get_is_done():
-				self.displayed_notes[item.note].set_item_visible(item, True)
+			if self.are_done_tasks_visible or not item.task.get_is_done():
+				self.displayed_tasks[item.task].set_item_visible(item, True)
 
 		self.out_filtered_items.clear()
 
@@ -73,19 +73,19 @@ class UiTimeline:
 			return
 
 		for section in self.date_sections:
-			for item in section.note_items:
-				if item.note.get_project() != project:
+			for item in section.task_items:
+				if item.task.get_project() != project:
 					section.set_item_visible(item, False)
 					self.out_filtered_items.append(item)
 
-	def remove_note(self, note):
-		note.remove_listener(self)
-		section = self.displayed_notes[note]
-		section.remove_note(note)
+	def remove_task(self, task):
+		task.remove_listener(self)
+		section = self.displayed_tasks[task]
+		section.remove_task(task)
 
-		if section.note_count() == 0:
+		if section.task_count() == 0:
 			self.remove_section(section)
-		del self.displayed_notes[note]
+		del self.displayed_tasks[task]
 
 	def insert_section(self, new_date):
 		"""Inserts a section for a new date"""

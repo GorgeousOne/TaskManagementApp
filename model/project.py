@@ -9,7 +9,6 @@ class Project(EventSource):
 	"""Stores all information about a project."""
 	def __init__(self, name, color=QtGui.QColor(63, 81, 181)):
 		super().__init__("on_project_change")
-		self.uuid = uuid.uuid4()
 		self.name = name
 		self.color = color
 		self.listeners = []
@@ -26,18 +25,11 @@ class Project(EventSource):
 	def set_color(self, color):
 		self.color = color
 
-	def get_id(self):
-		return self.uuid
-
-	def __eq__(self, other):
-		if not isinstance(other, Project):
-			return False
-		return self.uuid == other.uuid
-
 	def __lt__(self, other):
 		if not isinstance(other, Project):
 			return False
 		return self.name < other.name
 
 	def __repr__(self):
-		return f"<Project {str(self.uuid)[-5:]}: {self.name}>"
+		"""to string method for debug purposes"""
+		return f"<Project: {self.name}>"

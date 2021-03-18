@@ -2,15 +2,15 @@ import bisect
 from PySide2 import QtWidgets
 from PySide2.QtCore import Qt
 
-from uis.ui_note_item import UiNoteItem
+from uis.ui_task_item import UiTaskItem
 
 
 class UiDateSection(QtWidgets.QWidget):
-	"""A widget for displaying all note items of one day together with a date as header"""
+	"""A widget for displaying all task items of one day together with a date as header"""
 	def __init__(self, date):
 		super().__init__()
 		self.date = date
-		self.note_items = []
+		self.task_items = []
 		self.visible_item_count = 0
 
 		self.vertical_layout = QtWidgets.QVBoxLayout(self)
@@ -30,30 +30,31 @@ class UiDateSection(QtWidgets.QWidget):
 		self.vertical_layout.addWidget(self.line)
 
 		# creates the area for the tasks to be displayed
-		self.note_area = QtWidgets.QWidget(self)
-		self.vertical_layout.addWidget(self.note_area)
+		self.task_area = QtWidgets.QWidget(self)
+		self.vertical_layout.addWidget(self.task_area)
 
-		self.vertical_layout_2 = QtWidgets.QVBoxLayout(self.note_area)
+		self.vertical_layout_2 = QtWidgets.QVBoxLayout(self.task_area)
 		self.vertical_layout_2.setContentsMargins(10, 10, 10, 10)
 		self.vertical_layout_2.setSpacing(10)
 
-	def note_count(self):
-		"""Returns the amount of notes listed in this section"""
-		return len(self.note_items)
+	def task_count(self):
+		"""Returns the amount of tasks listed in this section"""
+		return len(self.task_items)
 
-	def any_notes_are_visible(self):
-		"""Returns if any of the notes inside this section are visible with the currently applied project filter"""
-		for note in self.note_items:
-			if note.isVisible():
+	def any_tasks_are_visible(self):
+		"""Returns if any of the tasks inside this section are visible with the currently applied project filter"""
+		for task in self.task_items:
+			if task.isVisible():
 				return True
 		return False
 
-	def display_note(self, new_note):
-		new_item = UiNoteItem(new_note, self)
-		index = bisect.bisect_right(self.note_items, new_item)
+	def display_task(self, new_task):
+		"""Creates a task item for the task and displays adds it to the layout"""
+		new_item = UiTaskItem(new_task, self)
+		index = bisect.bisect_right(self.task_items, new_item)
 
-		self.note_area.layout().insertWidget(index, new_item)
-		self.note_items.insert(index, new_item)
+		self.task_area.layout().insertWidget(index, new_item)
+		self.task_items.insert(index, new_item)
 		self.visible_item_count += 1
 		return new_item
 
@@ -68,28 +69,28 @@ class UiDateSection(QtWidgets.QWidget):
 		if self.visible_item_count == 0:
 			self.hide()
 
-	def update_item(self, note):
+	def update_item(self, task):
 		"""Updates the time/alphabet related position of an item inside this section after being changed"""
-		item = self.get_item(note)
-		self.note_items.remove(item)
-		new_index = bisect.bisect_right(self.note_items, item)
-		self.note_area.layout().insertWidget(new_index, item)
-		self.note_items.insert(new_index, item)
+		item = self.get_item(task)
+		self.task_items.remove(item)
+		new_index = bisect.bisect_right(self.task_items, item)
+		self.task_area.layout().insertWidget(new_index, item)
+		self.task_items.insert(new_index, item)
 
-	def remove_note(self, note):
-		item = self.get_item(note)
+	def remove_task(self, task):
+		item = self.get_item(task)
 		item.hide()
 		item.deleteLater()
-		self.note_items.remove(item)
-		note.remove_listener(item)
+		self.task_items.remove(item)
+		task.remove_listener(item)
 		return
 
-	def get_item(self, note):
+	def get_item(self, task):
 		"""Returns the task item from this section associated with the given task"""
-		for item in self.note_items:
-			if item.note == note:
+		for item in self.task_items:
+			if item.task == task:
 				return item
-		raise Exception(str(note) + " not listed in " + self.date.toString("d. MMMM yy"))
+		raise Exception(str(task) + " not listed in " + self.date.toString("d. MMMM yy"))
 
 	def __lt__(self, other):
 		if not isinstance(other, UiDateSection):

@@ -3,13 +3,13 @@ from PySide2 import QtUiTools, QtCore, QtWidgets, QtGui
 from PySide2.QtCore import Qt
 
 
-class UiNoteEditor:
-	"""A form for creating or editing notes"""
+class UiTaskEditor:
+	"""A form for creating or editing tasks"""
 	def __init__(self, projects):
 		self.projects = projects
 
 		# makes the dialog always stay on top, frameless and translucent on the rounded edges
-		self.dialog = QtUiTools.QUiLoader().load("./uis/scripts/ui_note_editor.ui")
+		self.dialog = QtUiTools.QUiLoader().load("./uis/scripts/ui_task_editor.ui")
 		self.dialog.setWindowModality(Qt.ApplicationModal)
 		self.dialog.setWindowFlags(Qt.FramelessWindowHint)
 		self.dialog.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -76,20 +76,20 @@ class UiNoteEditor:
 
 		projects_combo = self.dialog.projects_combo
 		projects_combo.clear()
-		projects_combo.addItem("No project")
+		projects_combo.addItem("-No project-")
 
 		for project in self.projects:
 			projects_combo.addItem(project.get_name())
 
-	def fill_in(self, note):
-		"""Fills in the data of a note into the inputs for it to get edited"""
-		self.dialog.title_edit.setText(note.get_title())
-		self.dialog.description_edit.setPlainText(note.get_description())
-		self.dialog.date_picker.setDate(note.get_date())
-		self.set_project(note.get_project())
+	def fill_in(self, task):
+		"""Fills in the data of a task into the inputs for it to get edited"""
+		self.dialog.title_edit.setText(task.get_title())
+		self.dialog.description_edit.setPlainText(task.get_description())
+		self.dialog.date_picker.setDate(task.get_date())
+		self.set_project(task.get_project())
 
-		if note.get_time():
-			self.dialog.time_picker.setTime(note.get_time())
+		if task.get_time():
+			self.dialog.time_picker.setTime(task.get_time())
 		else:
 			self.dialog.time_picker.setEnabled(False)
 			self.dialog.enable_all_day_check.setChecked(True)

@@ -1,15 +1,15 @@
 # Task Management App
 ![So sieht es auf meinem PC aus](res/screenshots/example.png)
 
-Task Management App ist ein Python-Projekt zum 
-Dies ist das Abschlussprojekt von  für das Modul "Einführung in die Programmierung".
+Task Management App ist ein Python-Projekt zum Verwalten von Aufgaben und Erinnerungen.
+Dies ist das Abschlussprojekt für das Modul "Einführung in die Programmierung".
 
 ## Installation
 Das Programm wurde mit [Python3](https://www.python.org/downloads/) entwickelt und benutzt die 
 die Bibliothek "PySide2".
 
-Sie kann mit [pip](https://pip.pypa.io/en/stable/) direkt installiert werden: `pip install PySide2`.  
-(Oder es geht auch mit der requirements.rxt: `pip install -r requirements.txt`)
+Sie kann mit pip direkt installiert werden: `pip install PySide2`.  
+(Oder es geht auch mit der requirements.txt: `pip install -r requirements.txt`)
 
 Mit dem Befehl `python3 main.py` kann die App dann ausgeführt werden.
 
@@ -94,7 +94,7 @@ Der Befehl `python3 main.py task list` z.B. listet alle Aufgaben in der Konsole 
 ```
 -------------------- Samstag, 13. März --------------------
 1  11:00
-   &#2713; Gemüse einkaufen
+   [Done] Gemüse einkaufen
       Paprika, Lauch, Zwiebeln, Kartoffeln
 -------------------- Mittwoch, 17. März --------------------
 2  14:00
@@ -111,9 +111,12 @@ Daraufhin steht diese Aufgabe an einer anderen Stelle in der Liste:
 ```
 -------------------- Dienstag, 23. März --------------------
 2  11:00
-   &#2713; Gemüse einkaufen
+   [Done] Gemüse einkaufen
       Paprika, Lauch, Zwiebeln, Kartoffeln
 ```
 
 ## Sonstiges
 
+In Aufgabenschreibungen werden Links, die z.B. ".com" oder ".de" enthalten, automatisch als Hypelinks markiert:
+
+![link](res/screenshots/sonstiges.png)

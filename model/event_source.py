@@ -1,7 +1,7 @@
 
 class EventSource:
-	"""Abstract event class according to the observer pattern.
-	It can store listeners and notify them about a common method"""
+	"""Abstract event class with observer pattern.
+	It can store listeners and notify them with a common method"""
 
 	def __init__(self, event_method_name):
 		"""event_method_name: the name of the method that will be called on each listener to notify them"""

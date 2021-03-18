@@ -11,7 +11,7 @@ class UiMainWindow:
 		self.window.setWindowIcon(QtGui.QIcon("./res/icons/squiggle3.png"))
 
 		self.window.toggle_menu_btn.setIcon(QtGui.QIcon("./res/icons/burger.png"))
-		self.window.create_note_btn.setIcon(QtGui.QIcon("./res/icons/plus.png"))
+		self.window.create_task_btn.setIcon(QtGui.QIcon("./res/icons/plus.png"))
 		self.window.create_project_btn.setIcon(QtGui.QIcon("./res/icons/circled-plus.png"))
 		self.window.create_project_btn.setIconSize(QtCore.QSize(50, 50))
 
