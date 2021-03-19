@@ -1,6 +1,7 @@
 import sys
 
-from PySide2 import QtWidgets, QtGui
+from PySide2 import QtCore, QtWidgets, QtGui
+from PySide2.QtCore import Qt
 
 from cli import CommandHandler
 from model.task_handler import TaskHandler
@@ -162,13 +163,14 @@ if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		CommandHandler(sys.argv)
 		exit(-1)
-
+	# stops this one warning message from popping up
+	QtCore.QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 	app = QtWidgets.QApplication(sys.argv)
 
 	# loads Segoe fonts in other OS other than Windows
 	if sys.platform != "win32":
 		import os
-		app_dir = os.path.dirname(__file__)
+		app_dir = os.path.dirname(os.path.abspath(__file__))
 		QtGui.QFontDatabase.addApplicationFont(app_dir + "/res/fonts/segoeui.ttf")
 		QtGui.QFontDatabase.addApplicationFont(app_dir + "/res/fonts/segoeuil.ttf")
 		QtGui.QFontDatabase.addApplicationFont(app_dir + "/res/fonts/seguisb.ttf")
