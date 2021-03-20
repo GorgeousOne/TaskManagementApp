@@ -6,12 +6,13 @@ Dies ist das Abschlussprojekt für das Modul "Einführung in die Programmierung"
 
 ## Installation
 Das Programm wurde mit [Python3](https://www.python.org/downloads/) entwickelt und benutzt die 
-die Bibliothek "PySide2".
-
-Sie kann mit pip direkt installiert werden: `pip install PySide2`.  
-(Oder es geht auch mit der requirements.txt: `pip install -r requirements.txt`)
+die Bibliothek "PySide2". Sie kann mit pip installiert werden: `python3 -m pip install PySide2`.
 
 Mit dem Befehl `python3 main.py` kann die App dann ausgeführt werden.
+
+Ein Fehler, der bei mir anfangs auf Ubuntu auftrat:  
+`qt.qpa.plugin: could not load Qt platform plugin "xcb" in "" even though it was found`  
+ließ sich für mich mit `sudo apt-get install --reinstall libxcb-xinerama0` beheben
 
 ## Bedienung
 

@@ -1,3 +1,5 @@
+import sys
+
 from PySide2 import QtWidgets, QtGui, QtUiTools
 from PySide2.QtCore import Qt
 
@@ -83,4 +85,10 @@ class UiProjectEditor:
 
 	def update_combo_color(self, index=6):
 		"""Sets the color of the color picker by index"""
-		self.dialog.color_combo.setStyleSheet("color: " + self.finest_color_selection[index].name())
+		selected_color = self.finest_color_selection[index]
+		if "linux" in sys.platform:
+			palette = self.dialog.color_combo.pallette()
+			palette.setColor(QtGui.QPalette.ButtonText, selected_color)
+			self.dialog.color_combo.setPalette(palette)
+		else:
+			self.dialog.color_combo.setStyleSheet("color: " + selected_color.name())
