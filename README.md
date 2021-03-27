@@ -8,7 +8,7 @@ Dies ist das Abschlussprojekt für das Modul "Einführung in die Programmierung"
 Das Programm wurde mit [Python3](https://www.python.org/downloads/) entwickelt und benutzt die 
 die Bibliothek "PySide2". Sie kann mit pip installiert werden: `python3 -m pip install PySide2`.
 
-Mit dem Befehl `python3 main.py` kann die App dann ausgeführt werden.
+Mit dem Befehl `python3 main.py` kann die App ausgeführt werden.
 
 Ein Fehler, der bei mir anfangs auf Ubuntu auftrat:  
 `qt.qpa.plugin: could not load Qt platform plugin "xcb" in "" even though it was found`  
@@ -28,7 +28,7 @@ Außerdem kann jede Aufgabe einem Projekt zugeordnet werden (siehe Optionale Fea
 
 ![](res/screenshots/editor.png)
 
-Sobald die Notiz mit "Save" gespeichert wird sie mit in der Zeitleiste zu sehen. 
+Sobald die Notiz mit "Save" gespeichert wird, ist sie in der Zeitleiste zu sehen. 
 Die Beschreibung klappt sich unter dem Titel aus und ein, wenn man auf die Notiz klickt.
 
 #### Aufgaben bearbeiten, erledigen, löschen
@@ -56,17 +56,17 @@ ausgesucht.
 Projekte können ähnlich wie Notizen in der linken Seitenleiste erstellt werden.
 Der "+" Knopf mit dem Kreis herum, öffnet das Formular zum Erstellen eines Projektes.   Jedes Projekt braucht einen eindeutigen Namen und kann eine Farbe haben.
 
-Genauso wie Aufgaben können Projekte mit Knöpfen, die beim hinüberfahren erscheinen, bearbeitet oder gelöscht werden.
+Genauso wie Aufgaben können Projekte mit Knöpfen, die beim Hinüberfahren erscheinen, bearbeitet oder gelöscht werden.
 
 ![](res/screenshots/editor2.png)
 
 
-Im Bearbeitungsformular kann eine Aufgabe dann einem Projekt zugeordnet werden, 
-was dann an dem Projekticon in der Zeitleiste erkennbar ist.
+Öffnet man nun das Bearbeitungsformular einer Aufgabe, kann die Aufgabe dort einem Projekt zugeordnet werden. 
+Die Zuordnung wird dann sichtbar gemacht, in dem das Icon des Projektes auf der Notiz in der Zeitleiste angezeigt wurd.
 
-Um sich nur die Aufgaben eines Projektes anzeigen zu lassen kann man auf den Namen eines Projektes klicken,
-dann werden alle anderen Aufgaben ausgeblendet. 
-Mit den "Show all tasks" Knopf werden wieder alle Aufgaben angezeigt.
+Um sich nur die Aufgaben eines Projektes anzeigen zu lassen, kann man auf den Namen eines Projektes klicken.
+Dann werden alle Aufgaben ohne Projekt oder anderer Projekte ausgeblendet. 
+Mit dem "Show all tasks" Knopf werden wieder alle Aufgaben angezeigt.
 
 #### CLI
 
@@ -106,7 +106,7 @@ Der Befehl `python3 main.py task list` z.B. listet alle Aufgaben in der Konsole 
 
 ```
 Der Index einer Aufgabe in dieser Liste kann in anderen Befehlen verwendet werden, 
-beispielsweise um den Einkauf an einen anderen Tag zu verschieben: `python3 main.py task edit 1 --date 23.3.`
+um zum Beispiel den Einkauf am Samstag an einen anderen Tag zu verschieben: `python3 main.py task edit 1 --date 23.3.`
 
 Daraufhin steht diese Aufgabe an einer anderen Stelle in der Liste:
 ```
@@ -118,6 +118,6 @@ Daraufhin steht diese Aufgabe an einer anderen Stelle in der Liste:
 
 ## Sonstiges
 
-In Aufgabenschreibungen werden Links, die z.B. ".com" oder ".de" enthalten, automatisch als Hypelinks markiert:
+In Aufgabenschreibungen werden Links, die beispielsweise ".com" oder ".de" enthalten, automatisch in anklickbare Hypelinks umgewandelt:
 
 ![link](res/screenshots/sonstiges.png)
