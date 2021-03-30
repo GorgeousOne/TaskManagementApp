@@ -47,13 +47,13 @@ class MainHandler:
 		self.task_editor.dialog.create_btn.clicked.connect(self.finish_editing_task)
 		self.main_ui.window.all_projects_btn.clicked.connect(lambda: self.main_ui.timeline.filter_project(None))
 
-	def create_task(self, task_form):
-		"""Creates a task with the information of the form"""
-		title = task_form.get_title()
-		description = task_form.get_description()
-		date = task_form.get_date()
-		time = task_form.get_time()
-		project = task_form.get_project()
+	def create_task(self, task_editor):
+		"""Creates a task with the information of the editor"""
+		title = task_editor.get_title()
+		description = task_editor.get_description()
+		date = task_editor.get_date()
+		time = task_editor.get_time()
+		project = task_editor.get_project()
 
 		new_task = Task(title, description, date, time, project)
 		self.create_task_item(new_task)
@@ -65,10 +65,10 @@ class MainHandler:
 		self.main_ui.window.timeline_area.show()
 		self.main_ui.timeline.display_task(new_task)
 
-	def create_project(self, project_form):
-		"""Creates a project with the information of the form"""
-		name = project_form.get_project_name()
-		color = project_form.get_selected_color()
+	def create_project(self, project_editor):
+		"""Creates a project with the information of the editor"""
+		name = project_editor.get_project_name()
+		color = project_editor.get_selected_color()
 		new_project = Project(name, color)
 
 		self.task_handler.add_project(new_project)
@@ -87,12 +87,14 @@ class MainHandler:
 		task.update_listeners()
 		self.task_handler.save_tasks()
 
-	def start_editing_task(self, task):
+	def start_editing_task(self, task, is_copy):
 		"""Opens task editor and fills in details of task to edit"""
 		self.task_editor.reset()
-		self.task_editor.fill_in(task)
+		self.task_editor.fill_in(task, is_copy)
 		self.task_editor.dialog.show()
-		self.edited_task = task
+		# if a copy is being created the original task will not be affected in finish_editing_task
+		if not is_copy:
+			self.edited_task = task
 
 	def finish_editing_task(self):
 		"""Called when "Create" button in task editor is clicked.
@@ -167,7 +169,7 @@ if __name__ == "__main__":
 	QtCore.QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 	app = QtWidgets.QApplication(sys.argv)
 
-	# loads Segoe fonts in other OS other than Windows
+	# loads Segoe fonts in other OS other than Windows, not 100% sure if that works
 	if sys.platform != "win32":
 		import os
 		app_dir = os.path.dirname(os.path.abspath(__file__))

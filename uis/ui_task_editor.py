@@ -81,9 +81,9 @@ class UiTaskEditor:
 		for project in self.projects:
 			projects_combo.addItem(project.get_name())
 
-	def fill_in(self, task):
+	def fill_in(self, task, is_copy):
 		"""Fills in the data of a task into the inputs for it to get edited"""
-		self.dialog.title_edit.setText(task.get_title())
+		self.dialog.title_edit.setText(task.get_title() + (" Copy" if is_copy else ""))
 		self.dialog.description_edit.setPlainText(task.get_description())
 		self.dialog.date_picker.setDate(task.get_date())
 		self.set_project(task.get_project())

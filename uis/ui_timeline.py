@@ -18,7 +18,7 @@ class UiTimeline:
 		self.out_filtered_items = []
 
 	def display_task(self, task):
-		"""Displays a task in the timeline. Creates a new section if there was no section with the tasks date before"""
+		"""Displays a task in the timeline. Creates a new section if there was no section with the task's date before"""
 		date = task.get_date()
 		section = None
 
@@ -35,8 +35,9 @@ class UiTimeline:
 
 		item = section.display_task(task)
 		item.content.toggle_done_btn.clicked.connect(lambda: self.main_handler.toggle_task_completion(task))
+		item.content.edit_btn.clicked.connect(lambda: self.main_handler.start_editing_task(task, False))
+		item.content.copy_btn.clicked.connect(lambda: self.main_handler.start_editing_task(task, True))
 		item.content.delete_btn.clicked.connect(lambda: self.main_handler.delete_task(task))
-		item.content.edit_btn.clicked.connect(lambda: self.main_handler.start_editing_task(task))
 
 	def on_task_change(self, task):
 		"""Reorders a task after it's date/time was potentially being changed"""
